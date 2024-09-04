@@ -1,0 +1,46 @@
+package org.detective.util;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+import org.springframework.security.core.GrantedAuthority;
+import java.util.Date;
+import java.util.stream.Collectors;
+
+@Component
+public class JwtUtil {
+
+    @Value("${jwt.secret}")
+    private String SECRET_KEY; // 비밀 키
+
+    private final long EXPIRATION_TIME = 86400000; // 1일
+
+    public String generateToken(Authentication authentication) {
+        String username = authentication.getName();
+        System.out.println(authentication);
+        long nowMillis = System.currentTimeMillis();
+        Date now = new Date(nowMillis);
+        // 권한을 문자열 목록으로 변환
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        return Jwts.builder()
+                .setSubject(username)
+                .claim("roles", authorities)
+                .setIssuedAt(now)
+                .setExpiration(new Date(nowMillis + EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
+
+    public Claims validateToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
+    }
+}

@@ -1,5 +1,5 @@
 package org.detective.entity;
 
 public enum Role {
-    CLIENT, DETECTIVE ,ADMIN
+    ROLE_USER, USER_DETECTIVE , USER_ADMIN
 }

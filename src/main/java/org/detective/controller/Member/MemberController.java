@@ -1,7 +1,9 @@
 package org.detective.controller.Member;
 
 import lombok.Data;
+import org.detective.entity.Specialty;
 import org.detective.entity.User;
+import org.detective.repository.SpecialtyRepository;
 import org.detective.repository.UserRepository;
 import org.detective.services.member.UserService;
 import org.detective.util.JwtUtil;
@@ -29,6 +31,8 @@ public class MemberController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private SpecialtyRepository specialtyRepository;
 
 
     @PostMapping("/register")
@@ -58,6 +62,14 @@ public class MemberController {
             return ResponseEntity.status(401).body("asdsadasdsad");
         }
     }
+
+    @GetMapping("/check-email")
+    public ResponseEntity<Boolean> checkEmailExists(@RequestParam String email) {
+        boolean emailExists = userService.existsByEmail(email);
+        return ResponseEntity.ok(!emailExists); // 이메일이 존재하지 않으면 true 반환
+    }
+
+
 }
 
 @Data

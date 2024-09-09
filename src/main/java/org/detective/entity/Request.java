@@ -1,26 +1,28 @@
 package org.detective.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.detective.dto.RequestDTO;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "Requests")
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "REQUESTS")
 public class Request {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "request_id")
     private Long requestId;
 
-    @Column(name = "client_id", nullable = false)
-    private Long clientId;  // Client 엔티티와의 관계
+    @ManyToOne
+    @JoinColumn(name = "client_id", referencedColumnName = "client_id", nullable = false)
+    private Client client;  // Client 엔티티와의 관계
 
     @Column(name = "location", length = 255)
     private String location;
@@ -30,33 +32,26 @@ public class Request {
     private String detectiveGender;
 
     @ManyToOne
-    @JoinColumn(name = "request_type", nullable = false)
-    private Specialty specialty;  // Specialty 엔티티와의 관계
+    @JoinColumn(name = "request_type", referencedColumnName = "speciality_id", nullable = false)
+    private Speciality speciality;  // Specialty 엔티티와의 관계
 
     @Lob
     @Column(name = "description")
-    private String description;
+    private String description;   // 의뢰내용
 
+    @CreationTimestamp
     @Column(name = "created_at", updatable = false)
-    private LocalDate createdAt = LocalDate.now();
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
-    // Getters and Setters
-    // Constructor (No-arg and All-arg)
-    // @PreUpdate to handle updatedAt field
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDate.now();
-    }
 
-    public Request(Long clientId, String location, String detectiveGender, Specialty specialty, String description) {
-        this.clientId = clientId;
+    public Request(Client client, String location, String detectiveGender, Speciality speciality, String description) {
+        this.client = client;
         this.location = location;
-        this.specialty = specialty;
+        this.speciality = speciality;
         this.detectiveGender = detectiveGender;
         this.description = description;
     }
-    // Getters, Setters, Constructors, etc.
 }

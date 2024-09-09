@@ -3,7 +3,7 @@ package org.detective.dto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.detective.entity.Specialty;
+import org.detective.entity.Speciality;
 import org.springframework.stereotype.Service;
 
 @Getter
@@ -13,6 +13,6 @@ public class RequestDTO {
     private String email;
     private String location;
     private String gender;
-    private Long specialty;
+    private Long speciality;
     private String description;
 }

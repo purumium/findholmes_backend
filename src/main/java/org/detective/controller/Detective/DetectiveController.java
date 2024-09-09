@@ -1,25 +1,17 @@
 package org.detective.controller.Detective;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Lob;
-import lombok.Data;
 import org.detective.dto.DetectiveDTO;
+import org.detective.entity.ApprovalStatus;
 import org.detective.entity.Detective;
-import org.detective.entity.Specialty;
+import org.detective.entity.Speciality;
 import org.detective.entity.User;
 import org.detective.repository.DetectiveRepository;
-import org.detective.repository.SpecialtyRepository;
+import org.detective.repository.SpecialityRepository;
 import org.detective.repository.UserRepository;
-import org.detective.services.member.UserService;
-import org.detective.util.JwtUtil;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +32,7 @@ import java.util.UUID;
 public class DetectiveController {
 
     @Autowired
-    private SpecialtyRepository specialtyRepository;
+    private SpecialityRepository specialityRepository;
 
     @Autowired
     private DetectiveRepository detectiveRepository;
@@ -49,9 +41,9 @@ public class DetectiveController {
     private UserRepository userRepository;
 
     @GetMapping("/specialties")
-    public List<Specialty> getAllSpecialties() {
-        System.out.println(specialtyRepository.findAll());
-        return specialtyRepository.findAll();
+    public List<Speciality> getAllSpecialties() {
+        System.out.println(specialityRepository.findAll());
+        return specialityRepository.findAll();
     }
 
     @PostMapping("/register")
@@ -64,12 +56,12 @@ public class DetectiveController {
         }
         User user = userRepository.findByEmail(email);
         Detective detective = new Detective();
-        detective.setUserId(user.getUserId());
-        detective.setCurrentPoints(0.0);
+        detective.setUser(user);
+//        detective.setCurrentPoints();
 
         try {
             detective.setIntroduction(request.getIntroduction());
-            detective.setApprovalStatus("PENDING");
+            detective.setApprovalStatus(ApprovalStatus.PENDING);
             detective.setLocation(request.getLocation());
             detective.setDetectiveGender(request.getDetectiveGender());
             detective.setResolvedCases(request.getResolvedCases());

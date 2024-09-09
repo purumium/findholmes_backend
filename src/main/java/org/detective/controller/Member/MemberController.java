@@ -1,10 +1,8 @@
 package org.detective.controller.Member;
 
 import lombok.Data;
-import org.detective.entity.Specialty;
 import org.detective.entity.User;
-import org.detective.repository.SpecialtyRepository;
-import org.detective.repository.UserRepository;
+import org.detective.repository.SpecialityRepository;
 import org.detective.services.member.UserService;
 import org.detective.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/member")
@@ -32,7 +27,7 @@ public class MemberController {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private SpecialtyRepository specialtyRepository;
+    private SpecialityRepository specialityRepository;
 
 
     @PostMapping("/register")

@@ -30,12 +30,8 @@ public class UserService {
             userRepository.save(user);
             Long id = user.getUserId();
             Client client = new Client();
-<<<<<<< HEAD
-            client.setUserId(id);
-=======
             // client.setUserId(id);
             client.setUser(user);
->>>>>>> jpa
             clientRepository.save(client);
             return true;
         }
@@ -49,8 +45,6 @@ public class UserService {
         User user = userRepository.findByEmail(email);
         return user != null; // user가 null이 아니면 true, null이면 false 반환
     }
-<<<<<<< HEAD
-=======
 
     public User findByEmail(String email) {
         User user = userRepository.findByEmail(email);
@@ -58,5 +52,4 @@ public class UserService {
 
         return user;
     }
->>>>>>> jpa
 }

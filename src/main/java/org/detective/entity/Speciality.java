@@ -24,4 +24,3 @@ public class Speciality {
     @OneToMany(mappedBy = "speciality", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DetectiveSpeciality> specialties =  new ArrayList<>();
 }
-

@@ -1,25 +1,29 @@
 package org.detective.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.util.HashSet;
-import java.util.Set;
-
-@Data
 @Entity
-@Table(name = "Detectives")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "DETECTIVES")
 public class Detective {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "detective_id")
     private Long detectiveId;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    private User user;
 
-    @Column(name = "current_points")
-    private Double currentPoints;
+    @ColumnDefault("0")
+    @Column(name="currentPoints")
+    private Long currentPoints;
 
     @Column(name = "business_registration")
     private String businessRegistration;
@@ -43,16 +47,8 @@ public class Detective {
     @Column(name = "resolved_cases")
     private Long resolvedCases;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "approval_status")
-    private String approvalStatus;
+    private ApprovalStatus approvalStatus;
 
-    @ManyToMany
-    @JoinTable(
-            name = "Detective_Specialties",
-            joinColumns = @JoinColumn(name = "detective_id"),
-            inverseJoinColumns = @JoinColumn(name = "specialty_id")
-    )
-    private Set<Specialty> specialties = new HashSet<>();
-
-    // Getters and setters
 }

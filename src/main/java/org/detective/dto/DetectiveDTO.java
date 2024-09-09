@@ -1,10 +1,21 @@
 package org.detective.dto;
 
+<<<<<<< HEAD
 import lombok.Data;
+=======
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+>>>>>>> jpa
 
 import java.util.List;
 
 @Data
+<<<<<<< HEAD
+=======
+@AllArgsConstructor
+@NoArgsConstructor
+>>>>>>> jpa
 public class DetectiveDTO {
     private Long userId;
     private Double currentPoints;

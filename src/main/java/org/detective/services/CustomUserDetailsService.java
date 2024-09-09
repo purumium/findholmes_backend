@@ -58,6 +58,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 
         System.out.print(user+"이게 맞아?");
+
 //        return new org.springframework.security.core.userdetails.User(
 //                user.getEmail(),
 //                user.getPassword(),
@@ -79,4 +80,3 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
 }
-

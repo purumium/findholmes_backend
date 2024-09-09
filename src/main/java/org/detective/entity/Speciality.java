@@ -16,6 +16,7 @@ public class Speciality {
     @Id
     @Column(name = "speciality_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long specialityId;
 
     @Column(name = "speciality_name")
@@ -24,4 +25,5 @@ public class Speciality {
     @OneToMany(mappedBy = "speciality", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DetectiveSpeciality> specialties =  new ArrayList<>();
 }
+
 

@@ -26,4 +26,6 @@ public class Client {
     @ColumnDefault("0")
     @Column(name="currentPoints")
     private Long currentPoints;
+
 }
+

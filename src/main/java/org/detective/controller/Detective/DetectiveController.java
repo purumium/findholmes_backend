@@ -42,8 +42,10 @@ public class DetectiveController {
 
     @GetMapping("/specialties")
     public List<Speciality> getAllSpecialties() {
+
         System.out.println(specialityRepository.findAll());
         return specialityRepository.findAll();
+
     }
 
     @PostMapping("/register")
@@ -57,7 +59,9 @@ public class DetectiveController {
         User user = userRepository.findByEmail(email);
         Detective detective = new Detective();
         detective.setUser(user);
+
 //        detective.setCurrentPoints();
+
 
         try {
             detective.setIntroduction(request.getIntroduction());
@@ -133,6 +137,3 @@ public class DetectiveController {
 
 
 }
-
-
-

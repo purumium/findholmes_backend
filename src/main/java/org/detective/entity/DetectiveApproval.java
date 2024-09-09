@@ -5,7 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 import java.time.LocalDateTime;
+
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Entity
 @Data
@@ -30,6 +40,11 @@ public class DetectiveApproval {
     @Column(name = "rejection_reason")
     private String rejReason; // clob
 
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private LocalDateTime createAt;
+
+    @UpdateTimestamp
     @Column(name = "confirmed_at")
     private LocalDateTime confirmedAt;
 }

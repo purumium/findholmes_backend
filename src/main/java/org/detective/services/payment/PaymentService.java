@@ -2,15 +2,13 @@ package org.detective.services.payment;
 
 
 import org.detective.dto.PaymentRequestDTO;
-import org.detective.entity.Client;
-import org.detective.entity.Payment;
-import org.detective.entity.User;
-import org.detective.entity.UserPoint;
-import org.detective.repository.ClientRepository;
-import org.detective.repository.PaymentRepository;
-import org.detective.repository.UserPointRepository;
-import org.detective.repository.UserRepository;
+import org.detective.dto.PaymentResponseDTO;
+import org.detective.entity.*;
+import org.detective.repository.*;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PaymentService {
@@ -19,13 +17,15 @@ public class PaymentService {
     private final UserRepository userRepository;
     private final UserPointRepository userPointRepository;
     private final ClientRepository clientRepository;
+    private final DetectiveRepository detectiveRepository;
 
     public PaymentService(PaymentRepository paymentRepository, UserRepository userRepository,
-                          ClientRepository clientRepository, UserPointRepository userPointRepository) {
+                          ClientRepository clientRepository, UserPointRepository userPointRepository, DetectiveRepository detectiveRepository) {
         this.paymentRepository = paymentRepository;
         this.userRepository = userRepository;
         this.userPointRepository = userPointRepository;
         this.clientRepository = clientRepository;
+        this.detectiveRepository = detectiveRepository;
     }
 
     public Payment savePayment(PaymentRequestDTO paymentRequestDTO) {
@@ -52,24 +52,44 @@ public class PaymentService {
     }
 
     public void updatePoint(User user, Long paymentPrice) {
-        // 1. userid로 client를 조회
-        Client client = clientRepository.findById(user.getUserId())
-                .orElseThrow(() -> new RuntimeException("해당 사용자의 포인트 내역을 찾을 수 없습니다."));
+        if(user.getRole().equals("ROLE_USER")) {
+            // 1. userid로 client를 조회
+            Client client = clientRepository.findByUser(user)
+                    .orElseThrow(() -> new RuntimeException("해당 사용자의 포인트 내역을 찾을 수 없습니다."));
 
-        // 2. 포인트 갱신 (현재 포인트 + 충전 금액)
-        Long currentPoints = client.getCurrentPoints();
-        Long updatedPoints = currentPoints + paymentPrice;
-        client.setCurrentPoints(updatedPoints);
+            // 2. 포인트 갱신 (현재 포인트 + 충전 금액)
+            Long currentPoints = client.getCurrentPoints();
+            Long updatedPoints = currentPoints + paymentPrice;
+            client.setCurrentPoints(updatedPoints);
 
-        // 3. 포인트 변동 내역 기록 (UserPoint 엔티티에 추가)
+            System.out.println("현재 포인트 : " + client.getCurrentPoints());
+
+            // 3. 포인트 업데이트
+            clientRepository.save(client);
+        } else {
+            // 1. userid로 detective 조회)
+            Detective detective = detectiveRepository.findByUser(user)
+                    .orElseThrow(() -> new RuntimeException("해당 사용자의 포인트 내역을 찾을 수 없습니다."));
+
+            // 2. 포인트 갱신 (현재 포인트 + 충전 금액)
+            Long currentPoints = detective.getCurrentPoints();
+            Long updatedPoints = currentPoints + paymentPrice;
+            detective.setCurrentPoints(updatedPoints);
+
+            // 3. 포인트 업데이트
+            detectiveRepository.save(detective);
+        }
+
+        // 4. 포인트 변동 내역 기록 (UserPoint 엔티티에 추가)
         UserPoint userPoint = new UserPoint();
         userPoint.setUser(user);  // User 설정
         userPoint.setPointChangeAmount(paymentPrice);
         userPoint.setPointUsingType(UserPoint.PointUsingType.CHARGE); // 충전 기록
         userPointRepository.save(userPoint);
 
-        // 4. 클라이언트 포인트 업데이트
-        clientRepository.save(client);
     }
 
+    public List<PaymentResponseDTO> getPaymentHistory(Long userId) {
+        return paymentRepository.getPaymentDetailsByUserId(userId);
+    }
 }

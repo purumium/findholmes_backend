@@ -57,7 +57,6 @@ public class DetectiveController {
         User user = userRepository.findByEmail(email);
         Detective detective = new Detective();
         detective.setUser(user);
-        //detective.setCurrentPoints(0L);  //기본으로 0으로 디폴트 세팅
 
         try {
             detective.setIntroduction(request.getIntroduction());

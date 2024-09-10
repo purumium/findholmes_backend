@@ -18,8 +18,10 @@ public interface DetectiveRepository extends JpaRepository<Detective, Long> {
     @Query(value = "SELECT * FROM (SELECT * FROM detectives ORDER BY DBMS_RANDOM.VALUE) WHERE ROWNUM <= 5", nativeQuery = true)
     List<Detective> getDetectiveRandom();
 
+
     Detective findByUser(User user);
     Optional<Detective> findOptionalByUser(User user);
 
 
 }
+

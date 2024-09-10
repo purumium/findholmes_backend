@@ -1,9 +1,11 @@
 package org.detective.repository;
 
-import org.detective.entity.Speciality;
+import org.detective.entity.Request;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SpecialtyRepository extends JpaRepository<Speciality, Long> {
+public interface RequestRepository  extends JpaRepository<Request, Long> {
+Request findByRequestId(Long requestId);
 }

@@ -57,7 +57,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         System.out.println("login role test"+getAuthorities(user.getRole()));
 
 
-        System.out.print(user.getUserName() + "이게 맞아?");
+        System.out.print(user+"이게 맞아?");
+
 //        return new org.springframework.security.core.userdetails.User(
 //                user.getEmail(),
 //                user.getPassword(),

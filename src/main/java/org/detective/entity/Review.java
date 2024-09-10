@@ -1,28 +1,17 @@
 package org.detective.entity;
 
 import jakarta.persistence.*;
-<<<<<<< HEAD
-import lombok.Getter;
-import lombok.Setter;
-=======
 import lombok.*;
->>>>>>> ba05d8b48fd66e75a09124503b943de184bc19bc
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-<<<<<<< HEAD
-@Entity
-@Getter
-@Setter
-=======
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "REVIEWS")
->>>>>>> ba05d8b48fd66e75a09124503b943de184bc19bc
 public class Review {
 
     @Id
@@ -31,18 +20,6 @@ public class Review {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-<<<<<<< HEAD
-    @JoinColumn(name="detective_id")
-    private Detective detective;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="client_id")
-    private Client client;
-
-    private int rating;
-
-    @Lob
-=======
     @JoinColumn(name="detective_id", referencedColumnName = "detective_id")
     private Detective detective;
 
@@ -55,7 +32,6 @@ public class Review {
 
     @Lob
     @Column(name="content")
->>>>>>> ba05d8b48fd66e75a09124503b943de184bc19bc
     private String content; // clob
 
     @CreationTimestamp

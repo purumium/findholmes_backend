@@ -1,36 +1,6 @@
 package org.detective.entity;
 
 import jakarta.persistence.*;
-<<<<<<< HEAD
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DialectOverride;
-
-import java.time.LocalDateTime;
-
-@Entity
-@Getter
-@Setter
-public class UserPoint {
-    @Id @Column(name="user_point_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ColumnDefault("0")
-    private int point;
-
-    @Column(name="point_type")
-    private int pointType;
-
-    @Column(name="created_at")
-    private LocalDateTime createdAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private User user;
-
-=======
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -79,5 +49,4 @@ public class UserPoint {
 
         this.createdAt = formattedDate;
     }
->>>>>>> ba05d8b48fd66e75a09124503b943de184bc19bc
 }

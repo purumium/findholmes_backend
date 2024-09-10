@@ -37,7 +37,7 @@ public class RequestService {
         Long userId = user.getUserId();
         if (userId == null) { throw new RuntimeException("User not found"); }
 
-        Optional<Client> client = clientRepository.findByUser(user);
+        Client client = clientRepository.findByUser(user);
         if (client == null) { throw new RuntimeException("Client not found"); }
 
         Optional<Speciality> optionalSpecialty = specialityRepository.findById(requestDTO.getSpeciality());
@@ -47,7 +47,7 @@ public class RequestService {
         );
 
 
-        Request request = new Request(client.get(), requestDTO.getLocation(), requestDTO.getGender(), speciality, requestDTO.getDescription());
+        Request request = new Request(client, requestDTO.getLocation(), requestDTO.getGender(), speciality, requestDTO.getDescription());
 
         System.out.println("Service request entity : "+ request.toString());
         Request savedRequest = requestRepository.save(request);

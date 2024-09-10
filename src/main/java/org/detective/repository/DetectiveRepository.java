@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DetectiveRepository extends JpaRepository<Detective, Long> {
@@ -17,4 +18,5 @@ public interface DetectiveRepository extends JpaRepository<Detective, Long> {
     @Query(value = "SELECT * FROM (SELECT * FROM detectives ORDER BY DBMS_RANDOM.VALUE) WHERE ROWNUM <= 5", nativeQuery = true)
     List<Detective> getDetectiveRandom();
 
-    Detective findByUser(User user);
+    Optional<Detective> findByUser(User user);
+}

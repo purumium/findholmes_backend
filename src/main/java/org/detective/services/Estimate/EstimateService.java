@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EstimateService {
@@ -31,8 +32,8 @@ public class EstimateService {
     public List<AssignedRequestDTO> getAssignedRequest(String email) {
         System.err.println("Estimate Service");
         User user = userRepository.findByEmail(email);
-        Detective detective = detectiveRepository.findByUser(user);
-        List<AssignmentRequest> assignmentRequest = assignmentRequestRepository.findByDetective(detective);
+        Optional<Detective> detective = detectiveRepository.findByUser(user);
+        List<AssignmentRequest> assignmentRequest = assignmentRequestRepository.findByDetective(detective.get());
         List<AssignedRequestDTO> requestsList = new ArrayList<>();
 
         for (AssignmentRequest assigned : assignmentRequest) {

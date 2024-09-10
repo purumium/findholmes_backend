@@ -21,9 +21,8 @@ public class Detective {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;
 
-    @ColumnDefault("0")
-    @Column(name="currentPoints")
-    private Long currentPoints;
+    @Column(name = "currentPoints", nullable = false)
+    private Long currentPoints = 0L;
 
     @Column(name = "business_registration")
     private String businessRegistration;

@@ -51,7 +51,7 @@ public class Estimate
     private LocalDateTime endDate;
 
     @CreationTimestamp
-    @Column(name = "created_at", updatable = false, nullable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createAt;
 
 }

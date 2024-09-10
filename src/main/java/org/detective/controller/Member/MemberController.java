@@ -5,7 +5,7 @@ import org.detective.entity.User;
 
 import org.detective.repository.SpecialityRepository;
 
-import org.detective.repository.SpecialtyRepository;
+import org.detective.repository.SpecialityRepository;
 import org.detective.repository.UserRepository;
 
 import org.detective.services.member.UserService;

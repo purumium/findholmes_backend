@@ -55,7 +55,7 @@ public class PaymentService {
     public void updatePoint(User user, Long paymentPrice) {
         if(user.getRole().equals("ROLE_USER")) {
             // 1. userid로 client를 조회
-            Client client = clientRepository.findByUser(user)
+            Client client = clientRepository.findOptionalByUser(user)
                     .orElseThrow(() -> new RuntimeException("해당 사용자의 포인트 내역을 찾을 수 없습니다."));
 
             // 2. 포인트 갱신 (현재 포인트 + 충전 금액)
@@ -69,7 +69,7 @@ public class PaymentService {
             clientRepository.save(client);
         } else {
             // 1. userid로 detective 조회)
-            Detective detective = detectiveRepository.findByUser(user)
+            Detective detective = detectiveRepository.findOptionalByUser(user)
                     .orElseThrow(() -> new RuntimeException("해당 사용자의 포인트 내역을 찾을 수 없습니다."));
 
             // 2. 포인트 갱신 (현재 포인트 + 충전 금액)

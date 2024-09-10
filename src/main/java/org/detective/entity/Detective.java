@@ -1,10 +1,15 @@
 package org.detective.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,7 +26,7 @@ public class Detective {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "currentPoints", nullable = false)
+    @Column(name="currentPoints", nullable = false)
     private Long currentPoints = 0L;
 
     @Column(name = "business_registration")
@@ -49,5 +54,8 @@ public class Detective {
     @Enumerated(EnumType.STRING)
     @Column(name = "approval_status")
     private ApprovalStatus approvalStatus;
+
+    @OneToMany(mappedBy = "detective", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DetectiveSpeciality> specialties =  new ArrayList<>();
 
 }

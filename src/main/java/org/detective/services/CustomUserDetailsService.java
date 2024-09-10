@@ -2,14 +2,13 @@ package org.detective.services;
 
 import org.detective.entity.User;
 import org.detective.repository.UserRepository;
+import org.detective.util.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,9 +36,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         System.out.println("나도몰라");
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -55,14 +54,20 @@ public class CustomUserDetailsService implements UserDetailsService {
 //        }
 
 
-//        System.out.println(getAuthorities(user.getRole()));
+        System.out.println("login role test"+getAuthorities(user.getRole()));
 
 
-        System.out.print(user.getUsername()+"이게 맞아?");
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
+        System.out.print(user.getUserName() + "이게 맞아?");
+//        return new org.springframework.security.core.userdetails.User(
+//                user.getEmail(),
+//                user.getPassword(),
+//                getAuthorities(user.getRole()) // 역할을 권한으로 변환하여 전달
+//        );
+        return new CustomUserDetails(
+                user.getEmail(),
                 user.getPassword(),
-                getAuthorities(user.getRole()) // 역할을 권한으로 변환하여 전달
+                user.getUserId(),  // User ID를 추가
+                getAuthorities(user.getRole())  // 역할을 권한으로 변환하여 전달
         );
     }
 
@@ -74,4 +79,3 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
 }
-

@@ -22,6 +22,8 @@ public interface DetectiveRepository extends JpaRepository<Detective, Long> {
     Detective findByUser(User user);
     Optional<Detective> findOptionalByUser(User user);
 
+    Optional<Detective> findByUserUserId(Long userId);
+
 
 }
 

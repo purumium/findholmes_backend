@@ -1,5 +1,8 @@
 package org.detective.dto;
 
+import org.detective.entity.Speciality;
+import org.springframework.stereotype.Service;
+
 import lombok.*;
 
 @Data

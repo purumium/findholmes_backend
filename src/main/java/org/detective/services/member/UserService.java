@@ -30,6 +30,7 @@ public class UserService {
             userRepository.save(user);
             Long id = user.getUserId();
             Client client = new Client();
+
             // client.setUserId(id);
             client.setUser(user);
             clientRepository.save(client);

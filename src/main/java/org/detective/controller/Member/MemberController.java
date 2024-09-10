@@ -2,8 +2,12 @@ package org.detective.controller.Member;
 
 import lombok.Data;
 import org.detective.entity.User;
+
+import org.detective.repository.SpecialityRepository;
+
 import org.detective.repository.SpecialtyRepository;
 import org.detective.repository.UserRepository;
+
 import org.detective.services.member.UserService;
 import org.detective.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +34,7 @@ public class MemberController {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private SpecialtyRepository specialtyRepository;
+    private SpecialityRepository specialityRepository;
 
     @Autowired
     private UserRepository userRepository;

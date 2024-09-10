@@ -6,7 +6,7 @@ import org.detective.entity.Detective;
 import org.detective.entity.Speciality;
 import org.detective.entity.User;
 import org.detective.repository.DetectiveRepository;
-import org.detective.repository.SpecialtyRepository;
+import org.detective.repository.SpecialityRepository;
 import org.detective.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,7 @@ import java.util.UUID;
 public class DetectiveController {
 
     @Autowired
-    private SpecialtyRepository specialtyRepository;
+    private SpecialityRepository specialityRepository;
 
     @Autowired
     private DetectiveRepository detectiveRepository;
@@ -42,8 +42,10 @@ public class DetectiveController {
 
     @GetMapping("/specialties")
     public List<Speciality> getAllSpecialties() {
-        System.out.println(specialtyRepository.findAll());
-        return specialtyRepository.findAll();
+
+        System.out.println(specialityRepository.findAll());
+        return specialityRepository.findAll();
+
     }
 
     @PostMapping("/register")
@@ -57,6 +59,8 @@ public class DetectiveController {
         User user = userRepository.findByEmail(email);
         Detective detective = new Detective();
         detective.setUser(user);
+
+//        detective.setCurrentPoints();
 
         try {
             detective.setIntroduction(request.getIntroduction());

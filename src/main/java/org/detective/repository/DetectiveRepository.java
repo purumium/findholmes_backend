@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DetectiveRepository extends JpaRepository<Detective, Long> {
@@ -18,3 +19,7 @@ public interface DetectiveRepository extends JpaRepository<Detective, Long> {
     List<Detective> getDetectiveRandom();
 
     Detective findByUser(User user);
+    Optional<Detective> findOptionalByUser(User user);
+
+
+}

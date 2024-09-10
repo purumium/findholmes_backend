@@ -34,9 +34,8 @@ public class Estimate
     @JoinColumn(name="detective_id", referencedColumnName = "detective_id")
     private Detective detective;
 
-    @ColumnDefault("0")
-    @Column(name="price")
-    private int price;
+    @Column(name = "price", nullable = false)
+    private Long currentPoints = 0L;
 
     @Lob
     private String description; //clob

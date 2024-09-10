@@ -2,6 +2,8 @@ package org.detective.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 
@@ -9,6 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "AssignmentRequests",
         uniqueConstraints = @UniqueConstraint(columnNames = {"request_id", "detective_id"}))
+@NoArgsConstructor
 public class AssignmentRequest {
 
     @Id
@@ -35,5 +38,11 @@ public class AssignmentRequest {
     private LocalDate replyAt;
 
     @Column(name="request_status")
-    private String requestStatus;
+    private ApprovalStatus requestStatus = ApprovalStatus.PENDING;
+
+    public AssignmentRequest(Request request, Detective detective, Speciality speciality) {
+        this.request = request;
+        this.detective = detective;
+        this.speciality = speciality;
+    }
 }

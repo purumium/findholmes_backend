@@ -1,15 +1,13 @@
 package org.detective.services.Request;
 
 import org.detective.dto.RequestDTO;
-import org.detective.entity.Client;
-import org.detective.entity.Request;
-import org.detective.entity.Speciality;
-import org.detective.entity.User;
+import org.detective.entity.*;
 import org.detective.repository.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,16 +18,16 @@ public class RequestService {
     private final ClientRepository clientRepository;
     private final UserRepository userRepository;
     private final DetectiveRepository detectiveRepository;
-//    private final AssignmentRequestRepository assignmentRequestRepository;
+    private final AssignmentRequestRepository assignmentRequestRepository;
 
     public RequestService(RequestRepository requestRepository, SpecialityRepository specialityRepository, ClientRepository clientRepository, UserRepository userRepository,
-                          DetectiveRepository detectiveRepository/*,AssignmentRequestRepository assignmentRequestRepository*/) {
+                          DetectiveRepository detectiveRepository,AssignmentRequestRepository assignmentRequestRepository) {
         this.requestRepository = requestRepository;
         this.specialityRepository = specialityRepository;
         this.clientRepository = clientRepository;
         this.userRepository = userRepository;
         this.detectiveRepository = detectiveRepository;
-//        this.assignmentRequestRepository = assignmentRequestRepository;
+        this.assignmentRequestRepository = assignmentRequestRepository;
     }
 
 
@@ -52,8 +50,18 @@ public class RequestService {
         Request request = new Request(client, requestDTO.getLocation(), requestDTO.getGender(), speciality, requestDTO.getDescription());
 
         System.out.println("Service request entity : "+ request.toString());
-        Request requestId = requestRepository.save(request);
-        System.out.println(requestId.getRequestId());
+        Request savedRequest = requestRepository.save(request);
+
+        List<Detective> detectives = detectiveRepository.getDetectiveRandom();
+        
+        int cnt = 0;
+        System.err.println("Service detectives entity : "+ detectives.toString());
+        System.err.println("Service detectives entity length : "+ detectives.size());
+        for (Detective detective : detectives) {
+            System.err.println(++cnt + "번째 삽입");
+            AssignmentRequest assignmentRequest = new AssignmentRequest(request, detective, speciality);
+            assignmentRequestRepository.save(assignmentRequest);
+        }
 
     }
 

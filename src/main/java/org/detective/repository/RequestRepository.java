@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RequestRepository  extends JpaRepository<Request, Long> {
-
+Request findByRequestId(Long requestId);
 }

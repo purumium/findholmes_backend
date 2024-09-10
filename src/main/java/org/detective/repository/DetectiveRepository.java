@@ -18,4 +18,3 @@ public interface DetectiveRepository extends JpaRepository<Detective, Long> {
     List<Detective> getDetectiveRandom();
 
     Detective findByUser(User user);
-}

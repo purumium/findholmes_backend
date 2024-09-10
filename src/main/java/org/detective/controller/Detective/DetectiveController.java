@@ -62,7 +62,6 @@ public class DetectiveController {
 
 //        detective.setCurrentPoints();
 
-
         try {
             detective.setIntroduction(request.getIntroduction());
             detective.setApprovalStatus(ApprovalStatus.PENDING);

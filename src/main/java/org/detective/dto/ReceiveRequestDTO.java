@@ -4,22 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.detective.entity.Speciality;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class AssignedRequestDTO {
+public class ReceiveRequestDTO {
     private Long assignedRequestId;
-    private Long detectiveId;
-    private Long clientId;
-    private Long userId;
     private Long requestId;
-
     private String title;
-    private String description;
     private String location;
-
     private LocalDateTime createAt;
-
     private Speciality speciality;
 }

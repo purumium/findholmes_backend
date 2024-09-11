@@ -1,5 +1,6 @@
 package org.detective.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class Speciality {
     private String specialityName;
 
     @OneToMany(mappedBy = "speciality", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<DetectiveSpeciality> specialties =  new ArrayList<>();
 }
 

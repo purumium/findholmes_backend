@@ -37,6 +37,9 @@ public class Request {
     @JoinColumn(name = "request_type", referencedColumnName = "speciality_id", nullable = false)
     private Speciality speciality;  // Specialty 엔티티와의 관계
 
+    @Column(name = "title")
+    private String title;
+
     @Lob
     @Column(name = "description")
     private String description;   // 의뢰내용
@@ -51,11 +54,12 @@ public class Request {
     private LocalDateTime updatedAt;
 
 
-    public Request(Client client, String location, String detectiveGender, Speciality speciality, String description) {
+    public Request(Client client, String location, String detectiveGender, Speciality speciality,String title, String description) {
         this.client = client;
         this.location = location;
         this.speciality = speciality;
         this.detectiveGender = detectiveGender;
+        this.title = title;
         this.description = description;
     }
 }

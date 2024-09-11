@@ -13,5 +13,6 @@ public class RequestDTO {
     private String location;
     private String gender;
     private Long speciality;
+    private String title;
     private String description;
 }

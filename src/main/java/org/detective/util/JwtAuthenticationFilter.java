@@ -37,6 +37,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        if (request.getRequestURI().equals("/uploads/")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
 
         String authorizationHeader = request.getHeader("Authorization");
 

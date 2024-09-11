@@ -6,9 +6,9 @@ import org.detective.repository.DetectiveRepository;
 import org.detective.repository.DetectiveSpecialityRepository;
 import org.detective.repository.SpecialityRepository;
 import org.detective.repository.UserRepository;
+import org.detective.services.Speciality.SpecialityService;
 import org.detective.services.admin.DetectiveApprovalService;
 import org.detective.services.detective.DetectiveService;
-import org.detective.services.detective.SpecialtyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +23,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/detective")
@@ -48,7 +46,7 @@ public class DetectiveController {
     private DetectiveSpecialityRepository detectiveSpecialityRepository;
 
     @Autowired
-    private SpecialtyService specialtyService;
+    private SpecialityService specialityService;
 
     @Autowired
     private DetectiveApprovalService detectiveApprovalService;
@@ -64,25 +62,84 @@ public class DetectiveController {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             email = userDetails.getUsername();
             User user = userRepository.findByEmail(email);
-            Long id = user.getUserId();
 
-            Detective detective = detectiveService.getDetectiveByUserId(id);
-            System.out.println("탐정정보 불러오기"+detective);
 
-            Long detectiveId = detective.getDetectiveId();
-            List<DetectiveSpeciality> specialities = detectiveSpecialityRepository.findByDetective_DetectiveId(detectiveId);
-            System.out.println("탐정 타입"+specialities);
+            Detective detective = detectiveRepository.findByUser(user);
+
+            System.out.println("select detective info"+detective);
+
+            DetectiveDTO detectivedto = new DetectiveDTO();
+
+            //dto 매핑
+            Long points = detective.getCurrentPoints();
+            detectivedto.setCurrentPoints(points.doubleValue());
+
+            detectivedto.setBusinessRegistration(detective.getBusinessRegistration());
+            detectivedto.setDetectiveLicense(detective.getDetectiveLicense());
+            detectivedto.setProfilePicture(detective.getProfilePicture());
+            detectivedto.setIntroduction(detective.getIntroduction());
+            detectivedto.setLocation(detective.getLocation());
+            detectivedto.setDetectiveGender(detective.getDetectiveGender());
+            detectivedto.setResolvedCases(detective.getResolvedCases());
+            detectivedto.setApprovalStatus(detective.getApprovalStatus().toString());
+            detectivedto.setUserName(detective.getUser().getUserName());
+            detectivedto.setEmail(detective.getUser().getEmail());
+            detectivedto.setPhoneNumber(detective.getUser().getPhoneNumber());
+            detectivedto.setCreatedAt(detective.getUser().getCreatedAt());
+
+            System.out.println("detectiveDTO"+detective.getSpecialties());
+
+//            Long detectiveId = detective.getDetectiveId();
+            List<DetectiveSpeciality> specialities = detectiveSpecialityRepository.findByDetective_DetectiveId(detective.getDetectiveId());
+            System.out.println("aaaaaaaaaaaaaa speciality"+specialities);
+
+            List<Long> slist = specialities.stream()
+                    .map(DetectiveSpeciality::getId)  // 각 DetectiveSpeciality의 ID를 추출
+                    .collect(Collectors.toList());
+
+            System.out.println(specialityService.getSpecialitiesByDetectiveSpecialityIds(slist));
+
+            List<String> slist2 = specialityService.getSpecialitiesByDetectiveSpecialityIds(slist).stream()
+                    .map(Speciality::getSpecialityName)  // 각 DetectiveSpeciality의 ID를 추출
+                    .collect(Collectors.toList());
+
+            detectivedto.setSpecialtiesName(slist2);
+
+            return detectivedto;
+
+        }else{
+            DetectiveDTO detectivedto = new DetectiveDTO();
+            return detectivedto;
 
         }
 
-        DetectiveDTO detective2 = new DetectiveDTO();
-        return detective2;
+
     }
 
     @GetMapping("/specialties")
     public List<Speciality> getAllSpecialties() {
-        System.out.println("탐정 전문 가져오기"+specialtyService.getAllSpecialties());
-        return specialtyService.getAllSpecialties();
+        System.out.println("탐정 전문 가져오기"+specialityService.getAllSpecialties());
+        return specialityService.getAllSpecialties();
+    }
+
+    @GetMapping("/checkregister")
+    public String checkDetectiveRegister() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = "";
+        if (authentication != null && authentication.getPrincipal() != null) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            email = userDetails.getUsername();
+            User user = userRepository.findByEmail(email);
+            Detective detective = detectiveRepository.findByUser(user);
+            if (detective == null) {
+                // 처리: 예를 들어, 예외를 던지거나 기본값을 반환할 수 있습니다.
+                return "NO";
+            }else{
+                return detective.getApprovalStatus().toString();
+            }
+        }else{
+            return "error";
+        }
     }
 
     @PostMapping("/register")
@@ -117,8 +174,8 @@ public class DetectiveController {
                 for(int i = 0;i<size;i++){
                     DetectiveSpeciality detectiveSpeciality = new DetectiveSpeciality();
                     detectiveSpeciality.setDetective(savedDetective); //detective 객체 할당
-                    System.out.println(specialtyService.getSpecialityById(specialties.get(i)));
-                    detectiveSpeciality.setSpeciality(specialtyService.getSpecialityById(specialties.get(i)));
+                    System.out.println(specialityService.getSpecialityById(specialties.get(i)));
+                    detectiveSpeciality.setSpeciality(specialityService.getSpecialityById(specialties.get(i)));
                     detectiveSpecialityRepository.save(detectiveSpeciality);
                 }
 

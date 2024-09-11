@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -23,9 +24,11 @@ public class DetectiveSpeciality {
 
         @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         @JoinColumn(name = "detective_id", referencedColumnName = "detective_id")
+        @ToString.Exclude // 순환 참조 방지
         private Detective detective;
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "speciality_id", referencedColumnName = "speciality_id")
+        @ToString.Exclude // 순환 참조 방지
         private Speciality speciality;
 }

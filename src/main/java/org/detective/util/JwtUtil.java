@@ -20,7 +20,15 @@ public class JwtUtil {
 
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
-        System.out.println(authentication);
+        System.out.println("auth check"+authentication+"\n");
+        System.out.println("----------------------------\n");
+
+        // Principal에서 CustomUserDetails 가져오기
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        // userId 가져오기
+        Long userId = userDetails.getUserId();
+
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
         // 권한을 문자열 목록으로 변환
@@ -31,6 +39,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(username)
                 .claim("roles", authorities)
+                .claim("id", userId)
                 .setIssuedAt(now)
                 .setExpiration(new Date(nowMillis + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)

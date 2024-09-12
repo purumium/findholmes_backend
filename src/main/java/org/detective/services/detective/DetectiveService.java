@@ -33,6 +33,11 @@ public class DetectiveService {
         return detectiveOptional.orElseThrow(() -> new RuntimeException("Detective not found for userId: " + userId));
     }
 
+    public List<Detective> findDetectivesByLocationAndSpecialities(String location, List<Long> specialityIds) {
+        return detectiveRepository.findByLocationAndSpecialities(location, specialityIds);
+    }
+
+
     public List<DetectiveDTO> findAllDetectives() {
         List<Detective> detectives = detectiveRepository.findAll();
         return detectives.stream()

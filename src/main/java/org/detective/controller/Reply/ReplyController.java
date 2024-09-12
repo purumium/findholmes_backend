@@ -25,7 +25,7 @@ public class ReplyController {
         System.err.println("ReplyController RequestDTO : "+replyDTO);
         try {
             replyService.createEstimate(replyDTO);
-           return ResponseEntity.ok("Request Created");
+           return ResponseEntity.ok("Estimate Created");
        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

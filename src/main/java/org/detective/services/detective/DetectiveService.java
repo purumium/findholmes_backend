@@ -5,8 +5,11 @@ import org.detective.dto.DetectiveDTO;
 import org.detective.entity.Detective;
 import org.detective.repository.DetectiveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.detective.entity.DetectiveSpeciality;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,6 +20,11 @@ public class DetectiveService {
     @Autowired
     private DetectiveRepository detectiveRepository;
 
+    public Detective getDetectiveById(Long detectiveId) {
+        return detectiveRepository.findById(detectiveId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Detective not found"));
+    }
+
     public Detective getDetectiveByUserId(Long userId) {
         // userId로 Detective를 조회
         Optional<Detective> detectiveOptional = detectiveRepository.findByUserUserId(userId);
@@ -24,6 +32,11 @@ public class DetectiveService {
         // 결과가 있으면 반환하고, 없으면 예외를 던질 수 있습니다
         return detectiveOptional.orElseThrow(() -> new RuntimeException("Detective not found for userId: " + userId));
     }
+
+    public List<Detective> findDetectivesByLocationAndSpecialities(String location, List<Long> specialityIds) {
+        return detectiveRepository.findByLocationAndSpecialities(location, specialityIds);
+    }
+
 
     public List<DetectiveDTO> findAllDetectives() {
         List<Detective> detectives = detectiveRepository.findAll();

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -19,9 +20,15 @@ public class DetectiveDTO {
     private String location;
     private String detectiveGender;
     private Long resolvedCases;
-    private String additionalCertifications;
     private String approvalStatus;
     private List<Long> specialties; // 전문 분야 ID 배열
+
+    private List<String> specialtiesName;
+    //user 정보
+    private String userName;
+    private String email;
+    private String phoneNumber;
+    private LocalDateTime createdAt;
 
     // Getters and setters
 }

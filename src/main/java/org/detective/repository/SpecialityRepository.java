@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface SpecialityRepository extends JpaRepository<Speciality, Long> {
     List<Speciality> findAll();
-
+    List<Speciality> findBySpecialityIdIn(List<Long> specialityIds);
 }

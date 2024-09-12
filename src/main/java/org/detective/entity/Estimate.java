@@ -42,6 +42,8 @@ public class Estimate
     @JoinColumn(name="detective_id", referencedColumnName = "detective_id")
     private Detective detective;
 
+    private String title;
+
     @Lob
     private String description; //clob
 
@@ -51,10 +53,11 @@ public class Estimate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createAt;
 
-    public Estimate(Client client,Request request, Detective detective, String description,int price) {
+    public Estimate(Client client,Request request, Detective detective,String title, String description,int price) {
         this.client = client;
         this.request = request;
         this.detective = detective;
+        this.title = title;
         this.description = description;
         this.price = price;
     }

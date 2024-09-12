@@ -36,7 +36,7 @@ public class ReplyService {
 
         System.err.println("Reply Service실행");
         System.out.println(client +"\n"+ request +"\n"+  detective);
-        estimateRepository.save(new Estimate(client, request, detective,replyDTO.getDescription(),replyDTO.getPrice()));
+        estimateRepository.save(new Estimate(client, request, detective, replyDTO.getTitle(), replyDTO.getDescription(), replyDTO.getPrice()));
     }
 
     public List<EstimateDetailDTO> getEstimateDetail(Long requestId) {
@@ -53,7 +53,7 @@ public class ReplyService {
         List<Estimate> estimates = estimateRepository.findByDetective(detective);
         List<EstimateDTO> estimateDTOS = new ArrayList<>();
         for (Estimate estimate : estimates) {
-            estimateDTOS.add(new EstimateDTO(estimate.getEstimateId(),estimate.getRequest().getRequestId(),estimate.getRequest().getTitle(),estimate.getCreateAt(),estimate.getRequest().getSpeciality().getSpecialityName()));
+            estimateDTOS.add(new EstimateDTO(estimate.getEstimateId(),estimate.getRequest().getRequestId(),estimate.getTitle(),estimate.getCreateAt(),estimate.getRequest().getSpeciality().getSpecialityName()));
         }
         return estimateDTOS;
     }

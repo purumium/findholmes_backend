@@ -8,6 +8,7 @@ import lombok.Data;
 public class ReplyDTO {
     private Long requestId;
     private String email;
+    private String title;
     private String description;
     private int price;
 }

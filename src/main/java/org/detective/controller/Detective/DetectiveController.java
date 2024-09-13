@@ -86,6 +86,9 @@ public class DetectiveController {
             detectivedto.setEmail(detective.getUser().getEmail());
             detectivedto.setPhoneNumber(detective.getUser().getPhoneNumber());
             detectivedto.setCreatedAt(detective.getUser().getCreatedAt());
+            detectivedto.setCompany(detective.getCompany());
+            detectivedto.setDescription(detective.getDescription());
+            detectivedto.setAdditionalCertifications(detective.getAdditionalCertifications());
 
             System.out.println("detectiveDTO"+detective.getSpecialties());
 
@@ -217,7 +220,8 @@ public class DetectiveController {
     public ResponseEntity<Map<String, String>> uploadFiles(
             @RequestParam("businessRegistration") MultipartFile businessRegistration,
             @RequestParam("detectiveLicense") MultipartFile detectiveLicense,
-            @RequestParam(value = "profilePicture", required = false) MultipartFile profilePicture) {
+            @RequestParam(value = "profilePicture", required = false) MultipartFile profilePicture,
+            @RequestParam(value = "additionalCertification", required = false) MultipartFile additionalCertification) {
 
         Map<String, String> filePaths = new HashMap<>();
 
@@ -226,11 +230,15 @@ public class DetectiveController {
             String businessRegistrationPath = saveFile(businessRegistration, "business_registration");
             String detectiveLicensePath = saveFile(detectiveLicense, "detective_license");
             String profilePicturePath = profilePicture != null ? saveFile(profilePicture, "profile_picture") : null;
+            String additionalCertificationPath = additionalCertification != null ? saveFile(additionalCertification, "additional_certification") : null;
 
             filePaths.put("businessRegistrationPath", businessRegistrationPath);
             filePaths.put("detectiveLicensePath", detectiveLicensePath);
             if (profilePicturePath != null) {
                 filePaths.put("profilePicturePath", profilePicturePath);
+            }
+            if (additionalCertificationPath != null) {
+                filePaths.put("additionalCertificationPath", additionalCertificationPath);
             }
 
             return ResponseEntity.ok(filePaths);

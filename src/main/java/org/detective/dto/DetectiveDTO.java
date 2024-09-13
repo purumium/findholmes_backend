@@ -23,6 +23,10 @@ public class DetectiveDTO {
     private String approvalStatus;
     private List<Long> specialties; // 전문 분야 ID 배열
 
+    private String company;
+    private String additionalCertifications;
+    private String description;
+
     private List<String> specialtiesName;
     //user 정보
     private String userName;

@@ -12,11 +12,13 @@ import java.util.Optional;
 @Repository
 public interface ChatRoomRepository extends MongoRepository<ChatRoom, String> {
 
-    Optional<ChatRoom> findByEstimateId(Long estimateId);
+//    Optional<ChatRoom> findByEstimateId(Long estimateId);
 
     @Query("{ 'participants': { $elemMatch: { 'user_id': ?0, 'role': 'c' } } }")
     List<ChatRoom> findByUserIdAndRoleIsClient(Long userId);
 
     @Query("{ 'participants': { $elemMatch: { 'user_id': ?0, 'role': 'd' } } }")
     List<ChatRoom> findByUserIdAndRoleIsDetective(Long userId);
+
+    List<ChatRoom> findByEstimateId(Long estimateId);
 }

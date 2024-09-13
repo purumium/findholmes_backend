@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ParticipantDTO {
 
-    private String userId;
+//    private String userId;
     private String userName;
     private String role;
 }

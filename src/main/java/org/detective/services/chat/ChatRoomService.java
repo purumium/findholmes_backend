@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -93,6 +94,12 @@ public class ChatRoomService {
         } else {
             throw new IllegalArgumentException("잘못된 역할입니다.");
         }
+    }
+
+    @Transactional
+    public Optional<ChatRoom> findByChatRoomInfo(String chatRoomId){
+        return chatRoomRepository.findById(chatRoomId);
+
     }
 
 

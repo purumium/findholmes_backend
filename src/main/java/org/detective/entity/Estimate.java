@@ -28,7 +28,11 @@ public class Estimate
     @Id
     @Column(name="estimate_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long estimateId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="client_id", referencedColumnName = "client_id")
+    private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="request_id", referencedColumnName = "request_id")
@@ -38,20 +42,23 @@ public class Estimate
     @JoinColumn(name="detective_id", referencedColumnName = "detective_id")
     private Detective detective;
 
-    @Column(name = "price", nullable = false)
-    private Long currentPoints = 0L;
+    private String title;
 
     @Lob
     private String description; //clob
 
-    @Column(name="start_date")
-    private LocalDateTime startDate;
-
-    @Column(name="end_date")
-    private LocalDateTime endDate;
+    private int price;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createAt;
 
+    public Estimate(Client client,Request request, Detective detective,String title, String description,int price) {
+        this.client = client;
+        this.request = request;
+        this.detective = detective;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+    }
 }

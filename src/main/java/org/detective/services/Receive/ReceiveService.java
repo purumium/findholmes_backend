@@ -47,21 +47,16 @@ public class ReceiveService {
         return requestsList;
     }
 
-    public AssignedRequestDTO getRequestDetail(Long requestId,String email) {
+    public AssignedRequestDTO getRequestDetail(Long requestId) {
         Request request = requestRepository.findByRequestId(requestId);
-        User user = userRepository.findByEmail(email);
-        Detective detective = detectiveRepository.findByUser(user);
-        AssignmentRequest assigned = assignmentRequestRepository.findByRequestAndDetective(request,detective);
-        return new AssignedRequestDTO(assigned.getAssignmentRequestId(),
-                                        assigned.getDetective().getDetectiveId(),
-                                        assigned.getRequest().getClient().getClientId(),
-                                        assigned.getRequest().getClient().getUser().getUserId(),
-                                        assigned.getRequest().getRequestId(),
-                                        assigned.getRequest().getTitle(),
-                                        assigned.getRequest().getDescription(),
-                                        assigned.getRequest().getLocation(),
-                                        assigned.getRequest().getCreatedAt(),
-                                        assigned.getSpeciality());
+
+        return new AssignedRequestDTO(  request.getRequestId(),
+                                        request.getClient().getUser().getUserName(),
+                                        request.getTitle(),
+                                        request.getDescription(),
+                                        request.getLocation(),
+                                        request.getCreatedAt(),
+                                        request.getSpeciality().getSpecialityName());
 
     }
 }

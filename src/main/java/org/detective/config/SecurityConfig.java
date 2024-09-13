@@ -38,11 +38,13 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/member/**","/speciality/**","/request/**","/receive/**","/detective/**","/reply/**").permitAll()
                         .requestMatchers("/test/**").hasRole("USER")
                         .requestMatchers("/admin/**").permitAll()
                         .requestMatchers("/client/**").permitAll()
                         .requestMatchers("/uploads/profile_picture/**").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가

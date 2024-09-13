@@ -35,8 +35,19 @@ public class Detective {
     @Column(name = "detective_license")
     private String detectiveLicense;
 
+
     @Column(name = "profile_picture")
     private String profilePicture;
+
+    @Column(name = "company")
+    private String company;
+
+    @Column(name = "additional_certifications")
+    private String additionalCertifications;
+
+    @Lob
+    @Column(name = "description")
+    private String description;
 
     @Lob
     @Column(name = "introduction")

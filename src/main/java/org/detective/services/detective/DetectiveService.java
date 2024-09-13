@@ -20,6 +20,7 @@ public class DetectiveService {
     @Autowired
     private DetectiveRepository detectiveRepository;
 
+
     public Detective getDetectiveById(Long detectiveId) {
         return detectiveRepository.findById(detectiveId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Detective not found"));
@@ -33,8 +34,19 @@ public class DetectiveService {
         return detectiveOptional.orElseThrow(() -> new RuntimeException("Detective not found for userId: " + userId));
     }
 
-    public List<Detective> findDetectivesByLocationAndSpecialities(String location, List<Long> specialityIds) {
-        return detectiveRepository.findByLocationAndSpecialities(location, specialityIds);
+//    public DetectiveService(DetectiveRepository detectiveRepository) {
+//        this.detectiveRepository = detectiveRepository;
+//    }
+
+//    public List<Detective> getDetectivesByLocationAndSpeciality(String location, Long specialityId) {
+//        return detectiveRepository.findByLocationAndSpecialityId(location, specialityId);
+//    }
+
+
+
+    //테스트
+    public List<Detective> findAllDetectives2(){
+        return detectiveRepository.findAll();
     }
 
 
@@ -59,6 +71,9 @@ public class DetectiveService {
         detective.setResolvedCases(resolvedCases);
         dto.setResolvedCases(resolvedCases);
         dto.setApprovalStatus(detective.getApprovalStatus().name());
+        dto.setCompany(detective.getCompany());
+        dto.setDescription(detective.getDescription());
+        dto.setAdditionalCertifications(detective.getAdditionalCertifications());
 
         List<Long> specialties = detective.getSpecialties().stream()
                 .map(DetectiveSpeciality::getId)

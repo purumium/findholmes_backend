@@ -13,6 +13,7 @@ import org.detective.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -42,8 +43,11 @@ public class ReceiveService {
                                                     assigned.getRequest().getTitle(),
                                                     assigned.getRequest().getLocation(),
                                                     assigned.getRequest().getCreatedAt(),
-                                                    assigned.getSpeciality()));
+                                                    assigned.getSpeciality(),
+                                                    assigned.getRequestStatus().name()));
         }
+        requestsList.sort(Comparator.comparing(ReceiveRequestDTO -> ReceiveRequestDTO.getRequestId()));
+
         return requestsList;
     }
 

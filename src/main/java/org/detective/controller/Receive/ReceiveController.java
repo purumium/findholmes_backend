@@ -26,10 +26,7 @@ public class ReceiveController {
 
     @GetMapping("") //의뢰 요청서 목록, 탐정이 자산에게 할당된 요청서를 출력하는 컨트롤러
     public List<ReceiveRequestDTO> getAssingedRequest(@RequestParam(value = "email",required = true) String email) {
-        System.err.println("Receive Controller");
         List<ReceiveRequestDTO> assignedRequest = receiveService.getAssignedRequest(email);
-        System.out.println("Receive Controller : " + assignedRequest.toString());
-        System.out.println("Receive Controller : " + assignedRequest.size());
         return assignedRequest;
     }
 

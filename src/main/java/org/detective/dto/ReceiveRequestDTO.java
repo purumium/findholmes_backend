@@ -16,4 +16,5 @@ public class ReceiveRequestDTO {
     private String location;
     private LocalDateTime createAt;
     private Speciality speciality;
+    private String status;
 }

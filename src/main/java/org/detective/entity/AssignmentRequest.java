@@ -3,6 +3,7 @@ package org.detective.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.detective.RequestStatus;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
@@ -38,7 +39,7 @@ public class AssignmentRequest {
     private LocalDate replyAt;
 
     @Column(name="request_status")
-    private ApprovalStatus requestStatus = ApprovalStatus.PENDING;
+    private RequestStatus requestStatus = RequestStatus.WAITING;
 
     public AssignmentRequest(Request request, Detective detective, Speciality speciality) {
         this.request = request;

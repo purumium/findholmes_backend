@@ -16,4 +16,5 @@ public interface AssignmentRequestRepository extends JpaRepository<AssignmentReq
     List<AssignmentRequest> findByDetective(Detective detective);
 
     AssignmentRequest findByRequestAndDetective(Request request,Detective detective);
+
 }

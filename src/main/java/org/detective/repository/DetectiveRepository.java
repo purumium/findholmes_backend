@@ -26,10 +26,16 @@ public interface DetectiveRepository extends JpaRepository<Detective, Long> {
 
     Optional<Detective> findByUserUserId(Long userId);
 
-    // location과 specialties의 specialityId가 일치하는 모든 Detective 찾기
-    @Query("SELECT d FROM Detective d JOIN d.specialties s WHERE d.location = :location AND s.speciality.specialityId IN :specialityIds")
-    List<Detective> findByLocationAndSpecialities(@Param("location") String location, @Param("specialityIds") List<Long> specialityIds);
+//    List<Detective> findByLocationAndSpecialtiesId(String location, Long specialityId);
 
+    @Query("SELECT d FROM Detective d JOIN d.specialties ds WHERE d.location = :location AND ds.speciality.specialityId = :specialityId")
+    List<Detective> findByLocationAndSpecialityId(@Param("location") String location, @Param("specialityId") Long specialityId);
+
+    @Query("SELECT d FROM Detective d JOIN d.specialties ds WHERE ds.speciality.specialityId = :specialityId")
+    List<Detective> findBySpecialityId(@Param("specialityId") Long specialityId);
+
+    @Query("SELECT d FROM Detective d JOIN d.specialties ds WHERE d.location = :location")
+    List<Detective> findByLocation(@Param("location") String location);
 
 }
 

@@ -24,16 +24,13 @@ public class ReceiveController {
 
 
 
-    @GetMapping("")
+    @GetMapping("") //의뢰 요청서 목록, 탐정이 자산에게 할당된 요청서를 출력하는 컨트롤러
     public List<ReceiveRequestDTO> getAssingedRequest(@RequestParam(value = "email",required = true) String email) {
-        System.err.println("Receive Controller");
         List<ReceiveRequestDTO> assignedRequest = receiveService.getAssignedRequest(email);
-        System.out.println("Receive Controller : " + assignedRequest.toString());
-        System.out.println("Receive Controller : " + assignedRequest.size());
         return assignedRequest;
     }
 
-    @GetMapping("/detail")
+    @GetMapping("/detail") // 요청서 정보 상세보기
     public AssignedRequestDTO getRequestDetail(@RequestParam("requestId") Long requestId) {
         System.err.println("Receive Controller2");
         return receiveService.getRequestDetail(requestId);

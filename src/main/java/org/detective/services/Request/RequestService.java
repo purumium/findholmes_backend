@@ -50,7 +50,7 @@ public class RequestService {
         Request request = new Request(client, requestDTO.getLocation(), requestDTO.getGender(), speciality, requestDTO.getTitle(), requestDTO.getDescription());
 
         System.out.println("Service request entity : "+ request.toString());
-        Request savedRequest = requestRepository.save(request);
+        requestRepository.save(request);
 
         List<Detective> detectives = detectiveRepository.getDetectiveRandom();
         

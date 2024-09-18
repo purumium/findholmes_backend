@@ -3,6 +3,8 @@ package org.detective.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 public class EstimateDetailDTO {
@@ -11,4 +13,6 @@ public class EstimateDetailDTO {
     private String detectiveName;
     private String description;
     private int price;
+    private String title;
+    private LocalDateTime createAt;
 }

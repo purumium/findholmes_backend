@@ -22,7 +22,8 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ESTIMATES")
+@Table(name = "ESTIMATES",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"request_id", "detective_id"}))
 public class Estimate
 {
     @Id

@@ -49,7 +49,8 @@ public class ReplyService {
         List<Estimate> estimates = estimateRepository.findByRequest(requestRepository.findByRequestId(requestId));
         List<EstimateDetailDTO> estimateDetailDTOS = new ArrayList<>();
         for (Estimate estimate : estimates) {
-            estimateDetailDTOS.add(new EstimateDetailDTO(estimate.getEstimateId(), estimate.getDetective().getDetectiveId(),estimate.getDetective().getUser().getUserName(),estimate.getDescription(), estimate.getPrice()));
+            estimateDetailDTOS.add(new EstimateDetailDTO(estimate.getEstimateId(), estimate.getDetective().getDetectiveId(),estimate.getDetective().getUser().getUserName(),
+                    estimate.getDescription(), estimate.getPrice(), estimate.getTitle(), estimate.getCreateAt()));
         }
         return estimateDetailDTOS;
     }

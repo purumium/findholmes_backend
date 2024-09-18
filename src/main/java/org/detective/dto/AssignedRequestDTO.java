@@ -19,4 +19,6 @@ public class AssignedRequestDTO {
     private LocalDateTime createAt;
 
     private String speciality;
+
+    private String detectiveGender;
 }

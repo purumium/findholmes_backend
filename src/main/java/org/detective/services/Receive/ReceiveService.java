@@ -60,7 +60,8 @@ public class ReceiveService {
                                         request.getDescription(),
                                         request.getLocation(),
                                         request.getCreatedAt(),
-                                        request.getSpeciality().getSpecialityName());
+                                        request.getSpeciality().getSpecialityName(),
+                                        request.getDetectiveGender() );
 
     }
 }

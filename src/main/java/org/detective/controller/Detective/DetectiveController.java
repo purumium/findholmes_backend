@@ -52,7 +52,6 @@ public class DetectiveController {
     private DetectiveApprovalService detectiveApprovalService;
 
 
-
     // 특정 userId로 탐정 정보 조회
     @GetMapping("/getDetectiveDetail")
     public DetectiveDTO getDetectiveByUserId() {
@@ -110,6 +109,9 @@ public class DetectiveController {
 
             }else{
                 DetectiveDTO detectivedto = new DetectiveDTO();
+                detectivedto.setUserName(user.getUserName());
+                detectivedto.setEmail(user.getEmail());
+
 
                 return detectivedto;
             }

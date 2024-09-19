@@ -42,6 +42,21 @@ public class UserService {
         }
     }
 
+    public boolean checkPw(String rawPassword, String encodedPassword){
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    public boolean updateUser(User user, User user2) {
+        // 비즈니스 로직을 여기에 추가할 수 있습니다.
+        // 비밀번호 암호화
+        user2.setPassword(passwordEncoder.encode(user.getPassword()));
+        user2.setUserName(user.getUserName());
+        user2.setPhoneNumber(user.getPhoneNumber());
+        userRepository.save(user2);
+        return true;
+
+    }
+
     public boolean existsByEmail(String email) {
         User user = userRepository.findByEmail(email);
         return user != null; // user가 null이 아니면 true, null이면 false 반환

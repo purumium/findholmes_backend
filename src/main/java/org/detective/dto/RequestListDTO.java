@@ -14,5 +14,9 @@ public class RequestListDTO {
     private String title;
     private LocalDateTime createAt;
     private String speciality;
+
     private boolean status;
+
+    private String detectiveGender;
+
 }

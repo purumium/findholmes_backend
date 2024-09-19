@@ -47,10 +47,32 @@ public class EstimateService {
         System.out.println(assignmentRequest);
     }
 
-    public List<EstimateListDTO> getEstimateList(Long userId) {
+    public List<EstimateListDTO> getEstimateList(Long userId, Long requestId) {
         Detective detective = detectiveRepository.findByUser_UserId(userId);
         List<Estimate> estimateLists = estimateRepository.findByDetective(detective);
         List<EstimateListDTO> estimateListDTOS = new ArrayList<>();
+
+        if (requestId != null) {
+            estimateLists = estimateLists.stream()
+                    .filter(estimate -> estimate.getRequest().getRequestId().equals(requestId))
+                    .collect(Collectors.toList());
+            for (Estimate estimate : estimateLists) {
+                estimateListDTOS.add(new EstimateListDTO(
+                        estimate.getRequest().getRequestId(),
+                        estimate.getEstimateId(),
+                        estimate.getRequest().getTitle(),
+                        estimate.getTitle(),
+                        estimate.getRequest().getLocation(),
+                        estimate.getRequest().getSpeciality().getSpecialityName(),
+                        estimate.getDescription(),
+                        estimate.getPrice(),
+                        estimate.getRequest().getCreatedAt(),
+                        estimate.getCreateAt(),
+                        estimate.getDetective().getUser().getUserName()
+                ));
+            }
+            return estimateListDTOS;
+        }
 
         for (Estimate estimate : estimateLists) {
             estimateListDTOS.add(new EstimateListDTO(
@@ -68,15 +90,10 @@ public class EstimateService {
         return estimateListDTOS;
     }
 
-    public List<EstimateDetailDTO> getEstimateDetail(Long requestId, Long userId) {
+    public List<EstimateDetailDTO> getEstimateDetail(Long requestId) {
 
         List<Estimate> estimates = estimateRepository.findByRequest(requestRepository.findByRequestId(requestId));
 
-        if (userId != null) {
-            estimates = estimates.stream()
-                    .filter(estimate -> estimate.getDetective().getUser().getUserId().equals(userId))
-                    .collect(Collectors.toList());
-        }
         List<EstimateDetailDTO> estimateDetailDTOS = new ArrayList<>();
         for (Estimate estimate : estimates) {
             estimateDetailDTOS.add(new EstimateDetailDTO(estimate.getEstimateId(), estimate.getDetective().getDetectiveId(),estimate.getDetective().getUser().getUserName(),

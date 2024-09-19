@@ -83,7 +83,8 @@ public class RequestService {
                     request.getTitle(),
                     request.getCreatedAt(),
                     request.getSpeciality().getSpecialityName(),
-                    assignmentRequestRepository.countStatusByRequest(request) > 0? true: false));
+                    assignmentRequestRepository.countStatusByRequest(request) > 0? true: false,
+                    request.getDetectiveGender()));
         }
         System.err.println("Request list by Client: " + requestList);
         return requestList;

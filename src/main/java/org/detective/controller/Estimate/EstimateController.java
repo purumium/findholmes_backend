@@ -31,13 +31,13 @@ public class EstimateController {
         }
     }
     @GetMapping("/list") // 고객에게 보낸 탐정의 답변서 목록 조회 메서드
-    public List<EstimateListDTO> getEstimateList(@RequestParam("userId") Long userId) {
-        return estimateService.getEstimateList(userId);
+    public List<EstimateListDTO> getEstimateList(@RequestParam("userId") Long userId, @RequestParam(value = "requestId",required = false) Long requestId) {
+        return estimateService.getEstimateList(userId,requestId);
     }
 
     @GetMapping("/details") // 고객이 보낸 의뢰애 대한 탐정의 답변서 상세정보 조회메서드
-    public ResponseEntity<List<EstimateDetailDTO>> getEstimateDetail(@RequestParam("requestId") Long requestId,@RequestParam(value = "userId", required = false) Long userId) {
-        return ResponseEntity.ok(estimateService.getEstimateDetail(requestId, userId));
+    public ResponseEntity<List<EstimateDetailDTO>> getEstimateDetail(@RequestParam("requestId") Long requestId) {
+        return ResponseEntity.ok(estimateService.getEstimateDetail(requestId));
     }
 
 }

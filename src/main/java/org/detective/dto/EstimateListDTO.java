@@ -16,11 +16,24 @@ public class EstimateListDTO {
     private String estimateTitle;
     private String location;
     private String speciality;
+    private String description;
+
+    private int price;
 
     private LocalDateTime requestCreateAt;
     private LocalDateTime estimateCreateAt;
 
-
     private String detectiveName;
 
+    public EstimateListDTO(Long requestId, Long estimateId, String requestTitle, String estimateTitle, String location, String speciality, LocalDateTime requestCreateAt, LocalDateTime estimateCreateAt, String detectiveName) {
+        this.requestId = requestId;
+        this.estimateId = estimateId;
+        this.requestTitle = requestTitle;
+        this.estimateTitle = estimateTitle;
+        this.location = location;
+        this.speciality = speciality;
+        this.requestCreateAt = requestCreateAt;
+        this.estimateCreateAt = estimateCreateAt;
+        this.detectiveName = detectiveName;
+    }
 }

@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
+// 고객의 의뢰에 대한 답변서 상세정보를 저장하는 DTO
 public class EstimateDetailDTO {
     private Long estimateId;
     private Long detectiveId;

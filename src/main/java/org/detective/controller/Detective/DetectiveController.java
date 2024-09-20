@@ -55,7 +55,6 @@ public class DetectiveController {
     private DetectiveApprovalService detectiveApprovalService;
 
 
-
     // 특정 userId로 탐정 정보 조회
     @GetMapping("/getDetectiveDetail")
     public DetectiveDTO getDetectiveByUserId() {
@@ -68,51 +67,57 @@ public class DetectiveController {
 
 
             Detective detective = detectiveRepository.findByUser(user);
+            if (detective != null) {
+                DetectiveDTO detectivedto = new DetectiveDTO();
 
-            System.out.println("select detective info"+detective);
+                //dto 매핑
+                Long points = detective.getCurrentPoints();
+                detectivedto.setCurrentPoints(points.doubleValue());
 
-            DetectiveDTO detectivedto = new DetectiveDTO();
+                detectivedto.setBusinessRegistration(detective.getBusinessRegistration());
+                detectivedto.setDetectiveLicense(detective.getDetectiveLicense());
+                detectivedto.setProfilePicture(detective.getProfilePicture());
+                detectivedto.setIntroduction(detective.getIntroduction());
+                detectivedto.setLocation(detective.getLocation());
+                detectivedto.setDetectiveGender(detective.getDetectiveGender());
+                detectivedto.setResolvedCases(detective.getResolvedCases());
+                detectivedto.setApprovalStatus(detective.getApprovalStatus().toString());
+                detectivedto.setUserName(detective.getUser().getUserName());
+                detectivedto.setEmail(detective.getUser().getEmail());
+                detectivedto.setPhoneNumber(detective.getUser().getPhoneNumber());
+                detectivedto.setCreatedAt(detective.getUser().getCreatedAt());
+                detectivedto.setCompany(detective.getCompany());
+                detectivedto.setDescription(detective.getDescription());
+                detectivedto.setAdditionalCertifications(detective.getAdditionalCertifications());
 
-            //dto 매핑
-            Long points = detective.getCurrentPoints();
-            detectivedto.setCurrentPoints(points.doubleValue());
-
-            detectivedto.setBusinessRegistration(detective.getBusinessRegistration());
-            detectivedto.setDetectiveLicense(detective.getDetectiveLicense());
-            detectivedto.setProfilePicture(detective.getProfilePicture());
-            detectivedto.setIntroduction(detective.getIntroduction());
-            detectivedto.setLocation(detective.getLocation());
-            detectivedto.setDetectiveGender(detective.getDetectiveGender());
-            detectivedto.setResolvedCases(detective.getResolvedCases());
-            detectivedto.setApprovalStatus(detective.getApprovalStatus().toString());
-            detectivedto.setUserName(detective.getUser().getUserName());
-            detectivedto.setEmail(detective.getUser().getEmail());
-            detectivedto.setPhoneNumber(detective.getUser().getPhoneNumber());
-            detectivedto.setCreatedAt(detective.getUser().getCreatedAt());
-            detectivedto.setCompany(detective.getCompany());
-            detectivedto.setDescription(detective.getDescription());
-            detectivedto.setAdditionalCertifications(detective.getAdditionalCertifications());
-
-            System.out.println("detectiveDTO"+detective.getSpecialties());
+                System.out.println("detectiveDTO"+detective.getSpecialties());
 
 //            Long detectiveId = detective.getDetectiveId();
-            List<DetectiveSpeciality> specialities = detectiveSpecialityRepository.findByDetective_DetectiveId(detective.getDetectiveId());
-            System.out.println("aaaaaaaaaaaaaa speciality"+specialities);
+                List<DetectiveSpeciality> specialities = detectiveSpecialityRepository.findByDetective_DetectiveId(detective.getDetectiveId());
+                System.out.println("aaaaaaaaaaaaaa speciality"+specialities);
 
-            List<Long> slist = specialities.stream()
-                    .map(DetectiveSpeciality::getId)  // 각 DetectiveSpeciality의 ID를 추출
-                    .collect(Collectors.toList());
+                List<Long> slist = specialities.stream()
+                        .map(DetectiveSpeciality::getId)  // 각 DetectiveSpeciality의 ID를 추출
+                        .collect(Collectors.toList());
 
-            System.out.println(specialityService.getSpecialitiesByDetectiveSpecialityIds(slist));
+                System.out.println(specialityService.getSpecialitiesByDetectiveSpecialityIds(slist));
 
-            List<String> slist2 = specialityService.getSpecialitiesByDetectiveSpecialityIds(slist).stream()
-                    .map(Speciality::getSpecialityName)  // 각 DetectiveSpeciality의 ID를 추출
-                    .collect(Collectors.toList());
+                List<String> slist2 = specialityService.getSpecialitiesByDetectiveSpecialityIds(slist).stream()
+                        .map(Speciality::getSpecialityName)  // 각 DetectiveSpeciality의 ID를 추출
+                        .collect(Collectors.toList());
 
-            detectivedto.setSpecialtiesName(slist2);
+                detectivedto.setSpecialtiesName(slist2);
 
-            return detectivedto;
+                return detectivedto;
 
+            }else{
+                DetectiveDTO detectivedto = new DetectiveDTO();
+                detectivedto.setUserName(user.getUserName());
+                detectivedto.setEmail(user.getEmail());
+
+
+                return detectivedto;
+            }
         }else{
             DetectiveDTO detectivedto = new DetectiveDTO();
             return detectivedto;

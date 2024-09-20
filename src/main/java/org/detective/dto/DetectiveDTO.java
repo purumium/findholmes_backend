@@ -25,9 +25,11 @@ public class DetectiveDTO {
 
     private String company;
     private String additionalCertifications;
+
     private String description;
 
     private List<String> specialtiesName;
+
     //user 정보
     private String userName;
     private String email;

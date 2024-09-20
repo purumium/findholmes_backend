@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,18 +31,17 @@ public class EstimateService {
         this.detectiveRepository = detectiveRepository;
     }
 
+
     public void createEstimate(EstimateFormDTO estimateFormDTO) {
         Request request = requestRepository.findByRequestId(estimateFormDTO.getRequestId());
         Client client = clientRepository.findByUser(request.getClient().getUser());
         Detective detective = detectiveRepository.findByUser(userRepository.findByEmail(estimateFormDTO.getEmail()));
 
-        System.err.println("Reply Service실행");
-        System.out.println(client +"\n"+ request +"\n"+  detective);
         estimateRepository.save(new Estimate(client, request, detective, estimateFormDTO.getTitle(), estimateFormDTO.getDescription(), estimateFormDTO.getPrice()));
         AssignmentRequest assignmentRequest = assignmentRequestRepository.findByRequestAndDetective(request,detective);
-        System.err.println("@@@@@@@@@@@@@@@@@\nassignmentRequest : "+assignmentRequest+"\n@@@@@@@@@@@@@@@@@");
         assignmentRequest.setRequestStatus(RequestStatus.ANSWERED);
         assignmentRequestRepository.save(assignmentRequest);
+
         System.out.println(assignmentRequest);
     }
 

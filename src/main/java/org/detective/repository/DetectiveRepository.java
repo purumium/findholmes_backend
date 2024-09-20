@@ -4,9 +4,11 @@ import org.detective.entity.Client;
 import org.detective.entity.Detective;
 import org.detective.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +38,10 @@ public interface DetectiveRepository extends JpaRepository<Detective, Long> {
 
     @Query("SELECT d FROM Detective d JOIN d.specialties ds WHERE d.location = :location")
     List<Detective> findByLocation(@Param("location") String location);
+
+    @Modifying
+    @Query("UPDATE Detective d SET d.currentPoints=(d.currentPoints-1000) where d.detectiveId=:detectiveId")
+    void setCurrentPoints(Long detectiveId);
 
 }
 

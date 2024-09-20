@@ -1,5 +1,6 @@
 package org.detective.controller.Detective;
 
+import jakarta.transaction.Transactional;
 import org.detective.dto.DetectiveDTO;
 import org.detective.entity.*;
 import org.detective.repository.DetectiveRepository;
@@ -9,6 +10,7 @@ import org.detective.repository.UserRepository;
 import org.detective.services.Speciality.SpecialityService;
 import org.detective.services.admin.DetectiveApprovalService;
 import org.detective.services.detective.DetectiveService;
+import org.detective.services.member.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,6 +28,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.apache.logging.log4j.ThreadContext.isEmpty;
 
 @RestController
 @RequestMapping("/detective")
@@ -50,6 +55,9 @@ public class DetectiveController {
 
     @Autowired
     private DetectiveApprovalService detectiveApprovalService;
+
+    @Autowired
+    private UserService userService;
 
 
     // 특정 userId로 탐정 정보 조회
@@ -164,6 +172,7 @@ public class DetectiveController {
                 detective.setLocation(request.getLocation());
                 detective.setCurrentPoints(0L);
                 detective.setDetectiveGender(request.getDetectiveGender());
+
                 // Long 객체를 long 기본형으로 캐스팅
                 long resolvedCases = request.getResolvedCases();
                 detective.setResolvedCases(resolvedCases);
@@ -171,6 +180,10 @@ public class DetectiveController {
                 detective.setProfilePicture(request.getProfilePicture());
                 detective.setDetectiveLicense(request.getDetectiveLicense());
                 detective.setApprovalStatus(ApprovalStatus.PENDING);
+                detective.setAdditionalCertifications(request.getAdditionalCertifications());
+
+                detective.setCompany(request.getCompany());
+                detective.setDescription(request.getDescription());
 
                 Detective savedDetective = detectiveRepository.save(detective);
                 Long id = savedDetective.getDetectiveId();
@@ -219,10 +232,76 @@ public class DetectiveController {
         }
     }
 
+    @Transactional // 이 어노테이션을 추가
+    @PostMapping("/update")
+    public ResponseEntity<String> updateDetective(@RequestBody DetectiveDTO request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = "";
+        if (authentication != null && authentication.getPrincipal() != null) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            email = userDetails.getUsername();
+            User user = userRepository.findByEmail(email);
+            Detective detective = detectiveRepository.findByUser(user);
+            System.out.println(detective+"update test");
+            System.out.println(request+"update test2");
+
+            detectiveService.updateDetective(user,detective,request);
+            return ResponseEntity.ok("탐정 등록이 완료되었습니다.");
+//            try {
+//                detective.setUser(user);
+//                detective.setIntroduction(request.getIntroduction());
+//
+//                detective.setLocation(request.getLocation());
+//                detective.setCurrentPoints(0L);
+//                detective.setDetectiveGender(request.getDetectiveGender());
+//
+//                // Long 객체를 long 기본형으로 캐스팅
+//                long resolvedCases = request.getResolvedCases();
+//                detective.setResolvedCases(resolvedCases);
+//                detective.setBusinessRegistration(request.getBusinessRegistration());
+//                detective.setProfilePicture(request.getProfilePicture());
+//                detective.setDetectiveLicense(request.getDetectiveLicense());
+//                detective.setApprovalStatus(ApprovalStatus.PENDING);
+//                detective.setAdditionalCertifications(request.getAdditionalCertifications());
+//
+//                detective.setCompany(request.getCompany());
+//                detective.setDescription(request.getDescription());
+//
+//                Detective savedDetective = detectiveRepository.save(detective);
+//                Long id = savedDetective.getDetectiveId();
+//                List<Long> specialties = request.getSpecialties();
+//                int size = specialties.size(); // 리스트의 크기
+//
+//                for(int i = 0;i<size;i++){
+//                    DetectiveSpeciality detectiveSpeciality = new DetectiveSpeciality();
+//                    detectiveSpeciality.setDetective(savedDetective); //detective 객체 할당
+//                    System.out.println(specialityService.getSpecialityById(specialties.get(i)));
+//                    detectiveSpeciality.setSpeciality(specialityService.getSpecialityById(specialties.get(i)));
+//                    detectiveSpecialityRepository.save(detectiveSpeciality);
+//                }
+//
+//                DetectiveApproval detectiveApproval = new DetectiveApproval();
+//                detectiveApproval.setDetective(savedDetective);
+//                detectiveApproval.setApprovalStatus(ApprovalStatus.PENDING);
+//                detectiveApproval.setRejReason("");
+//                detectiveApprovalService.save(detectiveApproval);
+//
+//                return ResponseEntity.ok("탐정 등록이 완료되었습니다.");
+//            } catch (Exception e) {
+//                return ResponseEntity.status(500).body("탐정 등록에 실패했습니다: " + e.getMessage());
+//            }
+//        }
+//        else{
+//            return ResponseEntity.status(500).body("탐정 등록에 실패했습니다: ");
+//        }
+        }
+        return ResponseEntity.ok("탐정 등록이 완료되었습니다.");
+    }
+
     @PostMapping("/files")
     public ResponseEntity<Map<String, String>> uploadFiles(
-            @RequestParam("businessRegistration") MultipartFile businessRegistration,
-            @RequestParam("detectiveLicense") MultipartFile detectiveLicense,
+            @RequestParam(value = "businessRegistration", required = false) MultipartFile businessRegistration,
+            @RequestParam(value = "detectiveLicense",required = false) MultipartFile detectiveLicense,
             @RequestParam(value = "profilePicture", required = false) MultipartFile profilePicture,
             @RequestParam(value = "additionalCertification", required = false) MultipartFile additionalCertification) {
 
@@ -230,13 +309,17 @@ public class DetectiveController {
 
         try {
             // 각 파일을 저장하고 경로 반환
-            String businessRegistrationPath = saveFile(businessRegistration, "business_registration");
-            String detectiveLicensePath = saveFile(detectiveLicense, "detective_license");
+            String businessRegistrationPath = businessRegistration != null? saveFile(businessRegistration, "business_registration") : null;
+            String detectiveLicensePath = detectiveLicense != null? saveFile(detectiveLicense, "detective_license") : null;
             String profilePicturePath = profilePicture != null ? saveFile(profilePicture, "profile_picture") : null;
             String additionalCertificationPath = additionalCertification != null ? saveFile(additionalCertification, "additional_certification") : null;
 
-            filePaths.put("businessRegistrationPath", businessRegistrationPath);
-            filePaths.put("detectiveLicensePath", detectiveLicensePath);
+            if (businessRegistrationPath != null) {
+                filePaths.put("businessRegistrationPath", businessRegistrationPath);
+            }
+            if (detectiveLicensePath != null) {
+                filePaths.put("detectiveLicensePath", detectiveLicensePath);
+            }
             if (profilePicturePath != null) {
                 filePaths.put("profilePicturePath", profilePicturePath);
             }
@@ -263,6 +346,85 @@ public class DetectiveController {
         Files.copy(file.getInputStream(), uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
         return uploadDir + "/" + fileName;  // 저장된 파일 경로 반환
     }
+
+    @PostMapping("/updateFile")
+    public ResponseEntity<String> deleteFile(@RequestParam("filePath") String filePath, @RequestParam("state") String state) {
+        System.out.println(filePath+"pathtest");
+        if(state.equals("delete")){
+            try {
+                Path path = Paths.get(filePath);
+                System.out.println(path+"pathtest2");
+                if (Files.exists(path)) {
+                    Files.delete(path);  // 파일 삭제
+                    return ResponseEntity.ok("File deleted successfully.");
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found.");
+                }
+            } catch (IOException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete the file.");
+            }
+        }else{
+            return ResponseEntity.ok("test");
+        }
+
+    }
+
+    @GetMapping("/pwCheck")
+    public Boolean passwordCheck(@RequestParam String password){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = "";
+        if (authentication != null && authentication.getPrincipal() != null) {
+            Object principal = authentication.getPrincipal();
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            email = userDetails.getUsername();
+        }
+        User user = userRepository.findByEmail(email);
+
+        if(userService.checkPw(password,user.getPassword())){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    // 탐졍 ID로 정보 가지고 오기
+    @GetMapping("/{detectiveId}")
+    public DetectiveDTO getDetecveById(@PathVariable Long detectiveId) {
+        Detective detective = detectiveRepository.findById(detectiveId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "탐정을 찾을 수 없습니다."));
+
+        DetectiveDTO detectivedto = new DetectiveDTO();
+
+        // DTO 매핑
+        Long points = detective.getCurrentPoints();
+        detectivedto.setCurrentPoints(points.doubleValue());
+
+        detectivedto.setBusinessRegistration(detective.getBusinessRegistration());
+        detectivedto.setDetectiveLicense(detective.getDetectiveLicense());
+        detectivedto.setProfilePicture(detective.getProfilePicture());
+        detectivedto.setIntroduction(detective.getIntroduction());
+        detectivedto.setLocation(detective.getLocation());
+        detectivedto.setDetectiveGender(detective.getDetectiveGender());
+        detectivedto.setResolvedCases(detective.getResolvedCases());
+        detectivedto.setApprovalStatus(detective.getApprovalStatus().toString());
+        detectivedto.setUserName(detective.getUser().getUserName());
+        detectivedto.setEmail(detective.getUser().getEmail());
+        detectivedto.setPhoneNumber(detective.getUser().getPhoneNumber());
+        detectivedto.setCreatedAt(detective.getUser().getCreatedAt());
+        detectivedto.setCompany(detective.getCompany());
+        detectivedto.setDescription(detective.getDescription());
+        detectivedto.setAdditionalCertifications(detective.getAdditionalCertifications());
+
+        // 탐정의 전문 분야 정보 추가
+        List<String> specialties = detective.getSpecialties().stream()
+                .map(s -> s.getSpeciality().getSpecialityName())
+                .collect(Collectors.toList());
+        detectivedto.setSpecialtiesName(specialties);
+
+        return detectivedto;
+    }
+
 
 
 }

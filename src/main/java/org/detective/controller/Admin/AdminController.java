@@ -31,6 +31,7 @@ public class AdminController {
 
     @GetMapping("/approvals")
     public List<DetectiveApprovalDTO> getAllDetectiveApprovals() {
+
         return detectiveApprovalService.findAll();
     }
 

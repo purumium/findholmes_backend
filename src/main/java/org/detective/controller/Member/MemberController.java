@@ -64,7 +64,6 @@ public class MemberController {
             User user2 = userRepository.findByEmail(email);
             userService.updateUser(user,user2);
 
-
             return ResponseEntity.ok("Registration successful!");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Registration failed: " + e.getMessage());
@@ -87,7 +86,6 @@ public class MemberController {
         }else{
             return false;
         }
-
     }
 
 

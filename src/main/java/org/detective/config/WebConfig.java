@@ -21,6 +21,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
                 .addResourceHandler("/uploads/**")
-                .addResourceLocations("file:uploads/"); // 업로드 디렉토리 경로
+                .addResourceLocations("file:" + System.getProperty("user.dir") + "/uploads/");  // 프로젝트 루트에서 'uploads' 디렉토리로 매핑
     }
 }

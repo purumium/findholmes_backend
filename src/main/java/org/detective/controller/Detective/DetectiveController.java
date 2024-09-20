@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,6 +26,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.apache.logging.log4j.ThreadContext.isEmpty;
 
 @RestController
 @RequestMapping("/detective")
@@ -115,8 +118,6 @@ public class DetectiveController {
             return detectivedto;
 
         }
-
-
     }
 
     @GetMapping("/specialties")
@@ -161,6 +162,7 @@ public class DetectiveController {
                 detective.setLocation(request.getLocation());
                 detective.setCurrentPoints(0L);
                 detective.setDetectiveGender(request.getDetectiveGender());
+
                 // Long 객체를 long 기본형으로 캐스팅
                 long resolvedCases = request.getResolvedCases();
                 detective.setResolvedCases(resolvedCases);
@@ -168,6 +170,10 @@ public class DetectiveController {
                 detective.setProfilePicture(request.getProfilePicture());
                 detective.setDetectiveLicense(request.getDetectiveLicense());
                 detective.setApprovalStatus(ApprovalStatus.PENDING);
+                detective.setAdditionalCertifications(request.getAdditionalCertifications());
+
+                detective.setCompany(request.getCompany());
+                detective.setDescription(request.getDescription());
 
                 Detective savedDetective = detectiveRepository.save(detective);
                 Long id = savedDetective.getDetectiveId();
@@ -260,6 +266,45 @@ public class DetectiveController {
         Files.copy(file.getInputStream(), uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
         return uploadDir + "/" + fileName;  // 저장된 파일 경로 반환
     }
+
+
+    // 탐졍 ID로 정보 가지고 오기
+    @GetMapping("/{detectiveId}")
+    public DetectiveDTO getDetecveById(@PathVariable Long detectiveId) {
+        Detective detective = detectiveRepository.findById(detectiveId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "탐정을 찾을 수 없습니다."));
+
+        DetectiveDTO detectivedto = new DetectiveDTO();
+
+        // DTO 매핑
+        Long points = detective.getCurrentPoints();
+        detectivedto.setCurrentPoints(points.doubleValue());
+
+        detectivedto.setBusinessRegistration(detective.getBusinessRegistration());
+        detectivedto.setDetectiveLicense(detective.getDetectiveLicense());
+        detectivedto.setProfilePicture(detective.getProfilePicture());
+        detectivedto.setIntroduction(detective.getIntroduction());
+        detectivedto.setLocation(detective.getLocation());
+        detectivedto.setDetectiveGender(detective.getDetectiveGender());
+        detectivedto.setResolvedCases(detective.getResolvedCases());
+        detectivedto.setApprovalStatus(detective.getApprovalStatus().toString());
+        detectivedto.setUserName(detective.getUser().getUserName());
+        detectivedto.setEmail(detective.getUser().getEmail());
+        detectivedto.setPhoneNumber(detective.getUser().getPhoneNumber());
+        detectivedto.setCreatedAt(detective.getUser().getCreatedAt());
+        detectivedto.setCompany(detective.getCompany());
+        detectivedto.setDescription(detective.getDescription());
+        detectivedto.setAdditionalCertifications(detective.getAdditionalCertifications());
+
+        // 탐정의 전문 분야 정보 추가
+        List<String> specialties = detective.getSpecialties().stream()
+                .map(s -> s.getSpeciality().getSpecialityName())
+                .collect(Collectors.toList());
+        detectivedto.setSpecialtiesName(specialties);
+
+        return detectivedto;
+    }
+
 
 
 }

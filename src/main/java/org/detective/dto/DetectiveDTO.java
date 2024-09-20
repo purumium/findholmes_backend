@@ -22,6 +22,7 @@ public class DetectiveDTO {
     private Long resolvedCases;
     private String approvalStatus;
     private List<Long> specialties; // 전문 분야 ID 배열
+    private String password;
 
     private String company;
     private String additionalCertifications;

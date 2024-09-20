@@ -3,9 +3,15 @@ package org.detective.services.detective;
 //import org.detective.repository.DetectiveRepository;
 import org.detective.dto.DetectiveDTO;
 import org.detective.entity.Detective;
+import org.detective.entity.User;
+import org.detective.repository.ClientRepository;
 import org.detective.repository.DetectiveRepository;
+import org.detective.repository.DetectiveSpecialityRepository;
+import org.detective.repository.UserRepository;
+import org.detective.services.Speciality.SpecialityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.detective.entity.DetectiveSpeciality;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,6 +25,18 @@ public class DetectiveService {
 
     @Autowired
     private DetectiveRepository detectiveRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    SpecialityService specialityService;
+
+    @Autowired
+    DetectiveSpecialityRepository detectiveSpecialityRepository;
 
 
     public Detective getDetectiveById(Long detectiveId) {
@@ -56,6 +74,44 @@ public class DetectiveService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
+    public boolean updateDetective(User user, Detective detective, DetectiveDTO request) {
+        // 비즈니스 로직을 여기에 추가할 수 있습니다.
+        // 비밀번호 암호화
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setUserName(request.getUserName());
+        user.setPhoneNumber(request.getPhoneNumber());
+        userRepository.save(user);
+        detective.setProfilePicture(request.getProfilePicture());
+        detective.setAdditionalCertifications(request.getAdditionalCertifications());
+        detective.setLocation(request.getLocation());
+        detective.setDescription(request.getDescription());
+        detective.setIntroduction(request.getIntroduction());
+
+        Detective savedDetective = detectiveRepository.save(detective);
+
+
+
+        Long id = savedDetective.getDetectiveId();
+        // savedDetective의 ID를 사용하여 모든 DetectiveSpeciality 삭제
+        detectiveSpecialityRepository.deleteByDetective_DetectiveId(id);
+
+
+        List<Long> specialties = request.getSpecialties();
+        int size = specialties.size(); // 리스트의 크기
+
+        for(int i = 0;i<size;i++){
+            DetectiveSpeciality detectiveSpeciality = new DetectiveSpeciality();
+            detectiveSpeciality.setDetective(savedDetective); //detective 객체 할당
+            System.out.println(specialityService.getSpecialityById(specialties.get(i)));
+            detectiveSpeciality.setSpeciality(specialityService.getSpecialityById(specialties.get(i)));
+            detectiveSpecialityRepository.save(detectiveSpeciality);
+        }
+        return true;
+
+    }
+
+
 
     private DetectiveDTO convertToDTO(Detective detective) {
         DetectiveDTO dto = new DetectiveDTO();

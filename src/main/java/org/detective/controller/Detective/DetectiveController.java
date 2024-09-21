@@ -1,12 +1,10 @@
 package org.detective.controller.Detective;
 
 import jakarta.transaction.Transactional;
+import org.detective.dto.DetectiveApprovalDTO;
 import org.detective.dto.DetectiveDTO;
 import org.detective.entity.*;
-import org.detective.repository.DetectiveRepository;
-import org.detective.repository.DetectiveSpecialityRepository;
-import org.detective.repository.SpecialityRepository;
-import org.detective.repository.UserRepository;
+import org.detective.repository.*;
 import org.detective.services.Speciality.SpecialityService;
 import org.detective.services.admin.DetectiveApprovalService;
 import org.detective.services.detective.DetectiveService;
@@ -49,6 +47,9 @@ public class DetectiveController {
 
     @Autowired
     private DetectiveSpecialityRepository detectiveSpecialityRepository;
+
+    @Autowired
+    private DetectiveApprovalRepository detectiveApprovalRepository;
 
     @Autowired
     private SpecialityService specialityService;
@@ -387,6 +388,34 @@ public class DetectiveController {
         }
     }
 
+    @GetMapping("/checkreject")
+    public DetectiveApprovalDTO getApprovalStatusRejectByDetectiveId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = "";
+        if (authentication != null && authentication.getPrincipal() != null) {
+            Object principal = authentication.getPrincipal();
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            email = userDetails.getUsername();
+        }
+        User user = userRepository.findByEmail(email);
+        Detective detective = detectiveRepository.findByUser(user);
+        DetectiveApproval approval = detectiveApprovalRepository.findByDetectiveApproval_DetectiveId(detective.getDetectiveId());
+
+        if (approval != null) {
+            DetectiveApprovalDTO dto = new DetectiveApprovalDTO();
+            dto.setId(approval.getId());
+            dto.setDetectiveId(approval.getDetective().getDetectiveId());
+            dto.setApprovalStatus(approval.getApprovalStatus().toString());
+            dto.setRejReason(approval.getRejReason());
+            dto.setCreatedAt(approval.getCreateAt());
+            dto.setConfirmedAt(approval.getConfirmedAt());
+
+            return dto;
+        } else {
+            return null; // 또는 처리할 로직 추가
+        }
+    }
+
 
     // 탐졍 ID로 정보 가지고 오기
     @GetMapping("/{detectiveId}")
@@ -424,6 +453,8 @@ public class DetectiveController {
 
         return detectivedto;
     }
+
+
 
 
 

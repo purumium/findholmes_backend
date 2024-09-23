@@ -4,7 +4,6 @@ import org.detective.dto.*;
 import org.detective.entity.*;
 import org.detective.repository.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -57,8 +56,16 @@ public class RequestService {
         System.out.println("Service request entity : "+ request.toString());
         requestRepository.save(request);
 
-        List<Detective> detectives = detectiveRepository.getDetectiveRandom();
-        
+        List<Detective> detectives = new ArrayList<>();
+
+        if (requestFormDTO.getGender().equals("ANY")) {
+            detectives = detectiveRepository.getDetectiveLS(speciality.getSpecialityId(), requestFormDTO.getLocation());
+        } else {
+            System.err.println("getDetectiveLSG : "+requestFormDTO.toString());
+            detectives = detectiveRepository.getDetectiveLSG(speciality.getSpecialityId(), requestFormDTO.getGender(), requestFormDTO.getLocation());
+            System.err.println("getDetectiveLSG_detective : "+detectives.toString());
+        }
+
         int cnt = 0;
         System.err.println("Service detectives entity : "+ detectives.toString());
         System.err.println("Service detectives entity length : "+ detectives.size());

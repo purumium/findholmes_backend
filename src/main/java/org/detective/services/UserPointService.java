@@ -22,13 +22,4 @@ public class UserPointService {
     private final UserRepository userRepository;
     private final ClientRepository clientRepository;
 
-    @Transactional
-    public void usePoints(UserPointDTO userPoint) {
-        User user = userRepository.findById(userPoint.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
-        Long userId = user.getUserId();
-        Optional<Client> client = clientRepository.findById(userId);
-
-
-    }
 }

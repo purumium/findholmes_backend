@@ -113,6 +113,11 @@ public class ChatRoomController {
         }
     }
 
+    @GetMapping("/chat-exist")
+    public boolean existingChatRoom(@RequestParam Long estimateId) {
+        return chatRoomService.getChatRoomExisting(estimateId);
+    }
+
 
 //    @GetMapping("/check/{estimateId}")
 //    public List<ChatRoom> getEstimates(@PathVariable Long estimateId) {

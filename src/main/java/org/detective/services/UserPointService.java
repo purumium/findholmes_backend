@@ -44,4 +44,5 @@ public class UserPointService {
         chatRoomRepository.save(chatRoom);
 
     }
+
 }

@@ -34,7 +34,6 @@ public class UserPoint {
     @Column(name = "point_change_amount")
     private Long pointChangeAmount;  // 포인트 변동량
 
-    @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private String createdAt;
 

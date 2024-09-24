@@ -112,7 +112,7 @@ public class ChatRoomService {
                 return true;
             }
 
-            if (chatRoom.getChatCount() < 6 ) {
+            if (chatRoom.getChatCount() < 5 ) {
                 return true;
             } else {
                 return false;
@@ -202,6 +202,13 @@ public class ChatRoomService {
     public Optional<ChatRoom> findByChatRoomInfo(String chatRoomId){
         return chatRoomRepository.findById(chatRoomId);
 
+    }
+
+    // 채팅방 유무에 따른 리뷰 작성
+    @Transactional
+    public boolean getChatRoomExisting(Long estimateId) {
+        Optional<ChatRoom> existingChatRoom = chatRoomRepository.findByEstimateId(estimateId);
+        return existingChatRoom.isPresent();
     }
 
     // 채팅방 삭제

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -69,7 +70,6 @@ public class InqueryController {
     }
 
 
-
     // 전체 문의글 조회
     @GetMapping("/all")
     public ResponseEntity<?> getAllInqueries() {
@@ -118,6 +118,20 @@ public class InqueryController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("문의글 답변완료 불러오기 에러" + e.getMessage());
+        }
+    }
+
+    // 문의글 상태 업데이트
+    @GetMapping("/{requestid}/status")
+    public ResponseEntity<?> updateInqueryStatus(@PathVariable("requestid") Long id) {
+        try {
+            inqueryService.updateInqueryStatsus(id);
+
+            return ResponseEntity.ok("문의 상태가 업데이트 되었습니다");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("문의글 상태 업데이트 에러" + e.getMessage());
         }
     }
 

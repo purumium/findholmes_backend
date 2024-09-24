@@ -2,6 +2,7 @@ package org.detective.controller.Admin;
 
 import org.detective.controller.Inquery.InqueryController;
 import org.detective.dto.DetectiveApprovalDTO;
+import org.detective.dto.InqueryDTO;
 import org.detective.entity.ApprovalStatus;
 import org.detective.entity.Detective;
 import org.detective.entity.DetectiveApproval;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin")
@@ -91,14 +93,12 @@ public class AdminController {
             detectiveRepository.save(detective);
             return ResponseEntity.ok(status);
         }
-
-
     }
 
-    // 문의글 상세 보기
-    @GetMapping("/inquery/{requestid}")
-    public ResponseEntity<?> getInqueryById(@PathVariable("requestid") Long id) {
-        return inqueryController.getInqueryById(id);
+    public class ResourceNotFoundException extends RuntimeException {
+        public ResourceNotFoundException(String message) {
+            super(message);
+        }
     }
 
     // 전체 문의 조회
@@ -119,12 +119,19 @@ public class AdminController {
         return inqueryController.getCompleteInqueries();
     }
 
-
-    public class ResourceNotFoundException extends RuntimeException {
-        public ResourceNotFoundException(String message) {
-            super(message);
-        }
+    // 문의글 상세 보기
+    @GetMapping("/inquery/{requestid}")
+    public ResponseEntity<?> getInqueryById(@PathVariable("requestid") Long id) {
+        return inqueryController.getInqueryById(id);
     }
+
+    // 문의글 상세 보기
+    @GetMapping("/inquery/{inqueryid}/status")
+    public ResponseEntity<?> updateInqueryStatus(@PathVariable("inqueryid") Long id) {
+        System.out.println("adminController : " + id);
+        return inqueryController.updateInqueryStatus(id);
+    }
+
 
 
 }

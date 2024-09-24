@@ -66,19 +66,6 @@ public class SecurityConfig {
                 .passwordEncoder(passwordEncoder());
         return authenticationManagerBuilder.build();
     }
-//    @Bean
-//    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-//        AuthenticationManagerBuilder authenticationManagerBuilder =
-//                http.getSharedObject(AuthenticationManagerBuilder.class);
-//        authenticationManagerBuilder
-//                .userDetailsService(userDetailsService)
-//                .passwordEncoder(passwordEncoder());
-//
-//        // 커스텀 인증 프로바이더를 사용하는 경우
-//        authenticationManagerBuilder.authenticationProvider(customAuthenticationProvider);
-//
-//        return authenticationManagerBuilder.build();
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

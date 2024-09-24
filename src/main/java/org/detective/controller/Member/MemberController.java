@@ -2,8 +2,11 @@ package org.detective.controller.Member;
 
 import lombok.Data;
 import org.detective.dto.EmailDTO;
+import org.detective.dto.UserDTO;
+import org.detective.entity.Client;
 import org.detective.entity.User;
 
+import org.detective.repository.ClientRepository;
 import org.detective.repository.SpecialityRepository;
 
 import org.detective.repository.SpecialityRepository;
@@ -40,6 +43,9 @@ public class MemberController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
 
     @PostMapping("/register")
@@ -125,6 +131,31 @@ public class MemberController {
             email = userDetails.getUsername();
         }
         User user = userRepository.findByEmail(email);
+
+        return user;
+    }
+
+    @GetMapping("/user/allinfo")
+    public UserDTO getUserAllInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = "";
+
+        if (authentication != null && authentication.getPrincipal() != null) {
+            Object principal = authentication.getPrincipal();
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            email = userDetails.getUsername();
+        }
+        User userInfo = userRepository.findByEmail(email);
+        Client client = clientRepository.findByUser_userId(userInfo.getUserId());
+
+        UserDTO user = new UserDTO(
+                userInfo.getUserId(),
+                userInfo.getUserName(),
+                userInfo.getEmail(),
+                userInfo.getRole(),
+                client.getCurrentPoints()
+        );
 
         return user;
     }

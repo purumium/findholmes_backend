@@ -21,13 +21,15 @@ public class ChatController {
     private final ChatService chatService;
     private final ChatRepository chatRepository;
 
-    // /receive를 메시지를 받을 endpoint로 설정합니다.    // /send로 메시지를 반환합니다.
+    // /receive를 메시지를 받을 endpoint로 설정합니다.
+    // /send로 메시지를 반환합니다.
     @MessageMapping("/receive")
     @SendTo("/send")
     public Chat SocketHandler(Chat chatMessage) {
         return chatService.saveMessage(chatMessage);
     }
 
+    // 채팅 내역 불러오기
     @GetMapping("/chat/chatroom/{chatRoomId}")
     public List<Chat> getMessages(@PathVariable String chatRoomId) {
         // 채팅방 ID에 해당하는 모든 메시지 반환

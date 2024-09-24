@@ -4,6 +4,7 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 
@@ -15,12 +16,16 @@ public class Chat {
     @Id
     private String id;
 
+    @Field("chat_room_id")
     private String chatRoomId;
 
+    @Field("sender_id")
     private Long senderId;
 
+    @Field("message")
     private String message;
 
+    @Field("send_time")
     private LocalDateTime sendTime;
 
 

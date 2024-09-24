@@ -22,9 +22,8 @@ public class Client {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;  // 외래키 설정: User 엔티티의 userId 필드와 매핑
 
-    @ColumnDefault("0")
     @Column(name="currentPoints")
-    private Long currentPoints;
+    private Long currentPoints = 0L;
 
     public void usePoints(Long points) {
         if (this.currentPoints < points) {

@@ -28,8 +28,6 @@ public class InqueryController {
     @PostMapping("/insert")
     public ResponseEntity<?> saveInquery(@RequestBody InqueryDTO inqueryDTO) {
         try {
-            System.out.println("inqueryDTO : " + inqueryDTO);
-
             User user = memberController.getUserInfo();
 
             Inquery inquery = new Inquery(

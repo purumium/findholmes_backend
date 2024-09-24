@@ -1,13 +1,11 @@
-package org.detective.controller.chat;
+package org.detective.controller.Chat;
 
 import lombok.RequiredArgsConstructor;
 import org.detective.entity.Chat;
-import org.detective.entity.ChatRoom;
 import org.detective.repository.ChatRepository;
 import org.detective.services.chat.ChatService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;

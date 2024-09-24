@@ -97,6 +97,22 @@ public class ChatRoomController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/{chatRoomId}/can-send-message")
+    public boolean canSendMessage(@PathVariable String chatRoomId) {
+        return chatRoomService.canSendMessage(chatRoomId);
+    }
+
+    @PostMapping("/{chatRoomId}/increase-count")
+    public ResponseEntity<String> increaseChatCount(@PathVariable String chatRoomId) {
+        try {
+            chatRoomService.increaseChatCount(chatRoomId);
+            return ResponseEntity.ok("ok");
+        }
+        catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 
 //    @GetMapping("/check/{estimateId}")
 //    public List<ChatRoom> getEstimates(@PathVariable Long estimateId) {

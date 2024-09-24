@@ -20,8 +20,8 @@ class ChatRoomRepositoryTest {
     @Test
     void testSaveChatRoom() {
         // Given: Participant 리스트 생성
-        ChatRoom.Participant participant1 = new ChatRoom.Participant(10L, "c");
-        ChatRoom.Participant participant2 = new ChatRoom.Participant(12L, "d");
+        ChatRoom.Participant participant1 = new ChatRoom.Participant(10L, "c", false);
+        ChatRoom.Participant participant2 = new ChatRoom.Participant(12L, "d", false);
         List<ChatRoom.Participant> participants = List.of(participant1, participant2);
 
         // ChatRoom 객체 생성

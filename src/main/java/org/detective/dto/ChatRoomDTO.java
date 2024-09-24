@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class ChatRoomDTO {
     private String chatRoomId;                  // 채팅방 ID
     private List<ParticipantDTO> participants;  // 참가자 목록 (ParticipantDto 리스트)
-    private LocalDateTime createdAt;            // 채팅방 생성 시간
+    private String lastMessage;
+    private LocalDateTime lastChatTime;
 }
 

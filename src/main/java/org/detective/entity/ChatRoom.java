@@ -31,6 +31,12 @@ public class ChatRoom {
     @Field("created_at")
     private LocalDateTime createdAt;
 
+    @Field("chat_count")
+    private int chatCount = 0;
+
+    @Field("unlimited_access")
+    private boolean unlimitedAccess = false;
+
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
@@ -44,10 +50,11 @@ public class ChatRoom {
 
         @Field("accepted_privacy")
         private Boolean acceptedPrivacy;
+
     }
 
-    public ChatRoom(Long estimateId, List<Participant> participants) {
-        this.estimateId = estimateId;
-        this.participants = participants;
+    public void increaseChatCount() {
+        this.chatCount++;
     }
+
 }

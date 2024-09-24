@@ -3,6 +3,7 @@ package org.detective.controller.Detective;
 import jakarta.transaction.Transactional;
 import org.detective.dto.DetectiveApprovalDTO;
 import org.detective.dto.DetectiveDTO;
+import org.detective.dto.DetectiveSimpleDTO;
 import org.detective.entity.*;
 import org.detective.repository.*;
 import org.detective.services.Speciality.SpecialityService;
@@ -129,6 +130,12 @@ public class DetectiveController {
             return detectivedto;
 
         }
+    }
+
+    //@직접 의뢰요청 시 탐정의 정보를 불러오는 메서드
+    @GetMapping("/info")
+    public DetectiveSimpleDTO getDetectiveInfo(@RequestParam("detectiveId") Long detectiveId) {
+        return detectiveService.getDetectiveInfo(detectiveId);
     }
 
     @GetMapping("/specialties")

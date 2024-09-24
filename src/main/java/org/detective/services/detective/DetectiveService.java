@@ -2,12 +2,10 @@ package org.detective.services.detective;
 
 //import org.detective.repository.DetectiveRepository;
 import org.detective.dto.DetectiveDTO;
+import org.detective.dto.DetectiveSimpleDTO;
 import org.detective.entity.Detective;
 import org.detective.entity.User;
-import org.detective.repository.ClientRepository;
-import org.detective.repository.DetectiveRepository;
-import org.detective.repository.DetectiveSpecialityRepository;
-import org.detective.repository.UserRepository;
+import org.detective.repository.*;
 import org.detective.services.Speciality.SpecialityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +35,8 @@ public class DetectiveService {
 
     @Autowired
     DetectiveSpecialityRepository detectiveSpecialityRepository;
+    @Autowired
+    private SpecialityRepository specialityRepository;
 
 
     public Detective getDetectiveById(Long detectiveId) {
@@ -67,6 +67,18 @@ public class DetectiveService {
         return detectiveRepository.findAll();
     }
 
+    public DetectiveSimpleDTO getDetectiveInfo(Long detectiveId) {
+        Detective detective = detectiveRepository.findByDetectiveId(detectiveId);
+
+        DetectiveSimpleDTO detectiveSimpleDTO = new DetectiveSimpleDTO(detective.getDetectiveId(),
+                detective.getUser().getUserName(),
+                detective.getDetectiveGender(),
+                specialityRepository.findByDetectiveId(detectiveId),
+                detective.getLocation(),
+                detective.getProfilePicture());
+        System.err.println("!@#$% Sepciality : "+detectiveSimpleDTO.getSpecialities().toString()+"!@#$%");
+        return detectiveSimpleDTO;
+    }
 
     public List<DetectiveDTO> findAllDetectives() {
         List<Detective> detectives = detectiveRepository.findAll();
@@ -74,6 +86,7 @@ public class DetectiveService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
 
     public boolean updateDetective(User user, Detective detective, DetectiveDTO request) {
         // 비즈니스 로직을 여기에 추가할 수 있습니다.

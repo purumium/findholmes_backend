@@ -420,6 +420,8 @@ public class DetectiveController {
     // 탐졍 ID로 정보 가지고 오기
     @GetMapping("/{detectiveId}")
     public DetectiveDTO getDetecveById(@PathVariable Long detectiveId) {
+
+        System.out.println("탐정 아이디 : " + detectiveId);
         Detective detective = detectiveRepository.findById(detectiveId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "탐정을 찾을 수 없습니다."));
 

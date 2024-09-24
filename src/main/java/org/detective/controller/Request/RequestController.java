@@ -31,7 +31,7 @@ public class RequestController {
     }
 
     @GetMapping("/list") // 고객이 자신이 보낸 요청서의 목록을 불러오는 메서드
-    public ResponseEntity<List<RequestListDTO>> getAllRequests(Long userId) {
+    public ResponseEntity<List<RequestListDTO>> getAllRequests(@RequestParam("userId") Long userId) {
         return ResponseEntity.ok(requestService.getAllRequests(userId));
     }
 

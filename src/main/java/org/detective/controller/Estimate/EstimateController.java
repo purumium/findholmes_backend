@@ -29,14 +29,19 @@ public class EstimateController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @GetMapping("/list") // 고객에게 보낸 탐정의 답변서 목록 조회 메서드
-    public List<EstimateListDTO> getEstimateList(@RequestParam("userId") Long userId, @RequestParam(value = "requestId",required = false) Long requestId) {
-        return estimateService.getEstimateList(userId,requestId);
+    @GetMapping("/list") // 탐정(자신)이 보낸 답변서 목록 조회 메서드
+    public List<EstimateListDTO> getEstimateList(@RequestParam(value = "userId") Long userId) {
+        return estimateService.getEstimateList(userId);
     }
 
     @GetMapping("/details") // 고객이 보낸 의뢰애 대한 탐정의 답변서 상세정보 조회메서드
-    public ResponseEntity<List<EstimateDetailDTO>> getEstimateDetail(@RequestParam("requestId") Long requestId) {
-        return ResponseEntity.ok(estimateService.getEstimateDetail(requestId));
+    public ResponseEntity<EstimateListDTO> getEstimateDetail(@RequestParam("userId") Long userId, @RequestParam("requestId") Long requestId) {
+        return ResponseEntity.ok(estimateService.getEstimateDetail(userId, requestId));
+    }
+
+    @GetMapping("/receivelist")
+    public ResponseEntity<List<EstimateDetailDTO>> getReceiveEstimateList(@RequestParam("requestId") Long requestId) {
+        return ResponseEntity.ok(estimateService.getReceiveEstimateList(requestId));
     }
 
 }

@@ -157,6 +157,100 @@ public class DetectiveController {
         }
     }
 
+    @Transactional
+    @PostMapping("/reregister")
+    public ResponseEntity<String> reRegisterDetective(@RequestBody DetectiveDTO request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = "";
+        if (authentication != null && authentication.getPrincipal() != null) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            email = userDetails.getUsername();
+            User user = userRepository.findByEmail(email);
+            Detective detective = detectiveRepository.findByUser(user);
+
+            deleteFile(detective.getBusinessRegistration(),"delete");
+            deleteFile(detective.getDetectiveLicense(),"delete");
+            if(detective.getProfilePicture()!=null){
+                deleteFile(detective.getProfilePicture(),"delete");
+            }
+            if(detective.getAdditionalCertifications()!=null){
+                deleteFile(detective.getAdditionalCertifications(),"delete");
+            }
+            try {
+                detective.setUser(user);
+                detective.setIntroduction(request.getIntroduction());
+
+                detective.setLocation(request.getLocation());
+                detective.setCurrentPoints(0L);
+                detective.setDetectiveGender(request.getDetectiveGender());
+
+                // Long 객체를 long 기본형으로 캐스팅
+                long resolvedCases = request.getResolvedCases();
+                detective.setResolvedCases(resolvedCases);
+                detective.setBusinessRegistration(request.getBusinessRegistration());
+                detective.setProfilePicture(request.getProfilePicture());
+                detective.setDetectiveLicense(request.getDetectiveLicense());
+                detective.setApprovalStatus(ApprovalStatus.PENDING);
+                detective.setAdditionalCertifications(request.getAdditionalCertifications());
+
+                detective.setCompany(request.getCompany());
+                detective.setDescription(request.getDescription());
+
+                Detective savedDetective = detectiveRepository.save(detective);
+
+//                Long id = savedDetective.getDetectiveId();
+//                List<Long> specialties = request.getSpecialties();
+//                int size = specialties.size(); // 리스트의 크기
+//
+//                for(int i = 0;i<size;i++){
+//                    DetectiveSpeciality detectiveSpeciality = new DetectiveSpeciality();
+//                    detectiveSpeciality.setDetective(savedDetective); //detective 객체 할당
+//                    System.out.println(specialityService.getSpecialityById(specialties.get(i)));
+//                    detectiveSpeciality.setSpeciality(specialityService.getSpecialityById(specialties.get(i)));
+//                    detectiveSpecialityRepository.save(detectiveSpeciality);
+//                }
+//
+//                DetectiveApproval detectiveApproval = new DetectiveApproval();
+//                detectiveApproval.setDetective(savedDetective);
+//                detectiveApproval.setApprovalStatus(ApprovalStatus.PENDING);
+//                detectiveApproval.setRejReason("");
+//                detectiveApprovalService.save(detectiveApproval);
+                Long id = savedDetective.getDetectiveId();
+                // savedDetective의 ID를 사용하여 모든 DetectiveSpeciality 삭제
+                System.out.println(id+"detectiveid");
+                detectiveSpecialityRepository.deleteByDetectiveId(id);
+
+
+                List<Long> specialties = request.getSpecialties();
+                int size = specialties.size(); // 리스트의 크기
+
+                for(int i = 0;i<size;i++){
+                    DetectiveSpeciality detectiveSpeciality = new DetectiveSpeciality();
+                    detectiveSpeciality.setDetective(savedDetective); //detective 객체 할당
+                    detectiveSpeciality.setSpeciality(null);
+                    detectiveSpecialityRepository.save(detectiveSpeciality);
+                    detectiveSpeciality.setDetective(savedDetective); //detective 객체 할당
+                    detectiveSpeciality.setSpeciality(specialityService.getSpecialityById(specialties.get(i)));
+                    detectiveSpecialityRepository.save(detectiveSpeciality);
+                }
+
+//                DetectiveApproval detectiveApproval = new DetectiveApproval();
+//                detectiveApproval.setDetective(savedDetective);
+//                detectiveApproval.setApprovalStatus(ApprovalStatus.PENDING);
+//                detectiveApproval.setRejReason("");
+//                detectiveApprovalService.save(detectiveApproval);
+
+                return ResponseEntity.ok("탐정 등록이 완료되었습니다.");
+            } catch (Exception e) {
+                return ResponseEntity.status(500).body("탐정 등록에 실패했습니다: " + e.getMessage());
+            }
+        }
+        else{
+            return ResponseEntity.status(500).body("탐정 등록에 실패했습니다: ");
+        }
+
+    }
+
     @PostMapping("/register")
     public ResponseEntity<String> registerDetective(@RequestBody DetectiveDTO request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -205,24 +299,6 @@ public class DetectiveController {
                 detectiveApproval.setRejReason("");
                 detectiveApprovalService.save(detectiveApproval);
 
-//            Detective savedDetective = detectiveRepository.save(detective);
-
-
-                // 2. Specialty 엔티티들을 데이터베이스에서 조회
-//            Set<Specialty> specialties = new HashSet<>(specialtyRepository.findAllById(request.getSpecialties()));
-//            List<Speciality> specialties = new ArrayList<>(specialityRepository.findAllById(request.getSpecialties()));
-//            // 3. Detective 객체에 specialties 설정
-//            detective.set(specialties);
-//            System.out.println(request.getSpecialties());
-                System.out.println(request);
-
-//            // 전문 분야 처리
-//            List<Specialty> specialties = specialtyRepository.findAllById(request.getSelectedSpecialties());
-//            detective.setSpecialties(specialties);
-//
-//            // 탐정 저장
-//            detectiveRepository.save(detective);
-
                 return ResponseEntity.ok("탐정 등록이 완료되었습니다.");
             } catch (Exception e) {
                 return ResponseEntity.status(500).body("탐정 등록에 실패했습니다: " + e.getMessage());
@@ -248,53 +324,6 @@ public class DetectiveController {
 
             detectiveService.updateDetective(user,detective,request);
             return ResponseEntity.ok("탐정 등록이 완료되었습니다.");
-//            try {
-//                detective.setUser(user);
-//                detective.setIntroduction(request.getIntroduction());
-//
-//                detective.setLocation(request.getLocation());
-//                detective.setCurrentPoints(0L);
-//                detective.setDetectiveGender(request.getDetectiveGender());
-//
-//                // Long 객체를 long 기본형으로 캐스팅
-//                long resolvedCases = request.getResolvedCases();
-//                detective.setResolvedCases(resolvedCases);
-//                detective.setBusinessRegistration(request.getBusinessRegistration());
-//                detective.setProfilePicture(request.getProfilePicture());
-//                detective.setDetectiveLicense(request.getDetectiveLicense());
-//                detective.setApprovalStatus(ApprovalStatus.PENDING);
-//                detective.setAdditionalCertifications(request.getAdditionalCertifications());
-//
-//                detective.setCompany(request.getCompany());
-//                detective.setDescription(request.getDescription());
-//
-//                Detective savedDetective = detectiveRepository.save(detective);
-//                Long id = savedDetective.getDetectiveId();
-//                List<Long> specialties = request.getSpecialties();
-//                int size = specialties.size(); // 리스트의 크기
-//
-//                for(int i = 0;i<size;i++){
-//                    DetectiveSpeciality detectiveSpeciality = new DetectiveSpeciality();
-//                    detectiveSpeciality.setDetective(savedDetective); //detective 객체 할당
-//                    System.out.println(specialityService.getSpecialityById(specialties.get(i)));
-//                    detectiveSpeciality.setSpeciality(specialityService.getSpecialityById(specialties.get(i)));
-//                    detectiveSpecialityRepository.save(detectiveSpeciality);
-//                }
-//
-//                DetectiveApproval detectiveApproval = new DetectiveApproval();
-//                detectiveApproval.setDetective(savedDetective);
-//                detectiveApproval.setApprovalStatus(ApprovalStatus.PENDING);
-//                detectiveApproval.setRejReason("");
-//                detectiveApprovalService.save(detectiveApproval);
-//
-//                return ResponseEntity.ok("탐정 등록이 완료되었습니다.");
-//            } catch (Exception e) {
-//                return ResponseEntity.status(500).body("탐정 등록에 실패했습니다: " + e.getMessage());
-//            }
-//        }
-//        else{
-//            return ResponseEntity.status(500).body("탐정 등록에 실패했습니다: ");
-//        }
         }
         return ResponseEntity.ok("탐정 등록이 완료되었습니다.");
     }

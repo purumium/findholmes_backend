@@ -5,6 +5,7 @@ import org.detective.entity.Detective;
 import org.detective.entity.DetectiveSpeciality;
 import org.detective.entity.Speciality;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -18,7 +19,9 @@ public interface DetectiveSpecialityRepository extends JpaRepository<DetectiveSp
     @Query("SELECT ds FROM DetectiveSpeciality ds WHERE ds.id IN :ids")
     List<DetectiveSpeciality> findByIdIn(@Param("ids") List<Long> ids);
 
-    void deleteByDetective_DetectiveId(Long detectiveId);
+    @Modifying
+    @Query("DELETE FROM DetectiveSpeciality ds WHERE ds.detective.detectiveId = :detectiveId")
+    void deleteByDetectiveId(@Param("detectiveId") Long detectiveId);
 
 
 

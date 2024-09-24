@@ -94,7 +94,7 @@ public class DetectiveService {
 
         Long id = savedDetective.getDetectiveId();
         // savedDetective의 ID를 사용하여 모든 DetectiveSpeciality 삭제
-        detectiveSpecialityRepository.deleteByDetective_DetectiveId(id);
+        detectiveSpecialityRepository.deleteByDetectiveId(id);
 
 
         List<Long> specialties = request.getSpecialties();

@@ -1,4 +1,4 @@
-package org.detective.controller.chat;
+package org.detective.controller.Chat;
 
 import lombok.RequiredArgsConstructor;
 import org.detective.dto.ChatRoomDTO;

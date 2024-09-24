@@ -56,5 +56,8 @@ public class ChatRoom {
     public void increaseChatCount() {
         this.chatCount++;
     }
+    public void enableUnlimitedAccess() {
+        this.unlimitedAccess = true;
+    }
 
 }

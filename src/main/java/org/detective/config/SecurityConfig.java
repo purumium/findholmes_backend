@@ -39,12 +39,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
                           .requestMatchers("/ws/**").permitAll()
-                        .requestMatchers("/member/**","/speciality/**","/request/**","/receive/**","/estimate/**","/detective/**","/reply/**","/chatroom/**","/email/**").permitAll()
+                        .requestMatchers("/member/**","/speciality/**","/request/**","/receive/**","/detective/**","/reply/**","/chatroom/**","/email/**","/estimate/**").permitAll()
                         .requestMatchers("/test/**").hasRole("USER")
                         .requestMatchers("/admin/**").permitAll()
                         .requestMatchers("/client/**").permitAll()
-                        .requestMatchers("/uploads/profile_picture/**").permitAll()
-                        .requestMatchers("/ws/**").permitAll()
+                        .requestMatchers("/ws/**").permitAll()//
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
@@ -67,19 +66,6 @@ public class SecurityConfig {
                 .passwordEncoder(passwordEncoder());
         return authenticationManagerBuilder.build();
     }
-//    @Bean
-//    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-//        AuthenticationManagerBuilder authenticationManagerBuilder =
-//                http.getSharedObject(AuthenticationManagerBuilder.class);
-//        authenticationManagerBuilder
-//                .userDetailsService(userDetailsService)
-//                .passwordEncoder(passwordEncoder());
-//
-//        // 커스텀 인증 프로바이더를 사용하는 경우
-//        authenticationManagerBuilder.authenticationProvider(customAuthenticationProvider);
-//
-//        return authenticationManagerBuilder.build();
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -8,6 +8,7 @@ import org.detective.repository.DetectiveApprovalRepository;
 import org.detective.repository.DetectiveRepository;
 import org.detective.services.admin.DetectiveApprovalService;
 import org.detective.services.detective.DetectiveService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,21 @@ public class AdminController {
             return ResponseEntity.ok(status);
         }
 
+
+    }
+
+
+    // 사용자 문의 리스트
+    @GetMapping("/inquery/list")
+    public ResponseEntity<?> getInqueryToalList() {
+        try {
+        List<DetectiveApproval> approvals = approvalRepository.findAll();
+
+        return ResponseEntity.ok(approvals);
+        }  catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("문의 접수 에러 발생함 " + e.getMessage());
+        }
 
     }
 

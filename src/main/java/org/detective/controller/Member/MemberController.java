@@ -1,6 +1,7 @@
 package org.detective.controller.Member;
 
 import lombok.Data;
+import org.detective.dto.EmailDTO;
 import org.detective.entity.User;
 
 import org.detective.repository.SpecialityRepository;
@@ -8,6 +9,7 @@ import org.detective.repository.SpecialityRepository;
 import org.detective.repository.SpecialityRepository;
 import org.detective.repository.UserRepository;
 
+import org.detective.services.email.EmailService;
 import org.detective.services.member.UserService;
 import org.detective.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;

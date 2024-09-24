@@ -41,15 +41,6 @@ public class MemberController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private EmailService emailService;
-
-    @PostMapping("/email/send")
-    public ResponseEntity<String> sendEmail(@RequestBody EmailDTO emailRequest) {
-        emailService.sendEmail(emailRequest.getTo(), emailRequest.getSubject(), emailRequest.getBody());
-        return ResponseEntity.ok("이메일이 발송되었습니다.");
-    }
-
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {

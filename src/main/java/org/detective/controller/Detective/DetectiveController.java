@@ -198,17 +198,7 @@ public class DetectiveController {
 
                 Detective savedDetective = detectiveRepository.save(detective);
 
-//                Long id = savedDetective.getDetectiveId();
-//                List<Long> specialties = request.getSpecialties();
-//                int size = specialties.size(); // 리스트의 크기
-//
-//                for(int i = 0;i<size;i++){
-//                    DetectiveSpeciality detectiveSpeciality = new DetectiveSpeciality();
-//                    detectiveSpeciality.setDetective(savedDetective); //detective 객체 할당
-//                    System.out.println(specialityService.getSpecialityById(specialties.get(i)));
-//                    detectiveSpeciality.setSpeciality(specialityService.getSpecialityById(specialties.get(i)));
-//                    detectiveSpecialityRepository.save(detectiveSpeciality);
-//                }
+
 //
 //                DetectiveApproval detectiveApproval = new DetectiveApproval();
 //                detectiveApproval.setDetective(savedDetective);
@@ -233,6 +223,11 @@ public class DetectiveController {
                     detectiveSpeciality.setSpeciality(specialityService.getSpecialityById(specialties.get(i)));
                     detectiveSpecialityRepository.save(detectiveSpeciality);
                 }
+
+                DetectiveApproval detectiveApproval = detectiveApprovalRepository.findByDetective(savedDetective);
+                detectiveApproval.setApprovalStatus(ApprovalStatus.PENDING);
+                detectiveApproval.setRejReason("");
+                detectiveApprovalRepository.save(detectiveApproval);
 
 //                DetectiveApproval detectiveApproval = new DetectiveApproval();
 //                detectiveApproval.setDetective(savedDetective);

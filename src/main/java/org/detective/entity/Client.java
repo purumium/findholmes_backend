@@ -26,5 +26,11 @@ public class Client {
     @Column(name="currentPoints")
     private Long currentPoints;
 
+    public void usePoints(Long points) {
+        if (this.currentPoints < points) {
+            throw new IllegalArgumentException("포인트가 부족합니다.");
+        }
+        this.currentPoints -= points;
+    }
 }
 

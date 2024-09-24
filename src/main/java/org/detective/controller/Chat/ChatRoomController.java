@@ -1,4 +1,4 @@
-package org.detective.controller.chat;
+package org.detective.controller.Chat;
 
 import lombok.RequiredArgsConstructor;
 import org.detective.dto.ChatRoomDTO;
@@ -111,6 +111,11 @@ public class ChatRoomController {
         catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/chat-exist")
+    public boolean existingChatRoom(@RequestParam Long estimateId) {
+        return chatRoomService.getChatRoomExisting(estimateId);
     }
 
 

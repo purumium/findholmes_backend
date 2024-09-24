@@ -9,9 +9,12 @@ import org.detective.entity.Speciality;
 import org.detective.repository.DetectiveRepository;
 import org.detective.repository.DetectiveSpecialityRepository;
 import org.detective.services.Speciality.SpecialityService;
+import org.detective.services.client.ClientService;
 import org.detective.services.detective.DetectiveService;
+import org.detective.util.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -33,6 +36,9 @@ public class ClientController {
 
     @Autowired
     private SpecialityService specialityService;
+
+    @Autowired
+    private ClientService clientService;
 
     @PostMapping("/finddetectives")
     public List<DetectiveDTO> findDetectives(@RequestBody SearchRequest request) {
@@ -93,6 +99,12 @@ public class ClientController {
         }
 
         return detectivesDTO;
+    }
+
+    @GetMapping("/current-point")
+    public Long getCurrentPoint(@AuthenticationPrincipal CustomUserDetails user) {
+        Long userId = user.getUserId();
+        return clientService.currentPoints(userId);
     }
 }
 

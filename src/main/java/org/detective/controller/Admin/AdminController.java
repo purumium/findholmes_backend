@@ -1,5 +1,6 @@
 package org.detective.controller.Admin;
 
+import org.detective.controller.Inquery.InqueryController;
 import org.detective.dto.DetectiveApprovalDTO;
 import org.detective.entity.ApprovalStatus;
 import org.detective.entity.Detective;
@@ -19,20 +20,30 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private DetectiveApprovalService detectiveApprovalService;
+    private final DetectiveApprovalService detectiveApprovalService;
 
-    @Autowired
-    private DetectiveApprovalRepository approvalRepository;
+    private final DetectiveApprovalRepository approvalRepository;
 
-    @Autowired
-    private DetectiveService detectiveService;
-    @Autowired
-    private DetectiveRepository detectiveRepository;
+    private  final DetectiveService detectiveService;
+
+    private  final DetectiveRepository detectiveRepository;
+
+    private final InqueryController inqueryController;
+
+    public AdminController( DetectiveApprovalService detectiveApprovalService,
+                            DetectiveApprovalRepository approvalRepository,
+                            DetectiveService detectiveService,
+                            DetectiveRepository detectiveRepository,
+                            InqueryController inqueryController) {
+        this.detectiveApprovalService = detectiveApprovalService;
+        this.approvalRepository = approvalRepository;
+        this.detectiveService = detectiveService;
+        this.detectiveRepository = detectiveRepository;
+        this.inqueryController = inqueryController;
+    }
 
     @GetMapping("/approvals")
     public List<DetectiveApprovalDTO> getAllDetectiveApprovals() {
-
         return detectiveApprovalService.findAll();
     }
 
@@ -84,20 +95,30 @@ public class AdminController {
 
     }
 
-
-    // 사용자 문의 리스트
-    @GetMapping("/inquery/list")
-    public ResponseEntity<?> getInqueryToalList() {
-        try {
-        List<DetectiveApproval> approvals = approvalRepository.findAll();
-
-        return ResponseEntity.ok(approvals);
-        }  catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("문의 접수 에러 발생함 " + e.getMessage());
-        }
-
+    // 문의글 상세 보기
+    @GetMapping("/inquery/{requestid}")
+    public ResponseEntity<?> getInqueryById(@PathVariable("requestid") Long id) {
+        return inqueryController.getInqueryById(id);
     }
+
+    // 전체 문의 조회
+    @GetMapping("/inquery/all")
+    public ResponseEntity<?> getAllInqueries() {
+        return inqueryController.getAllInqueries();
+    }
+
+    // 답변 대기 상태의 문의 조회
+    @GetMapping("/inquery/pending")
+    public ResponseEntity<?> getPendingInqueries() {
+        return inqueryController.getPendingInqueries();
+    }
+
+    // 답변 완료 상태의 문의 조회
+    @GetMapping("/inquery/complete")
+    public ResponseEntity<?> getCompleteInqueries() {
+        return inqueryController.getCompleteInqueries();
+    }
+
 
     public class ResourceNotFoundException extends RuntimeException {
         public ResourceNotFoundException(String message) {

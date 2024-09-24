@@ -47,4 +47,6 @@ public class DetectiveApproval {
     @UpdateTimestamp
     @Column(name = "confirmed_at")
     private LocalDateTime confirmedAt;
+
+
 }

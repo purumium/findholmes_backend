@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,7 +32,7 @@ public class UserPoint {
     @Column(name = "point_change_amount")
     private Long pointChangeAmount;  // 포인트 변동량
 
-
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private String createdAt;
 
@@ -49,4 +50,5 @@ public class UserPoint {
 
         this.createdAt = formattedDate;
     }
+
 }

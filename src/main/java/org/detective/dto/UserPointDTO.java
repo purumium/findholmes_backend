@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserPointDTO {
+
     private Long pointId;
     private Long userId;
     private String pointUsingType;
     private Long pointChangeAmount;
-    private String description;
-    private LocalDateTime createdAt;
+
 }

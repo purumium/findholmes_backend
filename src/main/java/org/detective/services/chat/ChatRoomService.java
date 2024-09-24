@@ -3,15 +3,18 @@ package org.detective.services.chat;
 import lombok.RequiredArgsConstructor;
 import org.detective.dto.ChatRoomDTO;
 import org.detective.dto.ParticipantDTO;
+import org.detective.entity.Chat;
 import org.detective.entity.ChatRoom;
 import org.detective.entity.Estimate;
 import org.detective.entity.User;
+import org.detective.repository.ChatRepository;
 import org.detective.repository.ChatRoomRepository;
 import org.detective.repository.EstimateRepository;
 import org.detective.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +27,7 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final EstimateRepository estimateRepository;
     private final UserRepository userRepository;
+    private final ChatRepository chatRepository;
 
 
     // 채팅방 생성하기
@@ -96,6 +100,40 @@ public class ChatRoomService {
                 .orElse(false)).orElse(false);
     }
 
+    // 채팅 제한 유무
+    @Transactional
+    public boolean canSendMessage(String chatRoomId) {
+        Optional<ChatRoom> chatRoomOpt = chatRoomRepository.findById(chatRoomId);
+
+        if (chatRoomOpt.isPresent()) {
+            ChatRoom chatRoom = chatRoomOpt.get();
+
+            if (chatRoom.isUnlimitedAccess()) {
+                return true;
+            }
+
+            if (chatRoom.getChatCount() < 6 ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        throw new RuntimeException("채팅방을 찾을 수 없습니다.");
+
+    }
+
+    @Transactional
+    public void increaseChatCount(String chatRoomId) {
+        if (canSendMessage(chatRoomId)) {
+            ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                    .orElseThrow();
+            chatRoom.increaseChatCount();
+            chatRoomRepository.save(chatRoom);
+        } else {
+            throw new IllegalStateException("채팅 제한에 도달했습니다. 포인트를 사용해 채팅을 무제한으로 할 수 있습니다.");
+        }
+    }
+
 
     // 채팅방 리스트 불러오기
     @Transactional
@@ -118,8 +156,11 @@ public class ChatRoomService {
                                     return new ParticipantDTO(detective.getUserName(), participant.getRole());
                                 })
                                 .collect(Collectors.toList());
+                        Optional<Chat> lastChat = chatRepository.findFirstByChatRoomIdOrderBySendTimeDesc(chatRoom.getId());
+                        String lastMessage = lastChat.map(Chat::getMessage).orElse("");
+                        LocalDateTime lastSendTime = lastChat.map(Chat::getSendTime).orElse(chatRoom.getCreatedAt());
 
-                        return new ChatRoomDTO(chatRoom.getId(), participants, chatRoom.getCreatedAt());
+                        return new ChatRoomDTO(chatRoom.getId(), participants, lastMessage, lastSendTime);
                     })
                     .collect(Collectors.toList());
 
@@ -130,6 +171,7 @@ public class ChatRoomService {
                     .map(chatRoom -> {
                         // participants에서 userId로 username 조회
                         List<ParticipantDTO> participants = chatRoom.getParticipants().stream()
+                                .filter(participant -> "c".equals(participant.getRole()))
                                 .map(participant -> {
                                     User client = userRepository.findById(participant.getUserId())
                                             .orElseThrow(() -> new IllegalArgumentException("상대 의뢰인을 찾을 수 없습니다."));
@@ -137,7 +179,11 @@ public class ChatRoomService {
                                 })
                                 .collect(Collectors.toList());
 
-                        return new ChatRoomDTO(chatRoom.getId(), participants, chatRoom.getCreatedAt());
+                        Optional<Chat> lastChat = chatRepository.findFirstByChatRoomIdOrderBySendTimeDesc(chatRoom.getId());
+                        String lastMessage = lastChat.map(Chat::getMessage).orElse("");
+                        LocalDateTime lastSendTime = lastChat.map(Chat::getSendTime).orElse(chatRoom.getCreatedAt());
+
+                        return new ChatRoomDTO(chatRoom.getId(), participants, lastMessage, lastSendTime);
                     })
                     .collect(Collectors.toList());
 
@@ -145,13 +191,13 @@ public class ChatRoomService {
             throw new IllegalArgumentException("잘못된 역할입니다.");
         }
     }
-    // userId 관한 채팅방 리스트 모든 데이터 가져오기
+    // userId 관한 채팅방 리스트 모든 데이터 가져오기 (사용안함)
     @Transactional
     public List<ChatRoom> getChatRoomList(Long userId){
         return chatRoomRepository.findBychatRoomList(userId);
     }
 
-    // 채팅방의 내역 불러오기
+    // 채팅방 관련 정보 불러오기
     @Transactional
     public Optional<ChatRoom> findByChatRoomInfo(String chatRoomId){
         return chatRoomRepository.findById(chatRoomId);

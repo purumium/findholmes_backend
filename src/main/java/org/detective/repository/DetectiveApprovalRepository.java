@@ -1,5 +1,6 @@
 package org.detective.repository;
 
+import org.detective.entity.Detective;
 import org.detective.entity.DetectiveApproval;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,7 @@ public interface DetectiveApprovalRepository extends JpaRepository<DetectiveAppr
 
     @Query(value="SELECT * FROM detective_approvals WHERE detective_id = :detectiveId", nativeQuery = true)
     DetectiveApproval findByDetectiveApproval_DetectiveId(@Param("detectiveId") Long detectiveId);
+
+    // Detective로 DetectiveApproval 조회
+    DetectiveApproval findByDetective(Detective detective);
 }

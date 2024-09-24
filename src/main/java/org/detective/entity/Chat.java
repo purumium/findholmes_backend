@@ -3,6 +3,7 @@ package org.detective.entity;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -26,6 +27,7 @@ public class Chat {
     private String message;
 
     @Field("send_time")
+    @Indexed(name = "send_time_idx")
     private LocalDateTime sendTime;
 
 

@@ -38,8 +38,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/ws/**").permitAll()
-                        .requestMatchers("/member/**","/speciality/**","/request/**","/receive/**","/detective/**","/reply/**","/chatroom/**","/estimate/**").permitAll()
+                          .requestMatchers("/ws/**").permitAll()
+                        .requestMatchers("/member/**","/speciality/**","/request/**","/receive/**","/detective/**","/reply/**","/chatroom/**","/email/**").permitAll()
                         .requestMatchers("/test/**").hasRole("USER")
                         .requestMatchers("/admin/**").permitAll()
                         .requestMatchers("/client/**").permitAll()

@@ -6,6 +6,7 @@ import org.detective.dto.EstimateFormDTO;
 import org.detective.dto.EstimateListDTO;
 import org.detective.entity.*;
 import org.detective.repository.*;
+import org.detective.services.detective.DetectiveService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,14 +22,16 @@ public class EstimateService {
     private final AssignmentRequestRepository assignmentRequestRepository;
     private final RequestRepository requestRepository;
     private final DetectiveRepository detectiveRepository;
+    private final DetectiveService detectiveService;
 
-    public EstimateService(UserRepository userRepository, DetectiveRepository detectiveRepository, ClientRepository clientRepository, EstimateRepository estimateRepository, AssignmentRequestRepository assignmentRequestRepository, RequestRepository requestRepository) {
+    public EstimateService(UserRepository userRepository, DetectiveRepository detectiveRepository, ClientRepository clientRepository, EstimateRepository estimateRepository, AssignmentRequestRepository assignmentRequestRepository, RequestRepository requestRepository, DetectiveService detectiveService) {
         this.userRepository = userRepository;
         this.clientRepository = clientRepository;
         this.estimateRepository = estimateRepository;
         this.assignmentRequestRepository = assignmentRequestRepository;
         this.requestRepository = requestRepository;
         this.detectiveRepository = detectiveRepository;
+        this.detectiveService = detectiveService;
     }
 
 
@@ -104,9 +107,16 @@ public class EstimateService {
                     estimate.getDescription(),
                     estimate.getPrice(),
                     estimate.getTitle(),
-                    estimate.getCreateAt()
+                    estimate.getCreateAt(),
+                    estimate.getDetective().getDetectiveGender(),
+                    estimate.getDetective().getSpecialties().stream()
+                            .map(s -> s.getSpeciality().getSpecialityName())
+                            .collect(Collectors.toList()),
+                    estimate.getDetective().getLocation(),
+                    estimate.getDetective().getProfilePicture()
             ));
         }
+        System.out.println("@@@@@고객의 탐정답변서 리스트 상세보기@@@@@"+estimateDetailDTOS);
         return estimateDetailDTOS;
     }
     }

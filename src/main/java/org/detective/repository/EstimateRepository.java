@@ -13,7 +13,8 @@ import java.util.List;
 public interface EstimateRepository extends JpaRepository<Estimate, Long> {
 
     List<Estimate> findByClient(Client client);
-    List<Estimate> findByRequest(Request request);
+    List<Estimate> findByRequest_requestId(Long requestId);
     List<Estimate> findByDetective(Detective detective);
 
+    Estimate findByDetectiveAndRequest_requestId(Detective detective, Long requestId);
 }

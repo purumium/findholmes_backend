@@ -3,6 +3,7 @@ package org.detective.services.Request;
 import org.detective.dto.*;
 import org.detective.entity.*;
 import org.detective.repository.*;
+import org.detective.services.Notify.NotificationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,15 +22,17 @@ public class RequestService {
     private final UserRepository userRepository;
     private final DetectiveRepository detectiveRepository;
     private final AssignmentRequestRepository assignmentRequestRepository;
+    private final NotificationService notificationService;
 
     public RequestService(RequestRepository requestRepository, SpecialityRepository specialityRepository, ClientRepository clientRepository, UserRepository userRepository,
-                          DetectiveRepository detectiveRepository,AssignmentRequestRepository assignmentRequestRepository) {
+                          DetectiveRepository detectiveRepository,AssignmentRequestRepository assignmentRequestRepository,NotificationService notificationService) {
         this.requestRepository = requestRepository;
         this.specialityRepository = specialityRepository;
         this.clientRepository = clientRepository;
         this.userRepository = userRepository;
         this.detectiveRepository = detectiveRepository;
         this.assignmentRequestRepository = assignmentRequestRepository;
+        this.notificationService = notificationService;
     }
 
     /*
@@ -50,14 +53,10 @@ public class RequestService {
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Specialty not found with ID")
         );
 
+        Request request = requestRepository.save(new Request(client, requestFormDTO.getLocation(), requestFormDTO.getGender(), speciality, requestFormDTO.getTitle(), requestFormDTO.getDescription()));
 
-            Request request = new Request(client, requestFormDTO.getLocation(), requestFormDTO.getGender(), speciality, requestFormDTO.getTitle(), requestFormDTO.getDescription());
-
-            System.out.println("Service request entity : " + request.toString());
-            requestRepository.save(request);
-
-            if (requestFormDTO.getDetectiveId() == null) {
-                List<Detective> detectives = new ArrayList<>();
+        if (requestFormDTO.getDetectiveId() == null) {
+            List<Detective> detectives = new ArrayList<>();
 
             if (requestFormDTO.getGender().equals("ANY")) {
                 detectives = detectiveRepository.getDetectiveLS(speciality.getSpecialityId(), requestFormDTO.getLocation());
@@ -74,12 +73,16 @@ public class RequestService {
                 System.err.println(++cnt + "번째 삽입");
                 AssignmentRequest assignmentRequest = new AssignmentRequest(request, detective, speciality);
                 assignmentRequestRepository.save(assignmentRequest);
+                NotificationDTO notificationDTO = new NotificationDTO(userId,detective.getUser().getUserId(),request.getTitle(),"/detective/received/"+request.getRequestId());
+                notificationService.notifyRequest(notificationDTO);
             }
         } else {
             System.err.println("직접 의뢰했습니다. / 직접 의뢰했습니다. / 직접 의뢰했습니다. / 직접 의뢰했습니다. / 직접 의뢰했습니다. / 직접 의뢰했습니다. / 직접 의뢰했습니다. / 직접 의뢰했습니다.");
             Detective detective = detectiveRepository.findByDetectiveId(requestFormDTO.getDetectiveId());
             AssignmentRequest assignmentRequest = new AssignmentRequest(request, detective, speciality);
             assignmentRequestRepository.save(assignmentRequest);
+            NotificationDTO notificationDTO = new NotificationDTO(userId,detective.getUser().getUserId(),request.getTitle(),"/estimatelist/"+request.getRequestId());
+            notificationService.notifyRequest(notificationDTO);
         }
     }
 

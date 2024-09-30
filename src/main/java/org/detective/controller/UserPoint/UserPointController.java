@@ -22,7 +22,7 @@ public class UserPointController {
         Long userId = user.getUserId();
         try {
             userPointService.usePoints(userId, points, chatRoomId);
-            return ResponseEntity.ok(points + " 사용");
+            return ResponseEntity.ok(points + "포인트 사용");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

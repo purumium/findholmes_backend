@@ -1,9 +1,17 @@
 package org.detective.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.converter.MessageConverter;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.*;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -12,7 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     // 클라이언트가 메시지를 구독할 endpoint를 정의합니다.
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/send");
+        config.enableSimpleBroker("/send", "/topic");
     }
 
     @Override
@@ -25,4 +33,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
+
 }

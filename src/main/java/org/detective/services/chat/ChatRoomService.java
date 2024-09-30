@@ -203,6 +203,9 @@ public class ChatRoomService {
     public ChatRoomDetailDTO findByChatRoomInfo(String chatRoomId){
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
                 .orElseThrow(() -> new RuntimeException("채팅방 찾기 실패하였습니다."));
+//        Long estimateId = chatRoom.getEstimateId();
+//        Estimate estimate = estimateRepository.findById(estimateId)
+//                .orElseThrow(() -> new RuntimeException("견적서 찾기 실패하였습니다."));
         List<ChatRoom.Participant> participants = chatRoom.getParticipants();
         List<Long> userIds = participants.stream()
                 .map(ChatRoom.Participant::getUserId) // Participant에서 userId 추출

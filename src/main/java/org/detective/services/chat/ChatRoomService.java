@@ -2,6 +2,7 @@ package org.detective.services.chat;
 
 import lombok.RequiredArgsConstructor;
 import org.detective.dto.ChatRoomDTO;
+import org.detective.dto.ChatRoomDetailDTO;
 import org.detective.dto.ParticipantDTO;
 import org.detective.entity.Chat;
 import org.detective.entity.ChatRoom;
@@ -14,9 +15,9 @@ import org.detective.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -153,7 +154,7 @@ public class ChatRoomService {
                                 .map(participant -> {
                                     User detective = userRepository.findById(participant.getUserId())
                                             .orElseThrow(() -> new IllegalArgumentException("상대 탐정을 찾을 수 없습니다."));
-                                    return new ParticipantDTO(detective.getUserName(), participant.getRole());
+                                    return new ParticipantDTO(detective.getUserId(),detective.getUserName(), participant.getRole());
                                 })
                                 .collect(Collectors.toList());
                         Optional<Chat> lastChat = chatRepository.findFirstByChatRoomIdOrderBySendTimeDesc(chatRoom.getId());
@@ -175,7 +176,7 @@ public class ChatRoomService {
                                 .map(participant -> {
                                     User client = userRepository.findById(participant.getUserId())
                                             .orElseThrow(() -> new IllegalArgumentException("상대 의뢰인을 찾을 수 없습니다."));
-                                    return new ParticipantDTO(client.getUserName(), participant.getRole());
+                                    return new ParticipantDTO(client.getUserId(), client.getUserName(), participant.getRole());
                                 })
                                 .collect(Collectors.toList());
 
@@ -199,9 +200,25 @@ public class ChatRoomService {
 
     // 채팅방 관련 정보 불러오기
     @Transactional
-    public Optional<ChatRoom> findByChatRoomInfo(String chatRoomId){
-        return chatRoomRepository.findById(chatRoomId);
-
+    public ChatRoomDetailDTO findByChatRoomInfo(String chatRoomId){
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(() -> new RuntimeException("채팅방 찾기 실패하였습니다."));
+        List<ChatRoom.Participant> participants = chatRoom.getParticipants();
+        List<Long> userIds = participants.stream()
+                .map(ChatRoom.Participant::getUserId) // Participant에서 userId 추출
+                .collect(Collectors.toList());
+        List<User> users = userRepository.findAllById(userIds);
+        List<ParticipantDTO> participantDTOs = users.stream()
+                .map(user -> {
+                    // Participant의 userId에 맞는 username을 DTO로 변환
+                    ChatRoom.Participant participant = participants.stream()
+                            .filter(p -> Objects.equals(p.getUserId(), user.getUserId()))
+                            .findFirst()
+                            .orElseThrow(() -> new RuntimeException("Participant not found for userId: " + user.getUserId()));
+                    return new ParticipantDTO(participant.getUserId(), user.getUserName(), participant.getRole());
+                })
+                .collect(Collectors.toList());
+        return new ChatRoomDetailDTO(chatRoom.getId(), participantDTOs);
     }
 
     // 채팅방 유무에 따른 리뷰 작성

@@ -2,6 +2,7 @@ package org.detective.controller.Chat;
 
 import lombok.RequiredArgsConstructor;
 import org.detective.dto.ChatRoomDTO;
+import org.detective.dto.ChatRoomDetailDTO;
 import org.detective.entity.ChatRoom;
 import org.detective.repository.ChatRoomRepository;
 import org.detective.repository.EstimateRepository;
@@ -89,12 +90,9 @@ public class ChatRoomController {
     }
 
     @GetMapping("/detail/{chatRoomId}")
-    public ResponseEntity<ChatRoom> getChatRoom(@PathVariable String chatRoomId){
-        Optional<ChatRoom> chatRoomOptional = chatRoomService.findByChatRoomInfo(chatRoomId);
-        // Optional 값 확인 후 적절한 응답 반환
-        return chatRoomOptional
-                .map(chatRoom -> ResponseEntity.ok(chatRoom))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ChatRoomDetailDTO> getChatRoom(@PathVariable String chatRoomId){
+        ChatRoomDetailDTO chatRoomDetailDTO  = chatRoomService.findByChatRoomInfo(chatRoomId);
+        return ResponseEntity.ok(chatRoomDetailDTO);
     }
 
     @GetMapping("/{chatRoomId}/can-send-message")

@@ -4,8 +4,10 @@ import org.detective.RequestStatus;
 import org.detective.dto.EstimateDetailDTO;
 import org.detective.dto.EstimateFormDTO;
 import org.detective.dto.EstimateListDTO;
+import org.detective.dto.NotificationDTO;
 import org.detective.entity.*;
 import org.detective.repository.*;
+import org.detective.services.Notify.NotificationService;
 import org.detective.services.detective.DetectiveService;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +25,9 @@ public class EstimateService {
     private final RequestRepository requestRepository;
     private final DetectiveRepository detectiveRepository;
     private final DetectiveService detectiveService;
+    private final NotificationService notificationService;
 
-    public EstimateService(UserRepository userRepository, DetectiveRepository detectiveRepository, ClientRepository clientRepository, EstimateRepository estimateRepository, AssignmentRequestRepository assignmentRequestRepository, RequestRepository requestRepository, DetectiveService detectiveService) {
+    public EstimateService(UserRepository userRepository, DetectiveRepository detectiveRepository, ClientRepository clientRepository, EstimateRepository estimateRepository, AssignmentRequestRepository assignmentRequestRepository, RequestRepository requestRepository, DetectiveService detectiveService, NotificationService notificationService) {
         this.userRepository = userRepository;
         this.clientRepository = clientRepository;
         this.estimateRepository = estimateRepository;
@@ -32,6 +35,7 @@ public class EstimateService {
         this.requestRepository = requestRepository;
         this.detectiveRepository = detectiveRepository;
         this.detectiveService = detectiveService;
+        this.notificationService = notificationService;
     }
 
 
@@ -49,31 +53,33 @@ public class EstimateService {
         Long newPoint = detective.getCurrentPoints() - 10L;
         detective.setCurrentPoints(newPoint);
         detectiveRepository.save(detective);
-
+        System.err.println(client.getUser().getUserId());
+        NotificationDTO notificationDTO = new NotificationDTO(detective.getDetectiveId(), client.getClientId(), request.getTitle(), detective.getUser().getUserName(),"/estimatelist/"+request.getRequestId());
+        notificationService.notifyEstimate(notificationDTO);
         System.out.println(assignmentRequest);
     }
 
     public List<EstimateListDTO> getEstimateList(Long userId) {
 
-            Detective detective = detectiveRepository.findByUser_UserId(userId);
-            List<Estimate> estimateLists = estimateRepository.findByDetective(detective);
-            List<EstimateListDTO> estimateListDTOS = new ArrayList<>();
+        Detective detective = detectiveRepository.findByUser_UserId(userId);
+        List<Estimate> estimateLists = estimateRepository.findByDetective(detective);
+        List<EstimateListDTO> estimateListDTOS = new ArrayList<>();
 
-            for (Estimate estimate : estimateLists) {
-                estimateListDTOS.add(new EstimateListDTO(
-                        estimate.getRequest().getRequestId(),
-                        estimate.getEstimateId(),
-                        estimate.getRequest().getTitle(),
-                        estimate.getTitle(),
-                        estimate.getRequest().getLocation(),
-                        estimate.getRequest().getSpeciality().getSpecialityName(),
-                        estimate.getRequest().getCreatedAt(),
-                        estimate.getCreateAt(),
-                        estimate.getDetective().getUser().getUserName()
-                ));
-            }
-            return estimateListDTOS;
+        for (Estimate estimate : estimateLists) {
+            estimateListDTOS.add(new EstimateListDTO(
+                    estimate.getRequest().getRequestId(),
+                    estimate.getEstimateId(),
+                    estimate.getRequest().getTitle(),
+                    estimate.getTitle(),
+                    estimate.getRequest().getLocation(),
+                    estimate.getRequest().getSpeciality().getSpecialityName(),
+                    estimate.getRequest().getCreatedAt(),
+                    estimate.getCreateAt(),
+                    estimate.getDetective().getUser().getUserName()
+            ));
         }
+        return estimateListDTOS;
+    }
 
     public EstimateListDTO getEstimateDetail(Long userId, Long requestId) {
 
@@ -92,8 +98,8 @@ public class EstimateService {
                 estimateDetail.getCreateAt(),
                 estimateDetail.getDetective().getUser().getUserName());
 
-            return estimateListDTOS;
-        }
+        return estimateListDTOS;
+    }
 
     public List<EstimateDetailDTO> getReceiveEstimateList(Long requestId) {
         List<Estimate> estimates = estimateRepository.findByRequest_requestId(requestId);
@@ -119,5 +125,5 @@ public class EstimateService {
         System.out.println("@@@@@고객의 탐정답변서 리스트 상세보기@@@@@"+estimateDetailDTOS);
         return estimateDetailDTOS;
     }
-    }
+}
 

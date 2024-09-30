@@ -43,7 +43,7 @@ public class SecurityConfig {
                         .requestMatchers("/test/**").hasRole("USER")
                         .requestMatchers("/admin/**").permitAll()
                         .requestMatchers("/client/**").permitAll()
-                        .requestMatchers("/ws/**").permitAll()//
+                        .requestMatchers("/notification/**").permitAll()//
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가

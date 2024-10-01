@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.detective.entity.Estimate;
+import org.detective.entity.Speciality;
 
 import java.util.List;
 
@@ -13,4 +14,7 @@ import java.util.List;
 public class ChatRoomDetailDTO {
     private String chatRoomId;
     private List<ParticipantDTO> participants;
+    private String estimate_title;
+    private int estimate_price;
+    private Speciality requestSpeciality;
 }

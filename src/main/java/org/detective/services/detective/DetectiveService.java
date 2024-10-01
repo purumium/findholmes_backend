@@ -88,10 +88,15 @@ public class DetectiveService {
     }
 
 
+    public boolean updateDetectivePW(User user,DetectiveDTO request){
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        userRepository.save(user);
+        return true;
+    }
+
     public boolean updateDetective(User user, Detective detective, DetectiveDTO request) {
         // 비즈니스 로직을 여기에 추가할 수 있습니다.
-        // 비밀번호 암호화
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
         user.setUserName(request.getUserName());
         user.setPhoneNumber(request.getPhoneNumber());
         userRepository.save(user);

@@ -60,7 +60,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
                           .requestMatchers("/ws/**").permitAll()
-                        .requestMatchers("/member/**","/speciality/**","/request/**","/receive/**","/detective/**","/reply/**","/chatroom/**","/email/**","/estimate/**","/review/**","/oauth2/**").permitAll()
+                        .requestMatchers("/member/**","/speciality/**","/request/**","/receive/**","/detective/**","/reply/**","/chatroom/**","/email/**","/estimate/**","/review/**","/oauth2/**","/uploads/").permitAll()
                         .requestMatchers("/test/**").hasRole("USER")
                         .requestMatchers("/admin/**").permitAll()
                         .requestMatchers("/client/**").permitAll()

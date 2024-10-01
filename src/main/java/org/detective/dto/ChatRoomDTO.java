@@ -15,5 +15,6 @@ public class ChatRoomDTO {
     private List<ParticipantDTO> participants;  // 참가자 목록 (ParticipantDto 리스트)
     private String lastMessage;
     private LocalDateTime lastChatTime;
+    private int notificationCount;
 }
 

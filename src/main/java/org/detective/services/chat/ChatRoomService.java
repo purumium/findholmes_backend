@@ -4,18 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.detective.dto.ChatRoomDTO;
 import org.detective.dto.ChatRoomDetailDTO;
 import org.detective.dto.ParticipantDTO;
-import org.detective.entity.Chat;
-import org.detective.entity.ChatRoom;
-import org.detective.entity.Estimate;
-import org.detective.entity.User;
-import org.detective.repository.ChatRepository;
-import org.detective.repository.ChatRoomRepository;
-import org.detective.repository.EstimateRepository;
-import org.detective.repository.UserRepository;
+import org.detective.entity.*;
+import org.detective.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,6 +24,7 @@ public class ChatRoomService {
     private final EstimateRepository estimateRepository;
     private final UserRepository userRepository;
     private final ChatRepository chatRepository;
+    private final ChatNotificationRepository chatNotificationRepository;
 
 
     // 채팅방 생성하기
@@ -161,8 +157,13 @@ public class ChatRoomService {
                         String lastMessage = lastChat.map(Chat::getMessage).orElse("");
                         LocalDateTime lastSendTime = lastChat.map(Chat::getSendTime).orElse(chatRoom.getCreatedAt());
 
-                        return new ChatRoomDTO(chatRoom.getId(), participants, lastMessage, lastSendTime);
+                        // ChatNotification 조회
+                        Optional<ChatNotification> notificationOpt = chatNotificationRepository.findByUserIdAndChatRoomId(userId, chatRoom.getId());
+                        int notificationCount = notificationOpt.map(ChatNotification::getNotification).orElse(0);  // 알림 값 추가
+
+                        return new ChatRoomDTO(chatRoom.getId(), participants, lastMessage, lastSendTime, notificationCount);
                     })
+                    .sorted(Comparator.comparing(ChatRoomDTO::getLastChatTime))
                     .collect(Collectors.toList());
 
             // ROLE_DETECTIVE이면 role이 "c"인 참여자만 반환
@@ -184,8 +185,13 @@ public class ChatRoomService {
                         String lastMessage = lastChat.map(Chat::getMessage).orElse("");
                         LocalDateTime lastSendTime = lastChat.map(Chat::getSendTime).orElse(chatRoom.getCreatedAt());
 
-                        return new ChatRoomDTO(chatRoom.getId(), participants, lastMessage, lastSendTime);
+                        // ChatNotification 조회
+                        Optional<ChatNotification> notificationOpt = chatNotificationRepository.findByUserIdAndChatRoomId(userId, chatRoom.getId());
+                        int notificationCount = notificationOpt.map(ChatNotification::getNotification).orElse(0);  // 알림 값 추가
+
+                        return new ChatRoomDTO(chatRoom.getId(), participants, lastMessage, lastSendTime, notificationCount);
                     })
+                    .sorted(Comparator.comparing(ChatRoomDTO::getLastChatTime))
                     .collect(Collectors.toList());
 
         } else {
@@ -203,9 +209,13 @@ public class ChatRoomService {
     public ChatRoomDetailDTO findByChatRoomInfo(String chatRoomId){
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
                 .orElseThrow(() -> new RuntimeException("채팅방 찾기 실패하였습니다."));
-//        Long estimateId = chatRoom.getEstimateId();
-//        Estimate estimate = estimateRepository.findById(estimateId)
-//                .orElseThrow(() -> new RuntimeException("견적서 찾기 실패하였습니다."));
+        Long estimateId = chatRoom.getEstimateId();
+        Estimate estimate = estimateRepository.findById(estimateId)
+                .orElseThrow(() -> new RuntimeException("견적서 찾기 실패하였습니다."));
+        String title = estimate.getTitle();
+        int price = estimate.getPrice();
+        Request request = estimate.getRequest();
+        Speciality requestSpeciality = request.getSpeciality();
         List<ChatRoom.Participant> participants = chatRoom.getParticipants();
         List<Long> userIds = participants.stream()
                 .map(ChatRoom.Participant::getUserId) // Participant에서 userId 추출
@@ -221,7 +231,7 @@ public class ChatRoomService {
                     return new ParticipantDTO(participant.getUserId(), user.getUserName(), participant.getRole());
                 })
                 .collect(Collectors.toList());
-        return new ChatRoomDetailDTO(chatRoom.getId(), participantDTOs);
+        return new ChatRoomDetailDTO(chatRoom.getId(), participantDTOs, title, price, requestSpeciality);
     }
 
     // 채팅방 유무에 따른 리뷰 작성

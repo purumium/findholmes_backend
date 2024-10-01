@@ -98,7 +98,9 @@ public class ClientController {
             detectivesDTO.add(dto);
         }
 
-        return detectivesDTO;
+        return detectivesDTO.stream()
+                .filter(d -> "APPROVED".equals(d.getApprovalStatus()))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/current-point")

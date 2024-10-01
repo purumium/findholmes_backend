@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### 환경설정 파일 ###
+/main/src/resource/application.properties
+
+## oracle
+/main/src/resource/Wallet/*

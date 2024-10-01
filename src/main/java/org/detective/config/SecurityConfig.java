@@ -2,7 +2,9 @@ package org.detective.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.detective.entity.Client;
 import org.detective.entity.User;
+import org.detective.repository.ClientRepository;
 import org.detective.repository.UserRepository;
 import org.detective.services.CustomUserDetailsService;
 import org.detective.util.CustomAuthenticationProvider;
@@ -38,6 +40,9 @@ public class SecurityConfig {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -85,13 +90,35 @@ public class SecurityConfig {
         // 사용자 정보가 없으면 가입 처리 (Optional)
         User user2 = userRepository.findByEmail(email);
         if (user2 == null) {
-            // 신규 사용자라면 자동 가입 처리
-            user2 = new User();
-            user2.setEmail(email);
-            user2.setUserName(name);
-            user2.setPassword("changeitlater");
-            user2.setPhoneNumber("010-0000-0000");
-            userRepository.save(user2);
+            // OAuth2 요청에서 state 값 추출
+            String role = httpServletRequest.getParameter("role");
+            System.out.println("rrr test"+role);
+
+            if(role.equals("ROLE_USER")){
+                // 신규 사용자라면 자동 가입 처리
+                user2 = new User();
+                user2.setEmail(email);
+                user2.setUserName(name);
+                user2.setPassword("changeitlater");
+                user2.setPhoneNumber("010-0000-0000");
+                user2.setRole(role);
+                userRepository.save(user2);
+                Long id = user2.getUserId();
+                Client client = new Client();
+                client.setClientId(id);
+                client.setUser(user2);
+                clientRepository.save(client);
+
+            }else if(role.equals("ROLE_DETECTIVE")){
+                user2 = new User();
+                user2.setEmail(email);
+                user2.setUserName(name);
+                user2.setPassword("changeitlater");
+                user2.setPhoneNumber("010-0000-0000");
+                user2.setRole(role);
+                userRepository.save(user2);
+            }
+
         }
 
 

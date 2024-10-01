@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -67,9 +68,21 @@ public class DetectiveController {
     public DetectiveDTO getDetectiveByUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = "";
+
         if (authentication != null && authentication.getPrincipal() != null) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            email = userDetails.getUsername();
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                email = userDetails.getUsername(); // UserDetails에서 이메일 가져오기
+            } else if (principal instanceof OAuth2User) {
+                OAuth2User oauthUser = (OAuth2User) principal;
+                email = oauthUser.getAttribute("email"); // OAuth2User에서 이메일 가져오기
+            } else {
+                System.err.println("Authentication principal is not an instance of UserDetails or OAuth2User");
+            }
+
+
             User user = userRepository.findByEmail(email);
 
 
@@ -148,9 +161,21 @@ public class DetectiveController {
     public String checkDetectiveRegister() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = "";
+
         if (authentication != null && authentication.getPrincipal() != null) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            email = userDetails.getUsername();
+
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                email = userDetails.getUsername(); // UserDetails에서 이메일 가져오기
+            } else if (principal instanceof OAuth2User) {
+                OAuth2User oauthUser = (OAuth2User) principal;
+                email = oauthUser.getAttribute("email"); // OAuth2User에서 이메일 가져오기
+            } else {
+                System.err.println("Authentication principal is not an instance of UserDetails or OAuth2User");
+            }
+
             User user = userRepository.findByEmail(email);
             Detective detective = detectiveRepository.findByUser(user);
             if (detective == null) {
@@ -170,8 +195,18 @@ public class DetectiveController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = "";
         if (authentication != null && authentication.getPrincipal() != null) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            email = userDetails.getUsername();
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                email = userDetails.getUsername(); // UserDetails에서 이메일 가져오기
+            } else if (principal instanceof OAuth2User) {
+                OAuth2User oauthUser = (OAuth2User) principal;
+                email = oauthUser.getAttribute("email"); // OAuth2User에서 이메일 가져오기
+            } else {
+                System.err.println("Authentication principal is not an instance of UserDetails or OAuth2User");
+            }
+
             User user = userRepository.findByEmail(email);
             Detective detective = detectiveRepository.findByUser(user);
 
@@ -258,8 +293,18 @@ public class DetectiveController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = "";
         if (authentication != null && authentication.getPrincipal() != null) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            email = userDetails.getUsername();
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                email = userDetails.getUsername(); // UserDetails에서 이메일 가져오기
+            } else if (principal instanceof OAuth2User) {
+                OAuth2User oauthUser = (OAuth2User) principal;
+                email = oauthUser.getAttribute("email"); // OAuth2User에서 이메일 가져오기
+            } else {
+                System.err.println("Authentication principal is not an instance of UserDetails or OAuth2User");
+            }
+
             User user = userRepository.findByEmail(email);
             Detective detective = new Detective();
             try {
@@ -317,8 +362,18 @@ public class DetectiveController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = "";
         if (authentication != null && authentication.getPrincipal() != null) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            email = userDetails.getUsername();
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                email = userDetails.getUsername(); // UserDetails에서 이메일 가져오기
+            } else if (principal instanceof OAuth2User) {
+                OAuth2User oauthUser = (OAuth2User) principal;
+                email = oauthUser.getAttribute("email"); // OAuth2User에서 이메일 가져오기
+            } else {
+                System.err.println("Authentication principal is not an instance of UserDetails or OAuth2User");
+            }
+
             User user = userRepository.findByEmail(email);
             Detective detective = detectiveRepository.findByUser(user);
             System.out.println(detective+"update test");
@@ -407,8 +462,16 @@ public class DetectiveController {
         String email = "";
         if (authentication != null && authentication.getPrincipal() != null) {
             Object principal = authentication.getPrincipal();
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            email = userDetails.getUsername();
+
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                email = userDetails.getUsername(); // UserDetails에서 이메일 가져오기
+            } else if (principal instanceof OAuth2User) {
+                OAuth2User oauthUser = (OAuth2User) principal;
+                email = oauthUser.getAttribute("email"); // OAuth2User에서 이메일 가져오기
+            } else {
+                System.err.println("Authentication principal is not an instance of UserDetails or OAuth2User");
+            }
         }
         User user = userRepository.findByEmail(email);
 
@@ -423,10 +486,17 @@ public class DetectiveController {
     public DetectiveApprovalDTO getApprovalStatusRejectByDetectiveId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = "";
-        if (authentication != null && authentication.getPrincipal() != null) {
-            Object principal = authentication.getPrincipal();
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            email = userDetails.getUsername();
+        if (authentication != null && authentication.getPrincipal() != null) {Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                email = userDetails.getUsername(); // UserDetails에서 이메일 가져오기
+            } else if (principal instanceof OAuth2User) {
+                OAuth2User oauthUser = (OAuth2User) principal;
+                email = oauthUser.getAttribute("email"); // OAuth2User에서 이메일 가져오기
+            } else {
+                System.err.println("Authentication principal is not an instance of UserDetails or OAuth2User");
+            }
         }
         User user = userRepository.findByEmail(email);
         Detective detective = detectiveRepository.findByUser(user);

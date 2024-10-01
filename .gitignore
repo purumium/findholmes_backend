@@ -40,4 +40,4 @@ out/
 /main/src/resource/application.properties
 
 ## oracle
-/main/src/resource/wallet/*
+/main/src/resource/Wallet/*

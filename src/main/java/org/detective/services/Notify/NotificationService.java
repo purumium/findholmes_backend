@@ -88,4 +88,16 @@ public class NotificationService {
         }
         return notificationDTOS;
     }
+
+    public void notifyChatCount(Long userId) {
+        if (NotificationController.sseEmitters.containsKey(userId)) {
+            SseEmitter sseEmitterReceiver = NotificationController.sseEmitters.get(userId);
+            try {
+                System.err.println("채팅 카운팅 메서드 실행");
+                sseEmitterReceiver.send(SseEmitter.event().name("ReceiveChat").data("왜 안돼"));
+            } catch (IOException e) {
+                NotificationController.sseEmitters.remove(userId);
+            }
+        }
+    }
 }

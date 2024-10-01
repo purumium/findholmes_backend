@@ -39,24 +39,33 @@ public class EstimateService {
     }
 
 
-    public void createEstimate(EstimateFormDTO estimateFormDTO) {
-        Request request = requestRepository.findByRequestId(estimateFormDTO.getRequestId());
-        Client client = clientRepository.findByUser(request.getClient().getUser());
+    public boolean createEstimate(EstimateFormDTO estimateFormDTO) {
+
         Detective detective = detectiveRepository.findByUser(userRepository.findByEmail(estimateFormDTO.getEmail()));
 
-        estimateRepository.save(new Estimate(client, request, detective, estimateFormDTO.getTitle(), estimateFormDTO.getDescription(), estimateFormDTO.getPrice()));
+        if (detective.getCurrentPoints()>=1000) {
 
-        AssignmentRequest assignmentRequest = assignmentRequestRepository.findByRequestAndDetective(request, detective);
-        assignmentRequest.setRequestStatus(RequestStatus.ANSWERED);
-        assignmentRequestRepository.save(assignmentRequest);
+            Request request = requestRepository.findByRequestId(estimateFormDTO.getRequestId());
+            Client client = clientRepository.findByUser(request.getClient().getUser());
 
-        Long newPoint = detective.getCurrentPoints() - 10L;
-        detective.setCurrentPoints(newPoint);
-        detectiveRepository.save(detective);
-        System.err.println(client.getUser().getUserId());
-        NotificationDTO notificationDTO = new NotificationDTO(detective.getDetectiveId(), client.getClientId(), request.getTitle(), detective.getUser().getUserName(),"/estimatelist/"+request.getRequestId());
-        notificationService.notifyEstimate(notificationDTO);
-        System.out.println(assignmentRequest);
+
+            estimateRepository.save(new Estimate(client, request, detective, estimateFormDTO.getTitle(), estimateFormDTO.getDescription(), estimateFormDTO.getPrice()));
+
+            AssignmentRequest assignmentRequest = assignmentRequestRepository.findByRequestAndDetective(request, detective);
+            assignmentRequest.setRequestStatus(RequestStatus.ANSWERED);
+            assignmentRequestRepository.save(assignmentRequest);
+
+            Long newPoint = detective.getCurrentPoints() - 10L;
+            detective.setCurrentPoints(newPoint);
+            detectiveRepository.save(detective);
+            System.err.println(client.getUser().getUserId());
+            NotificationDTO notificationDTO = new NotificationDTO(detective.getDetectiveId(), client.getClientId(), request.getTitle(), detective.getUser().getUserName(), "/estimatelist/" + request.getRequestId());
+            notificationService.notifyEstimate(notificationDTO);
+            System.out.println(assignmentRequest);
+
+            return true;
+        }
+        return false;
     }
 
     public List<EstimateListDTO> getEstimateList(Long userId) {

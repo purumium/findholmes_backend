@@ -24,16 +24,18 @@ public class EstimateService {
     private final AssignmentRequestRepository assignmentRequestRepository;
     private final RequestRepository requestRepository;
     private final DetectiveRepository detectiveRepository;
+    private final UserPointRepository userPointRepository;
     private final DetectiveService detectiveService;
     private final NotificationService notificationService;
 
-    public EstimateService(UserRepository userRepository, DetectiveRepository detectiveRepository, ClientRepository clientRepository, EstimateRepository estimateRepository, AssignmentRequestRepository assignmentRequestRepository, RequestRepository requestRepository, DetectiveService detectiveService, NotificationService notificationService) {
+    public EstimateService(UserRepository userRepository, DetectiveRepository detectiveRepository, ClientRepository clientRepository, EstimateRepository estimateRepository, AssignmentRequestRepository assignmentRequestRepository, RequestRepository requestRepository,UserPointRepository userPointRepository, DetectiveService detectiveService, NotificationService notificationService) {
         this.userRepository = userRepository;
         this.clientRepository = clientRepository;
         this.estimateRepository = estimateRepository;
         this.assignmentRequestRepository = assignmentRequestRepository;
         this.requestRepository = requestRepository;
         this.detectiveRepository = detectiveRepository;
+        this.userPointRepository = userPointRepository;
         this.detectiveService = detectiveService;
         this.notificationService = notificationService;
     }
@@ -55,10 +57,13 @@ public class EstimateService {
             assignmentRequest.setRequestStatus(RequestStatus.ANSWERED);
             assignmentRequestRepository.save(assignmentRequest);
 
-            Long newPoint = detective.getCurrentPoints() - 10L;
+            Long newPoint = detective.getCurrentPoints() - 1000L;
             detective.setCurrentPoints(newPoint);
             detectiveRepository.save(detective);
             System.err.println(client.getUser().getUserId());
+            // 충전 기록
+            userPointRepository.save(new UserPoint(detective.getUser(),1000L,UserPoint.PointUsingType.USE));
+
             NotificationDTO notificationDTO = new NotificationDTO(detective.getDetectiveId(), client.getClientId(), request.getTitle(), detective.getUser().getUserName(), "/estimatelist/" + request.getRequestId());
             notificationService.notifyEstimate(notificationDTO);
             System.out.println(assignmentRequest);

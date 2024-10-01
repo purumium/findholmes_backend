@@ -82,7 +82,7 @@ public class NotificationService {
         List<NotificationDTO> notificationDTOS = new ArrayList<>();
         List<Notification> notifications = notificationRepository.findByReceiverId(userId);
         for (Notification notification : notifications) {
-            notificationDTOS.add(new NotificationDTO(notification.getDescription(),notification.getUrl()));
+            notificationDTOS.add(new NotificationDTO(notification.getDescription(),notification.getUrl(),notification.getNotificationTime()));
             notification.setIsCheck(true);
             notificationRepository.save(notification);
         }

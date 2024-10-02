@@ -3,13 +3,17 @@ package org.detective.controller.Admin;
 import org.detective.controller.Inquery.InqueryController;
 import org.detective.dto.DetectiveApprovalDTO;
 import org.detective.dto.InqueryDTO;
+import org.detective.dto.UserCountDTO;
 import org.detective.entity.ApprovalStatus;
 import org.detective.entity.Detective;
 import org.detective.entity.DetectiveApproval;
+import org.detective.entity.User;
 import org.detective.repository.DetectiveApprovalRepository;
 import org.detective.repository.DetectiveRepository;
+import org.detective.repository.UserRepository;
 import org.detective.services.admin.DetectiveApprovalService;
 import org.detective.services.detective.DetectiveService;
+import org.detective.services.member.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +35,9 @@ public class AdminController {
     private  final DetectiveRepository detectiveRepository;
 
     private final InqueryController inqueryController;
+
+    @Autowired
+    private UserService userService;
 
     public AdminController( DetectiveApprovalService detectiveApprovalService,
                             DetectiveApprovalRepository approvalRepository,
@@ -130,6 +137,13 @@ public class AdminController {
     public ResponseEntity<?> updateInqueryStatus(@PathVariable("inqueryid") Long id) {
         System.out.println("adminController : " + id);
         return inqueryController.updateInqueryStatus(id);
+    }
+
+    //날짜별 가입 수 조회
+    @GetMapping("/count")
+    public List<UserCountDTO> getUserCountByCreatedAtAndRole() {
+        System.out.println("count test"+userService.countUsersByCreatedAtAndRole());
+        return userService.countUsersByCreatedAtAndRole();
     }
 
 

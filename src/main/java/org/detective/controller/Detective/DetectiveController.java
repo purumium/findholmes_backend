@@ -481,6 +481,21 @@ public class DetectiveController {
             return false;
         }
     }
+    @PostMapping("/updatepw")
+    public ResponseEntity<String> updateDetectivePW(@RequestBody DetectiveDTO request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = "";
+        if (authentication != null && authentication.getPrincipal() != null) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            email = userDetails.getUsername();
+            User user = userRepository.findByEmail(email);
+            Detective detective = detectiveRepository.findByUser(user);
+
+            detectiveService.updateDetectivePW(user,request);
+            return ResponseEntity.ok("탐정 등록이 완료되었습니다.");
+        }
+        return ResponseEntity.ok("탐정 등록이 완료되었습니다.");
+    }
 
     @GetMapping("/checkreject")
     public DetectiveApprovalDTO getApprovalStatusRejectByDetectiveId() {

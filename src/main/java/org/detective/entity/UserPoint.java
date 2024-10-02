@@ -52,4 +52,9 @@ public class UserPoint {
         this.createdAt = formattedDate;
     }
 
+    public UserPoint(User user, Long pointChangeAmount, PointUsingType pointUsingType) {
+        this.user = user;
+        this.pointChangeAmount = pointChangeAmount;
+        this.pointUsingType = pointUsingType;
+    }
 }

@@ -19,15 +19,11 @@ public class EstimateController {
     }
 
     @PostMapping("") // 고객의 의뢰에 대한 탐정의 답변서 작성 메서드
-    public ResponseEntity<String> createEstimate(@RequestBody EstimateFormDTO estimateFormDTO) {
+    public boolean createEstimate(@RequestBody EstimateFormDTO estimateFormDTO) {
         System.err.println("ReplyController : createRequest 실행");
-        System.err.println("ReplyController RequestDTO : "+ estimateFormDTO);
-        try {
-            estimateService.createEstimate(estimateFormDTO);
-           return ResponseEntity.ok("Estimate Created");
-       } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        System.err.println("ReplyController RequestDTO : " + estimateFormDTO);
+        return estimateService.createEstimate(estimateFormDTO);
+
     }
     @GetMapping("/list") // 탐정(자신)이 보낸 답변서 목록 조회 메서드
     public List<EstimateListDTO> getEstimateList(@RequestParam(value = "userId") Long userId) {

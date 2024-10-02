@@ -82,10 +82,22 @@ public class NotificationService {
         List<NotificationDTO> notificationDTOS = new ArrayList<>();
         List<Notification> notifications = notificationRepository.findByReceiverId(userId);
         for (Notification notification : notifications) {
-            notificationDTOS.add(new NotificationDTO(notification.getDescription(),notification.getUrl()));
+            notificationDTOS.add(new NotificationDTO(notification.getDescription(),notification.getUrl(),notification.getNotificationTime()));
             notification.setIsCheck(true);
             notificationRepository.save(notification);
         }
         return notificationDTOS;
+    }
+
+    public void notifyChatCount(Long userId) {
+        if (NotificationController.sseEmitters.containsKey(userId)) {
+            SseEmitter sseEmitterReceiver = NotificationController.sseEmitters.get(userId);
+            try {
+                System.err.println("채팅 카운팅 메서드 실행");
+                sseEmitterReceiver.send(SseEmitter.event().name("ReceiveChat").data("왜 안돼"));
+            } catch (IOException e) {
+                NotificationController.sseEmitters.remove(userId);
+            }
+        }
     }
 }

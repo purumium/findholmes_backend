@@ -3,6 +3,7 @@ package org.detective.services.payment;
 
 import org.detective.dto.PaymentRequestDTO;
 import org.detective.dto.PaymentResponseDTO;
+import org.detective.dto.PaymentTotalDTO;
 import org.detective.entity.*;
 import org.detective.repository.*;
 import org.springframework.security.core.parameters.P;
@@ -93,4 +94,9 @@ public class PaymentService {
     public List<PaymentResponseDTO> getPaymentHistory(Long userId) {
         return paymentRepository.getPaymentDetailsByUserId(userId);
     }
+
+    public List<PaymentTotalDTO> getTotalPriceByRolesAndDate() {
+        return paymentRepository.getTotalPriceByRolesAndDate();
+    }
+
 }

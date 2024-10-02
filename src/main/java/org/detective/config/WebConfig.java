@@ -11,9 +11,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8000", "https://findmyholmes.netlify.app") // Vue.js 애플리케이션의 URL
+                .allowedOrigins("http://localhost:8000", "https://findmyholmes.netlify.app/") // Vue.js 애플리케이션의 URL
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
+                .allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept")
                 .allowCredentials(true);
     }
 

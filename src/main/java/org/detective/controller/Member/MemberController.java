@@ -87,6 +87,26 @@ public class MemberController {
         }
     }
 
+    @PostMapping("/updatepw")
+    public ResponseEntity<String> updateUserPW(@RequestBody User user) {
+        System.out.println(user+"update test");
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String email = "";
+            if (authentication != null && authentication.getPrincipal() != null) {
+                Object principal = authentication.getPrincipal();
+                UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+                email = userDetails.getUsername();
+            }
+            User user2 = userRepository.findByEmail(email);
+            userService.updateUserPW(user,user2);
+
+            return ResponseEntity.ok("Registration successful!");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Registration failed: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/pwCheck")
     public Boolean passwordCheck(@RequestParam String password){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

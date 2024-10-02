@@ -163,7 +163,7 @@ public class ChatRoomService {
 
                         return new ChatRoomDTO(chatRoom.getId(), participants, lastMessage, lastSendTime, notificationCount);
                     })
-                    .sorted(Comparator.comparing(ChatRoomDTO::getLastChatTime))
+                    .sorted(Comparator.comparing(ChatRoomDTO::getLastChatTime).reversed())
                     .collect(Collectors.toList());
 
             // ROLE_DETECTIVE이면 role이 "c"인 참여자만 반환
@@ -191,7 +191,7 @@ public class ChatRoomService {
 
                         return new ChatRoomDTO(chatRoom.getId(), participants, lastMessage, lastSendTime, notificationCount);
                     })
-                    .sorted(Comparator.comparing(ChatRoomDTO::getLastChatTime))
+                    .sorted(Comparator.comparing(ChatRoomDTO::getLastChatTime).reversed())
                     .collect(Collectors.toList());
 
         } else {

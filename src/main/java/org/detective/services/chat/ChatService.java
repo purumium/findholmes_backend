@@ -28,6 +28,7 @@ public class ChatService {
     // 채팅 보내기
     @Transactional
     public Chat saveMessage(Chat message) {
+
         chatRepository.save(message);
 
         // 채팅 알림 관련 로직

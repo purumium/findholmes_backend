@@ -3,6 +3,7 @@ package org.detective.controller.Admin;
 import org.detective.controller.Inquery.InqueryController;
 import org.detective.dto.DetectiveApprovalDTO;
 import org.detective.dto.InqueryDTO;
+import org.detective.dto.PaymentTotalDTO;
 import org.detective.dto.UserCountDTO;
 import org.detective.entity.ApprovalStatus;
 import org.detective.entity.Detective;
@@ -14,6 +15,7 @@ import org.detective.repository.UserRepository;
 import org.detective.services.admin.DetectiveApprovalService;
 import org.detective.services.detective.DetectiveService;
 import org.detective.services.member.UserService;
+import org.detective.services.payment.PaymentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +40,10 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PaymentService paymentService;
+
 
     public AdminController( DetectiveApprovalService detectiveApprovalService,
                             DetectiveApprovalRepository approvalRepository,
@@ -146,6 +152,10 @@ public class AdminController {
         return userService.countUsersByCreatedAtAndRole();
     }
 
-
+    //날자별 결제
+    @GetMapping("/count/payments")
+    public List<PaymentTotalDTO> getTotalPriceByRolesAndDate() {
+        return paymentService.getTotalPriceByRolesAndDate();
+    }
 
 }

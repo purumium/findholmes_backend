@@ -1,6 +1,7 @@
 package org.detective.services.member;
 
 //import org.detective.repository.ClientRepository;
+import org.detective.dto.UserCountDTO;
 import org.detective.entity.Client;
 import org.detective.entity.User;
 import org.detective.repository.ClientRepository;
@@ -8,6 +9,10 @@ import org.detective.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -65,5 +70,19 @@ public class UserService {
     public boolean existsByEmail(String email) {
         User user = userRepository.findByEmail(email);
         return user != null; // user가 null이 아니면 true, null이면 false 반환
+    }
+
+    public List<UserCountDTO> countUsersByCreatedAtAndRole() {
+        List<Object[]> results = userRepository.countByRoleAndCreatedAt();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        return results.stream()
+                .map(result -> new UserCountDTO(
+                        result[0].toString(), // 날짜 변환
+                        (String) result[1],   // 역할
+                        ((Number) result[2]).longValue() // 개수
+                ))
+                .collect(Collectors.toList());
     }
 }

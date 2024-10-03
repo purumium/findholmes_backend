@@ -27,7 +27,7 @@ public class ChatService {
 
     // 채팅 보내기
     @Transactional
-    public Chat saveMessage(Chat message) {
+    public void saveMessage(Chat message) {
 
         chatRepository.save(message);
 
@@ -37,7 +37,7 @@ public class ChatService {
         int readCount = message.getReadCount();
 
         chatNotificationService.sendNotification(userId, chatRoomId, readCount);
-        return message;
+        messagingTemplate.convertAndSend("/send/" + chatRoomId, message);;
     }
 
     // 채팅 메세지 불러오기

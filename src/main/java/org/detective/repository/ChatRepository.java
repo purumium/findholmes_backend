@@ -18,4 +18,5 @@ public interface ChatRepository extends MongoRepository<Chat, String> {
 
     @Query("{ 'chatRoomId': ?0, 'isRead': false }")
     List<Chat> findUnreadMessagesByChatRoomId(String chatRoomId);
+
 }

@@ -5,12 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.detective.dto.ChatReadInfo;
 import org.detective.entity.Chat;
 import org.detective.repository.ChatRepository;
+import org.detective.services.chat.ChatNotificationService;
 import org.detective.services.chat.ChatService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class ChatController {
     private final ChatRepository chatRepository;
     private final ObjectMapper objectMapper;
     private final SimpMessagingTemplate messagingTemplate;
+    private final ChatNotificationService chatNotificationService;
 
     // /receive를 메시지를 받을 endpoint로 설정합니다.
     // /send로 메시지를 반환합니다.
@@ -43,6 +46,13 @@ public class ChatController {
     @MessageMapping("/read/{chatRoomId}")
     public void markMessageAsRead(ChatReadInfo readInfo) {
         chatService.markMessageAsRead(readInfo.getChatRoomId(), readInfo.getUserId());
+    }
+
+    @GetMapping("/chatConut")
+    public int totalChatConut(@RequestParam Long userId) {
+        int cnt = chatNotificationService.totalChatCount(userId);
+        System.out.println("\n채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt);
+        return chatNotificationService.totalChatCount(userId);
     }
 
 }

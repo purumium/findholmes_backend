@@ -23,6 +23,7 @@ public class NotificationService {
         this.notificationRepository = notificationRepository;
     }
 
+    //서버에 클라이언트를 등록시키는 메서드
     public SseEmitter subscribe(Long userId) {
         SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
 
@@ -42,6 +43,7 @@ public class NotificationService {
         return sseEmitter;
     }
 
+    //고객이 의뢰글을 작성하면 해당하는 탐정에게 알림을 전달하는 메서드
     public void notifyRequest(NotificationDTO notificationDTO) {
         if (NotificationController.sseEmitters.containsKey(notificationDTO.getReceiverId())) {
             SseEmitter sseEmitterReceiver = NotificationController.sseEmitters.get(notificationDTO.getReceiverId());
@@ -56,6 +58,7 @@ public class NotificationService {
         }
     }
 
+    //탐정이 답변서를 작성하면 고객에게 알림을 전달하는 메서드
     public void notifyEstimate(NotificationDTO notificationDTO) {
         System.err.println("제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 ");
         if (NotificationController.sseEmitters.containsKey(notificationDTO.getReceiverId())) {
@@ -74,10 +77,12 @@ public class NotificationService {
         }
     }
 
+    //미확인 알림개수를 불러오는 메서드
     public int loadNotificationCount(Long userId) {
         return notificationRepository.countByReceiverIdAndIsCheck(userId,false);
     }
 
+    //받은 알림 리스트를 조회하는 메서드
     public List<NotificationDTO> loadNotifications(Long userId) {
         List<NotificationDTO> notificationDTOS = new ArrayList<>();
         List<Notification> notifications = notificationRepository.findByReceiverId(userId);
@@ -89,12 +94,13 @@ public class NotificationService {
         return notificationDTOS;
     }
 
+    //메시지 수신 시 알림을 전달하는 메서드
     public void notifyChatCount(Long userId) {
         if (NotificationController.sseEmitters.containsKey(userId)) {
             SseEmitter sseEmitterReceiver = NotificationController.sseEmitters.get(userId);
             try {
                 System.err.println("채팅 카운팅 메서드 실행");
-                sseEmitterReceiver.send(SseEmitter.event().name("ReceiveChat").data("왜 안돼"));
+                sseEmitterReceiver.send(SseEmitter.event().name("ReceiveChat").data("새로운 채팅메시지"));
             } catch (IOException e) {
                 NotificationController.sseEmitters.remove(userId);
             }

@@ -1,10 +1,12 @@
 package org.detective.services.inquery;
 
+import org.detective.dto.InqueryDTO;
 import org.detective.entity.*;
 import org.detective.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class InqueryService {
@@ -45,5 +47,9 @@ public class InqueryService {
         // 해당 문의글의 상태를 update
         inquery.setResponseStatus(Inquery.ResponseStatus.COMPLETE);
         inqueryRepository.save(inquery);
+    }
+
+    public List<Inquery> getInqueryByUser(User user) {
+        return inqueryRepository.findByUser(user);
     }
 }

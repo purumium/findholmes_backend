@@ -23,19 +23,28 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
+    // 서버에 클라이언트를 등록하는 메서드
     @GetMapping("/subscribe")
     public SseEmitter subscribe(@RequestParam Long userId) {
         System.err.println("제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ ");
         return notificationService.subscribe(userId);
     }
 
+    // 미확인 알림 개수를 불러오는 메서드
     @GetMapping("/receive")
     public int loadNotificationCount(@RequestParam Long userId) {
         return notificationService.loadNotificationCount(userId);
     }
 
+    //받은 알림 리스트를 조회하는 메서드
     @GetMapping("/list")
     public List<NotificationDTO> loadNotifications(@RequestParam Long userId) {
         return notificationService.loadNotifications(userId);
+    }
+
+    //안읽은 메시지 개수를 불러오는 메서드
+    @GetMapping("chatCount")
+    public void receiveChatCount(@RequestParam Long userId) {
+        notificationService.notifyChatCount(userId);
     }
 }

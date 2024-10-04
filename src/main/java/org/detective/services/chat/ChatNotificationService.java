@@ -7,13 +7,18 @@ import org.detective.entity.ChatRoom;
 import org.detective.repository.ChatNotificationRepository;
 import org.detective.repository.ChatRepository;
 import org.detective.repository.ChatRoomRepository;
+import org.detective.repository.TotalMessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.util.List;
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
 import java.util.Optional;
 
 @Service
@@ -65,6 +70,16 @@ public class ChatNotificationService {
                     notificationData                            // 전송할 데이터 (ChatNotification 객체)
             );
         }
+    }
+
+    public int totalChatCount(Long userId) {
+        List<ChatNotification> chatCount = chatNotificationRepository.findByUserId(userId);
+        System.err.println(" 채팅 카운트 서비스 : "+chatCount+" 채팅 카운트 서비스 : "+chatCount +" 채팅 카운트 서비스 : "+chatCount +" 채팅 카운트 서비스 : "+chatCount +" 채팅 카운트 서비스 : "+chatCount +" 채팅 카운트 서비스 : "+chatCount +" 채팅 카운트 서비스 : "+chatCount +" 채팅 카운트 서비스 : "+chatCount );
+        int totalCount = 0;
+        for (ChatNotification mapping : chatCount) {
+            totalCount+=mapping.getNotification();
+        }
+        return totalCount;
     }
 }
 

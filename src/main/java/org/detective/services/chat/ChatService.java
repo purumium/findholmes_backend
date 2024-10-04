@@ -7,12 +7,14 @@ import org.detective.entity.ChatRoom;
 import org.detective.repository.ChatNotificationRepository;
 import org.detective.repository.ChatRepository;
 import org.detective.repository.ChatRoomRepository;
+import org.detective.services.Notify.NotificationService;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class ChatService {
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatNotificationService chatNotificationService;
     private final ChatRoomRepository chatRoomRepository;
+    private final NotificationService notificationService;
 
     // 채팅 보내기
     @Transactional
@@ -34,8 +37,16 @@ public class ChatService {
         String chatRoomId = message.getChatRoomId();
         Long userId = message.getSenderId();
 
+        List<ChatRoom.Participant> participants = chatRoomRepository.findById(chatRoomId).get().getParticipants();
+
+        Long receiverId = Objects.equals((long) participants.getFirst().getUserId(), (long) userId) ?participants.getLast().getUserId():participants.getFirst().getUserId();
+
         chatNotificationService.sendNotification(userId, chatRoomId);
+
         messagingTemplate.convertAndSend("/send/" + chatRoomId, message);;
+
+        notificationService.notifyChatCount(receiverId);
+
     }
 
     // 채팅 메세지 불러오기

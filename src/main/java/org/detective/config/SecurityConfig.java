@@ -64,7 +64,7 @@ public class SecurityConfig {
                         .requestMatchers("/test/**").hasRole("USER")
                         .requestMatchers("/admin/**").permitAll()
                         .requestMatchers("/client/**").permitAll()
-                        .requestMatchers("/notification/**").permitAll()//
+                        .requestMatchers("/notification/**","/chatConut").permitAll()//
                         .anyRequest().authenticated()
                 )
 //                .oauth2Login(oauth2 -> oauth2

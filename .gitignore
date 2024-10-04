@@ -41,3 +41,5 @@ out/
 
 ## oracle
 /main/src/resource/Wallet/*
+*.properties
+src/main/resources/application.properties

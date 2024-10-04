@@ -28,7 +28,7 @@ public class Review {
     private Client client;
 
     @Column(name="rating")
-    private int rating;
+    private Double rating;
 
     @Lob
     @Column(name="content")

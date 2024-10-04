@@ -79,7 +79,7 @@ public class ReviewController {
         Optional<Review> review = reviewRepository.findById(reviewDTO.getId());
         if (review.isPresent()) {
             Detective detective = review.get().getDetective();
-            int oldRating = review.get().getRating();
+            Double oldRating = review.get().getRating();
             Review foundReview = review.get();
             // review 객체에 대한 작업 수행
             foundReview.setContent(reviewDTO.getContent());

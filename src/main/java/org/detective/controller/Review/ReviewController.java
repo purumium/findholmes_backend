@@ -2,6 +2,7 @@ package org.detective.controller.Review;
 
 import org.detective.dto.MyReviewListDTO;
 import org.detective.dto.ReviewDTO;
+import org.detective.dto.ReviewEstimateDTO;
 import org.detective.dto.ReviewListDTO;
 import org.detective.entity.*;
 import org.detective.repository.*;
@@ -133,6 +134,16 @@ public class ReviewController {
                 review.getRating(),
                 review.getContent(),
                 review.getEstimate().getEstimateId()
+        );
+    }
+
+    @GetMapping("/info/{estimateId}")
+    public ReviewEstimateDTO getEstimateDetail(@PathVariable Long estimateId) {
+        Estimate estimate = reviewService.getEstimateInfo(estimateId);
+        return new ReviewEstimateDTO(
+                estimate.getRequest().getTitle(),
+                estimate.getTitle(),
+                estimate.getDetective().getUser().getUserName()
         );
     }
 }

@@ -66,7 +66,7 @@ public class Detective {
     private Double averageRating = 0.0; // 평균 평점 저장
 
     @Column(name = "review_count")
-    private int reviewCount = 0; // 리뷰 개수 저장
+    private Integer reviewCount = 0; // 리뷰 개수 저장
 
     @Enumerated(EnumType.STRING)
     @Column(name = "approval_status")

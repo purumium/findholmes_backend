@@ -41,9 +41,6 @@ public class ChatService {
 
         Long receiverId = Objects.equals((long) participants.getFirst().getUserId(), (long) userId) ?participants.getLast().getUserId():participants.getFirst().getUserId();
 
-        chatNotificationService.sendNotification(userId, chatRoomId, readCount);
-
-
         chatNotificationService.sendNotification(userId, chatRoomId);
 
         messagingTemplate.convertAndSend("/send/" + chatRoomId, message);;

@@ -12,6 +12,7 @@ import org.detective.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -43,6 +44,11 @@ public class UserPointService {
         chatRoom.enableUnlimitedAccess();
         chatRoomRepository.save(chatRoom);
 
+    }
+
+    // 특정 사용자의 포인트 내역을 가져오는 서비스 메서드
+    public List<UserPoint> getUserPointsByUserId(Long userId) {
+        return userPointRepository.findByUserUserId(userId);
     }
 
 }

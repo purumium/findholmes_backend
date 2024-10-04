@@ -1,6 +1,7 @@
 package org.detective.controller.UserPoint;
 
 import lombok.RequiredArgsConstructor;
+import org.detective.entity.UserPoint;
 import org.detective.repository.ChatRoomRepository;
 import org.detective.repository.UserPointRepository;
 import org.detective.services.UserPointService;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,4 +30,5 @@ public class UserPointController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
 }

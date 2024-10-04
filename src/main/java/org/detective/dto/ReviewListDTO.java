@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class ReviewListDTO {
     private Long id;
     private Long detectiveId;
-    private int rating;
+    private Double rating;
     private String content;
     private LocalDateTime updatedAt;
 }

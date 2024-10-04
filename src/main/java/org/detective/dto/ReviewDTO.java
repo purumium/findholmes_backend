@@ -8,7 +8,7 @@ import lombok.Data;
 public class ReviewDTO {
     private Long id;
     private Long detectiveId;
-    private int rating;
+    private Double rating;
     private String content;
     private Long estimateId;
 }

@@ -32,9 +32,11 @@ public class ChatRoom {
     private LocalDateTime createdAt;
 
     @Field("chat_count")
+    @Builder.Default
     private int chatCount = 0;
 
     @Field("unlimited_access")
+    @Builder.Default
     private boolean unlimitedAccess = false;
 
     @Data

@@ -25,6 +25,7 @@ public class ChatNotification {
     private Long userId;
 
     @Field("notification")
+    @Builder.Default
     private int notification = 0;
 
     public ChatNotification(String chatRoomId, Long userId) {

@@ -45,36 +45,35 @@ public class NotificationService {
 
     //고객이 의뢰글을 작성하면 해당하는 탐정에게 알림을 전달하는 메서드
     public void notifyRequest(NotificationDTO notificationDTO) {
+        String message = "새로운 의뢰 '"+notificationDTO.getTitle()+"'가 도착했습니다.";
+
         if (NotificationController.sseEmitters.containsKey(notificationDTO.getReceiverId())) {
             SseEmitter sseEmitterReceiver = NotificationController.sseEmitters.get(notificationDTO.getReceiverId());
             try {
-                String message = "새로운 의뢰 요청이 도착했습니다.";
-                Notification notification = new Notification(notificationDTO.getSenderId(), notificationDTO.getReceiverId(), notificationDTO.getUrl(), message);
-                notificationRepository.save(notification);
                 sseEmitterReceiver.send(SseEmitter.event().name("addMessage").data("{\"message\": \"" + message + "\"}"));
             } catch (IOException e) {
                 NotificationController.sseEmitters.remove(notificationDTO.getReceiverId());
             }
         }
+
+        Notification notification = new Notification(notificationDTO.getSenderId(), notificationDTO.getReceiverId(), notificationDTO.getUrl(), message);
+        notificationRepository.save(notification);
     }
 
     //탐정이 답변서를 작성하면 고객에게 알림을 전달하는 메서드
     public void notifyEstimate(NotificationDTO notificationDTO) {
-        System.err.println("제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 ");
+        String message = "의뢰글 '"+notificationDTO.getTitle()+"'에 대한 "+notificationDTO.getSenderName()+"님의 답변서가 도착했습니다.";
+
         if (NotificationController.sseEmitters.containsKey(notificationDTO.getReceiverId())) {
             SseEmitter sseEmitterReceiver = NotificationController.sseEmitters.get(notificationDTO.getReceiverId());
             try {
-                System.err.println("@@@@@@@@@@@@@@@제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 제발 보내져라 ");
-
-                String message = "의뢰글 '"+notificationDTO.getTitle()+"'에 대한 "+notificationDTO.getSenderName()+"님의 답변서가 도착했습니다.";
-
-                Notification notification = new Notification(notificationDTO.getSenderId(), notificationDTO.getReceiverId(), notificationDTO.getUrl(), message);
-                notificationRepository.save(notification);
                 sseEmitterReceiver.send(SseEmitter.event().name("addMessage").data("{\"message\": \"" + message + "\"}"));
             } catch (IOException e) {
                 NotificationController.sseEmitters.remove(notificationDTO.getReceiverId());
             }
         }
+        Notification notification = new Notification(notificationDTO.getSenderId(), notificationDTO.getReceiverId(), notificationDTO.getUrl(), message);
+        notificationRepository.save(notification);
     }
 
     //미확인 알림개수를 불러오는 메서드

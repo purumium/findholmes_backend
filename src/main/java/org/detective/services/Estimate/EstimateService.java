@@ -64,7 +64,7 @@ public class EstimateService {
             // 충전 기록
             userPointRepository.save(new UserPoint(detective.getUser(),1000L,UserPoint.PointUsingType.USE));
 
-            NotificationDTO notificationDTO = new NotificationDTO(detective.getDetectiveId(), client.getClientId(), request.getTitle(), detective.getUser().getUserName(), "/estimatelist/" + request.getRequestId());
+            NotificationDTO notificationDTO = new NotificationDTO(detective.getUser().getUserId(), client.getUser().getUserId(), request.getTitle(), detective.getUser().getUserName(), "/estimatelist/" + request.getRequestId());
             notificationService.notifyEstimate(notificationDTO);
             System.out.println(assignmentRequest);
 

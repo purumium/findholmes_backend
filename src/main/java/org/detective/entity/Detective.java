@@ -60,7 +60,7 @@ public class Detective {
     private String detectiveGender;
 
     @Column(name = "resolved_cases")
-    private Long resolvedCases;
+    private Long resolvedCases = 0L;
 
     @Column(name = "average_rating")
     private Double averageRating = 0.0; // 평균 평점 저장
@@ -81,6 +81,18 @@ public class Detective {
 
     public void decreaseReviewCount() {
         this.reviewCount--;
+    }
+
+    public Detective(User user, String businessRegistration, String detectiveLicense, String profilePicture, String company, String introduction, String location, String detectiveGender, ApprovalStatus approvalStatus) {
+        this.user = user;
+        this.businessRegistration = businessRegistration;
+        this.detectiveLicense = detectiveLicense;
+        this.profilePicture = profilePicture;
+        this.company = company;
+        this.introduction = introduction;
+        this.location = location;
+        this.detectiveGender = detectiveGender;
+        this.approvalStatus = approvalStatus;
     }
 
 }

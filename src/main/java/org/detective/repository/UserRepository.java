@@ -25,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "ORDER BY TRUNC(created_at) ASC",
             nativeQuery = true)
     List<Object[]> countByRoleAndCreatedAt();
+
+    User findByUserId(Long i);
 }

@@ -81,7 +81,7 @@ public class RequestService {
             Detective detective = detectiveRepository.findByDetectiveId(requestFormDTO.getDetectiveId());
             AssignmentRequest assignmentRequest = new AssignmentRequest(request, detective, speciality);
             assignmentRequestRepository.save(assignmentRequest);
-            NotificationDTO notificationDTO = new NotificationDTO(userId,detective.getUser().getUserId(),request.getTitle(),"/estimatelist/"+request.getRequestId());
+            NotificationDTO notificationDTO = new NotificationDTO(userId,detective.getUser().getUserId(),request.getTitle(),"/detective/received/"+request.getRequestId());
             notificationService.notifyRequest(notificationDTO);
         }
     }

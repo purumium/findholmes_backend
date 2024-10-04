@@ -49,29 +49,6 @@ public class UserService {
         }
     }
 
-    public boolean registerUserRandom() {
-        // 비즈니스 로직을 여기에 추가할 수 있습니다.
-        // 비밀번호 암호화
-//        userName: username.value,
-//                email: email.value,
-//                phoneNumber: phonenumber.value,
-//                password: password.value,
-//                role: role.value,
-
-        String password = passwordEncoder.encode("1");
-        for (int i = 1; i<51 ; i++) {
-            String userName="탐정"+i;
-            String email = "detective"+i+"@test.com";
-            String phoneNumber = i>9?"010-0000-00"+i:"010-0000-000"+i;
-            String role = "ROLE_DETECTIVE";
-            User user = new User(userName, email, phoneNumber,password,role);
-
-            userRepository.save(user);
-
-        }
-        return true;
-    }
-
     public boolean checkPw(String rawPassword, String encodedPassword){
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }

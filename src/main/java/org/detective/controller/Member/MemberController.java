@@ -63,6 +63,16 @@ public class MemberController {
         }
     }
 
+    @PostMapping("/random")
+    public ResponseEntity<String> registerUserRandom() {
+        try {
+            userService.registerUserRandom();
+            return ResponseEntity.ok("Registration successful!");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Registration failed: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/update")
     public ResponseEntity<String> updateUser(@RequestBody User user) {
         System.out.println(user+"update test");

@@ -3,6 +3,7 @@ package org.detective.controller.Chat;
 import lombok.RequiredArgsConstructor;
 import org.detective.dto.ChatRoomDTO;
 import org.detective.dto.ChatRoomDetailDTO;
+import org.detective.entity.Chat;
 import org.detective.entity.ChatRoom;
 import org.detective.repository.ChatRoomRepository;
 import org.detective.repository.EstimateRepository;
@@ -113,14 +114,9 @@ public class ChatRoomController {
     }
 
     @GetMapping("/chat-exist")
-    public ResponseEntity<?> existingChatRoom(@RequestParam Long estimateId) {
-        Optional<ChatRoom> existingChatRoom = chatRoomService.getChatRoomExisting(estimateId);
+    public boolean existingChatRoom(@RequestParam Long estimateId) {
+        return chatRoomService.getChatRoomExisting(estimateId);
 
-        if (existingChatRoom.isPresent()) {
-            return ResponseEntity.ok(Map.of("exists", true, "chatRoomId", existingChatRoom.get().getId()));
-        } else {
-            return ResponseEntity.ok(Map.of("exists", false));
-        }
     }
 
 

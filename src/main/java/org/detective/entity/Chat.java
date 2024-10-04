@@ -35,6 +35,7 @@ public class Chat {
     private LocalDateTime sendTime;
 
     @Field("read_count")
+    @Builder.Default
     private int readCount = 1;
 
     public void isRead() {

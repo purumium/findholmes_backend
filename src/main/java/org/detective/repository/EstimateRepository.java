@@ -12,6 +12,7 @@ import java.util.List;
 @Repository
 public interface EstimateRepository extends JpaRepository<Estimate, Long> {
 
+    Estimate findByEstimateId(long estimateId);
     List<Estimate> findByClient(Client client);
     List<Estimate> findByRequest_requestId(Long requestId);
     List<Estimate> findByDetective(Detective detective);

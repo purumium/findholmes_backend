@@ -36,7 +36,7 @@ public class ReviewService {
         for (int i = 0; i < reviews.size(); i++) {
             Review review = reviews.get(i);
             // review 객체에 대해 원하는 작업 수행
-            ReviewListDTO reviewDTO = new ReviewListDTO(0L,0L,0,"", LocalDateTime.now());
+            ReviewListDTO reviewDTO = new ReviewListDTO(0L,0L,0.0,"", LocalDateTime.now());
             reviewDTO.setId(review.getId());
             reviewDTO.setDetectiveId(review.getDetective().getDetectiveId());
             reviewDTO.setRating(review.getRating());
@@ -83,7 +83,7 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new RuntimeException("Review not found"));
         // 리뷰 삭제
-        int deletedRating = review.getRating();
+        Double deletedRating = review.getRating();
         Detective detective = review.getDetective();
 
         reviewRepository.deleteById(reviewId);

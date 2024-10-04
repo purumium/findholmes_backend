@@ -28,15 +28,13 @@ public class ChatService {
     // 채팅 보내기
     @Transactional
     public void saveMessage(Chat message) {
-
         chatRepository.save(message);
 
         // 채팅 알림 관련 로직
         String chatRoomId = message.getChatRoomId();
         Long userId = message.getSenderId();
-        int readCount = message.getReadCount();
 
-        chatNotificationService.sendNotification(userId, chatRoomId, readCount);
+        chatNotificationService.sendNotification(userId, chatRoomId);
         messagingTemplate.convertAndSend("/send/" + chatRoomId, message);;
     }
 

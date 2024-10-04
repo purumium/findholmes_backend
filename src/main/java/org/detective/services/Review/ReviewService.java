@@ -101,23 +101,8 @@ public class ReviewService {
     }
 
     @Transactional
-    public void recalculateDetectiveRating(Long detectiveId, int deletedRating) {
-        Detective detective = detectiveRepository.findById(detectiveId)
-                .orElseThrow(() -> new RuntimeException("Detective not found"));
-
-        int reviewCount = detective.getReviewCount();  // 탐정의 리뷰 총 개수
-        double currentAverage = detective.getAverageRating();  // 현재 탐정의 평균 평점
-
-        if (reviewCount == 1) {
-            detective.setAverageRating(0.0);  // 리뷰가 하나였으면 삭제 후 평점은 0
-            detective.setReviewCount(0);  // 리뷰 개수를 0으로 설정
-        } else {
-            // 새로운 평점을 계산 (삭제된 리뷰의 평점을 제외)
-            double newAverage = (currentAverage * reviewCount - deletedRating) / (reviewCount - 1);
-            detective.setAverageRating(newAverage);  // 새로운 평균 평점 저장
-            detective.setReviewCount(reviewCount - 1);  // 리뷰 개수 감소
-        }
-        detectiveRepository.save(detective);  // 탐정 정보 저장
+    public Estimate getEstimateInfo(Long estimateId) {
+        return estimateRepository.findById(estimateId).orElseThrow(() -> new RuntimeException("Estimate not found"));
     }
 
 }

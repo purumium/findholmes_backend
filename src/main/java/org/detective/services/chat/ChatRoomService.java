@@ -137,11 +137,18 @@ public class ChatRoomService {
                 .orElseThrow(() -> new IllegalArgumentException("client를 찾을 수 없습니다."));
         String role = user.getRole();
         List<ChatRoom> chatRooms;
-
         if(role.equals("ROLE_USER")) {
             chatRooms = chatRoomRepository.findByUserIdAndRoleIsClient(userId);
             return chatRooms.stream()
                     .map(chatRoom -> {
+                        // 해당 채팅방에 채팅이 있는지 확인
+                        Optional<Chat> lastChat = chatRepository.findFirstByChatRoomIdOrderBySendTimeDesc(chatRoom.getId());
+
+                        // 채팅이 없으면 null 반환 (리스트에서 제외되도록)
+                        if (lastChat.isEmpty()) {
+                            return null;
+                        }
+
                         // participants에서 userId로 username 조회
                         List<ParticipantDTO> participants = chatRoom.getParticipants().stream()
                                 .filter(participant -> "d".equals(participant.getRole()))
@@ -151,7 +158,6 @@ public class ChatRoomService {
                                     return new ParticipantDTO(detective.getUserId(),detective.getUserName(), participant.getRole());
                                 })
                                 .collect(Collectors.toList());
-                        Optional<Chat> lastChat = chatRepository.findFirstByChatRoomIdOrderBySendTimeDesc(chatRoom.getId());
                         String lastMessage = lastChat.map(Chat::getMessage).orElse("");
                         LocalDateTime lastSendTime = lastChat.map(Chat::getSendTime).orElse(chatRoom.getCreatedAt());
 
@@ -161,6 +167,7 @@ public class ChatRoomService {
 
                         return new ChatRoomDTO(chatRoom.getId(), participants, lastMessage, lastSendTime, notificationCount);
                     })
+                    .filter(Objects::nonNull)
                     .sorted(Comparator.comparing(ChatRoomDTO::getLastChatTime).reversed())
                     .collect(Collectors.toList());
 
@@ -169,6 +176,13 @@ public class ChatRoomService {
             chatRooms = chatRoomRepository.findByUserIdAndRoleIsDetective(userId); // 이미 "d"로 필터된 결과 가져오기
             return chatRooms.stream()
                     .map(chatRoom -> {
+                        // 해당 채팅방에 채팅이 있는지 확인
+                        Optional<Chat> lastChat = chatRepository.findFirstByChatRoomIdOrderBySendTimeDesc(chatRoom.getId());
+
+                        // 채팅이 없으면 null 반환 (리스트에서 제외되도록)
+                        if (lastChat.isEmpty()) {
+                            return null;
+                        }
                         // participants에서 userId로 username 조회
                         List<ParticipantDTO> participants = chatRoom.getParticipants().stream()
                                 .filter(participant -> "c".equals(participant.getRole()))
@@ -178,8 +192,6 @@ public class ChatRoomService {
                                     return new ParticipantDTO(client.getUserId(), client.getUserName(), participant.getRole());
                                 })
                                 .collect(Collectors.toList());
-
-                        Optional<Chat> lastChat = chatRepository.findFirstByChatRoomIdOrderBySendTimeDesc(chatRoom.getId());
                         String lastMessage = lastChat.map(Chat::getMessage).orElse("");
                         LocalDateTime lastSendTime = lastChat.map(Chat::getSendTime).orElse(chatRoom.getCreatedAt());
 
@@ -189,6 +201,7 @@ public class ChatRoomService {
 
                         return new ChatRoomDTO(chatRoom.getId(), participants, lastMessage, lastSendTime, notificationCount);
                     })
+                    .filter(Objects::nonNull)
                     .sorted(Comparator.comparing(ChatRoomDTO::getLastChatTime).reversed())
                     .collect(Collectors.toList());
 
@@ -234,9 +247,14 @@ public class ChatRoomService {
 
     // 채팅방 유무에 따른 리뷰 작성
     @Transactional
-    public Optional<ChatRoom> getChatRoomExisting(Long estimateId) {
-        return chatRoomRepository.findByEstimateId(estimateId);
-//        return existingChatRoom.isPresent();
+    public Boolean getChatRoomExisting(Long estimateId) {
+        ChatRoom chatRoom = chatRoomRepository.findByEstimateId(estimateId).orElseThrow(() -> new RuntimeException("채팅방 찾기 실패"));
+        Optional<Chat> lastChat = chatRepository.findFirstByChatRoomIdOrderBySendTimeDesc(chatRoom.getId());
+
+        // 채팅이 없으면 null 반환 (리스트에서 제외되도록)
+        if (lastChat.isEmpty()) {
+            return false;
+        }else return true;
     }
 
     // 채팅방 삭제
@@ -245,6 +263,8 @@ public class ChatRoomService {
         chatRoomRepository.deleteById(chatRoomId);
         //chatRepository.deleteByChatRoomId(chatRoomId);
     }
+
+
 
 
 }

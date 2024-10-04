@@ -12,6 +12,7 @@ import org.detective.repository.SpecialityRepository;
 import org.detective.repository.SpecialityRepository;
 import org.detective.repository.UserRepository;
 
+import org.detective.services.DeletedStatusService;
 import org.detective.services.email.EmailService;
 import org.detective.services.member.UserService;
 import org.detective.util.JwtUtil;
@@ -47,6 +48,9 @@ public class MemberController {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private DeletedStatusService deletedStatusService;
 
 
     @PostMapping("/register")
@@ -210,6 +214,47 @@ public class MemberController {
         );
 
         return user;
+    }
+
+    //삭제
+    @PostMapping("/delete")
+    public ResponseEntity<String> deleteMember(@RequestParam Integer index) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = "";
+
+        if (authentication != null && authentication.getPrincipal() != null) {
+            Object principal = authentication.getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                email = userDetails.getUsername(); // UserDetails에서 이메일 가져오기
+            } else if (principal instanceof OAuth2User) {
+                OAuth2User oauthUser = (OAuth2User) principal;
+                email = oauthUser.getAttribute("email"); // OAuth2User에서 이메일 가져오기
+            } else {
+                System.err.println("Authentication principal is not an instance of UserDetails or OAuth2User");
+            }
+        }
+        User userInfo = userRepository.findByEmail(email);
+        System.out.println(userInfo.getRole());
+        System.out.println("test99: " + index);
+
+        Long deletedId = 1L;
+        // Reason 값을 증가시키는 서비스 메서드 호출
+        int role; //0 = 사용자, 1 = 탐정
+        if(userInfo.getRole().equals("ROLE_USER")){
+            role = 0;
+        }else{
+            role = 1;
+        }
+        deletedStatusService.incrementReasonByIndex(deletedId, index, role);
+        // 멤버 삭제 로직 ...
+
+        Long id = userInfo.getUserId();
+//        userService.deleteUser(id);
+
+        return ResponseEntity.ok("Member deleted successfully");
     }
 
 

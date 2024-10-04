@@ -41,18 +41,13 @@ public class ChatService {
 
         List<ChatRoom.Participant> participants = chatRoomRepository.findById(chatRoomId).get().getParticipants();
 
-        System.err.println(" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId+" 발신자"+userId);
-        System.err.println(" 참여자 : "+participants+" 참여자 : "+participants+" 참여자 : "+participants+" 참여자 : "+participants+" 참여자 : "+participants+" 참여자 : "+participants+" 참여자 : "+participants+" 참여자 : "+participants+" 참여자 : "+participants+" 참여자 : "+participants+" 참여자 : "+participants+" 참여자 : "+participants+" 참여자 : "+participants+" 참여자 : "+participants);
-        System.err.println(Objects.equals((long) participants.getFirst().getUserId(), (long) userId) +" "+Objects.equals((long) participants.getFirst().getUserId(), (long) userId) +" "+Objects.equals((long) participants.getFirst().getUserId(), (long) userId) +" "+Objects.equals((long) participants.getFirst().getUserId(), (long) userId) +" "+Objects.equals((long) participants.getFirst().getUserId(), (long) userId) +" "+Objects.equals((long) participants.getFirst().getUserId(), (long) userId) +" "+Objects.equals((long) participants.getFirst().getUserId(), (long) userId) +" ");
-
         Long receiverId = Objects.equals((long) participants.getFirst().getUserId(), (long) userId) ?participants.getLast().getUserId():participants.getFirst().getUserId();
 
-        System.err.println(" 수신자 : "+receiverId+" 수신자 : "+receiverId+" 수신자 : "+receiverId+" 수신자 : "+receiverId+" 수신자 : "+receiverId+" 수신자 : "+receiverId+" 수신자 : "+receiverId+" 수신자 : "+receiverId+" 수신자 : "+receiverId+" 수신자 : "+receiverId+" 수신자 : "+receiverId+" 수신자 : "+receiverId+" 수신자 : "+receiverId+" 수신자 : "+receiverId+" 수신자 : "+receiverId);
-
-        notificationService.notifyChatCount(receiverId);
         chatNotificationService.sendNotification(userId, chatRoomId, readCount);
 
         messagingTemplate.convertAndSend("/send/" + chatRoomId, message);;
+
+        notificationService.notifyChatCount(receiverId);
 
     }
 

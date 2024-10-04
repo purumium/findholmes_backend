@@ -49,8 +49,6 @@ public class ChatController {
 
     @GetMapping("/chatConut")
     public int totalChatConut(@RequestParam Long userId) {
-        int cnt = chatNotificationService.totalChatCount(userId);
-        System.out.println("\n채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt+ " 채팅 개수 : "+cnt);
         return chatNotificationService.totalChatCount(userId);
     }
 

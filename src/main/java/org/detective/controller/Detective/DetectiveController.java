@@ -109,8 +109,6 @@ public class DetectiveController {
                 detectivedto.setCompany(detective.getCompany());
                 detectivedto.setDescription(detective.getDescription());
                 detectivedto.setAdditionalCertifications(detective.getAdditionalCertifications());
-                detectivedto.setAverageRating(detective.getAverageRating());
-                detectivedto.setReviewCount(detective.getReviewCount());
 
                 System.out.println("detectiveDTO"+detective.getSpecialties());
 
@@ -564,8 +562,6 @@ public class DetectiveController {
         detectivedto.setCompany(detective.getCompany());
         detectivedto.setDescription(detective.getDescription());
         detectivedto.setAdditionalCertifications(detective.getAdditionalCertifications());
-        detectivedto.setAverageRating(detective.getAverageRating());
-        detectivedto.setReviewCount(detective.getReviewCount());
 
         // 탐정의 전문 분야 정보 추가
         List<String> specialties = detective.getSpecialties().stream()

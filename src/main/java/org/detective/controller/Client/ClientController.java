@@ -81,8 +81,6 @@ public class ClientController {
             dto.setDescription(detectives.get(i).getDescription());
             dto.setAdditionalCertifications(detectives.get(i).getAdditionalCertifications());
             dto.setUserId(detectives.get(i).getDetectiveId());
-            dto.setAverageRating(detectives.get(i).getAverageRating());
-            dto.setReviewCount(detectives.get(i).getReviewCount());
 
             // Specialities 매핑
             List<DetectiveSpeciality> specialities = detectiveSpecialityRepository.findByDetective_DetectiveId(detectives.get(i).getDetectiveId());

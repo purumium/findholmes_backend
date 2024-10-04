@@ -10,5 +10,4 @@ public class ReviewDTO {
     private Long detectiveId;
     private int rating;
     private String content;
-    private Long estimateId;
 }

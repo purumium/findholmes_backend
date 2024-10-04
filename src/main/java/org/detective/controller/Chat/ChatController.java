@@ -27,8 +27,9 @@ public class ChatController {
     // /receive를 메시지를 받을 endpoint로 설정합니다.
     // /send로 메시지를 반환합니다.
     @MessageMapping("/receive")
-    public void SocketHandler(Chat chatMessage) {
-         chatService.saveMessage(chatMessage);
+    @SendTo("/send")
+    public Chat SocketHandler(Chat chatMessage) {
+        return chatService.saveMessage(chatMessage);
     }
 
     // 채팅 내역 불러오기

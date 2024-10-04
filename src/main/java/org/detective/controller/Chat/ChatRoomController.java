@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -113,14 +112,8 @@ public class ChatRoomController {
     }
 
     @GetMapping("/chat-exist")
-    public ResponseEntity<?> existingChatRoom(@RequestParam Long estimateId) {
-        Optional<ChatRoom> existingChatRoom = chatRoomService.getChatRoomExisting(estimateId);
-
-        if (existingChatRoom.isPresent()) {
-            return ResponseEntity.ok(Map.of("exists", true, "chatRoomId", existingChatRoom.get().getId()));
-        } else {
-            return ResponseEntity.ok(Map.of("exists", false));
-        }
+    public boolean existingChatRoom(@RequestParam Long estimateId) {
+        return chatRoomService.getChatRoomExisting(estimateId);
     }
 
 

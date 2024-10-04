@@ -91,7 +91,7 @@ public class InqueryController {
         try {
             List<Inquery> inqueries = inqueryService.getInqueriesByStatus(Inquery.ResponseStatus.PENDING);
 
-            List<InqueryDTO> inqueryDTOS = inqueries.stream()
+            List<InqueryDTO> inqueryDTOS= inqueries.stream()
                     .map(this::convertToInqueryDTO)  // DTO로 변환하기 위한 작업
                     .collect(Collectors.toList());
 
@@ -108,7 +108,7 @@ public class InqueryController {
         try {
             List<Inquery> inqueries = inqueryService.getInqueriesByStatus(Inquery.ResponseStatus.COMPLETE);
 
-            List<InqueryDTO> inqueryDTOS = inqueries.stream()
+            List<InqueryDTO> inqueryDTOS= inqueries.stream()
                     .map(this::convertToInqueryDTO)  // DTO로 변환하기 위한 작업
                     .collect(Collectors.toList());
 
@@ -130,26 +130,6 @@ public class InqueryController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("문의글 상태 업데이트 에러" + e.getMessage());
-        }
-    }
-
-    // 사용자별 목록
-    @GetMapping("/listbyuser")
-    public ResponseEntity<?> getInqueryListByUser() {
-        User user = memberController.getUserInfo();
-
-        try {
-            List<Inquery> inqueryList = inqueryService.getInqueryByUser(user);
-
-            List<InqueryDTO> inqueryDTOS = inqueryList.stream()
-                    .map(this::convertToInqueryDTO)  // DTO로 변환하기 위한 작업
-                    .collect(Collectors.toList());
-
-            return ResponseEntity.ok(inqueryDTOS);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("문의글 불러오기 에러" + e.getMessage());
         }
     }
 

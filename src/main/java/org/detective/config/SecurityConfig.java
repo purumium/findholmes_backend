@@ -67,9 +67,9 @@ public class SecurityConfig {
                         .requestMatchers("/notification/**").permitAll()//
                         .anyRequest().authenticated()
                 )
-//                .oauth2Login(oauth2 -> oauth2
-//                        .successHandler(this::handleOAuth2LoginSuccess) // 커스텀 성공 핸들러 설정
-//                )
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(this::handleOAuth2LoginSuccess) // 커스텀 성공 핸들러 설정
+                )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
 
 

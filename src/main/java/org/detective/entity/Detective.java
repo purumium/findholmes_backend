@@ -62,25 +62,11 @@ public class Detective {
     @Column(name = "resolved_cases")
     private Long resolvedCases;
 
-    @Column(name = "average_rating")
-    private Double averageRating = 0.0; // 평균 평점 저장
-
-    @Column(name = "review_count")
-    private int reviewCount = 0; // 리뷰 개수 저장
-
     @Enumerated(EnumType.STRING)
     @Column(name = "approval_status")
     private ApprovalStatus approvalStatus;
 
     @OneToMany(mappedBy = "detective", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DetectiveSpeciality> specialties =  new ArrayList<>();
-
-    public void increaseReviewCount() {
-        this.reviewCount++;
-    }
-
-    public void decreaseReviewCount() {
-        this.reviewCount--;
-    }
 
 }

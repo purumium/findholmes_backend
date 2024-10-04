@@ -28,8 +28,6 @@ public class DetectiveDTO {
     private String additionalCertifications;
 
     private String description;
-    private double averageRating;
-    private int reviewCount;
 
     private List<String> specialtiesName;
 

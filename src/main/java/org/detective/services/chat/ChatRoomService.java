@@ -6,12 +6,14 @@ import org.detective.dto.ChatRoomDetailDTO;
 import org.detective.dto.ParticipantDTO;
 import org.detective.entity.*;
 import org.detective.repository.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -161,7 +163,7 @@ public class ChatRoomService {
 
                         return new ChatRoomDTO(chatRoom.getId(), participants, lastMessage, lastSendTime, notificationCount);
                     })
-                    .sorted(Comparator.comparing(ChatRoomDTO::getLastChatTime).reversed())
+                    .sorted(Comparator.comparing(ChatRoomDTO::getLastChatTime))
                     .collect(Collectors.toList());
 
             // ROLE_DETECTIVE이면 role이 "c"인 참여자만 반환
@@ -189,7 +191,7 @@ public class ChatRoomService {
 
                         return new ChatRoomDTO(chatRoom.getId(), participants, lastMessage, lastSendTime, notificationCount);
                     })
-                    .sorted(Comparator.comparing(ChatRoomDTO::getLastChatTime).reversed())
+                    .sorted(Comparator.comparing(ChatRoomDTO::getLastChatTime))
                     .collect(Collectors.toList());
 
         } else {
@@ -234,9 +236,9 @@ public class ChatRoomService {
 
     // 채팅방 유무에 따른 리뷰 작성
     @Transactional
-    public Optional<ChatRoom> getChatRoomExisting(Long estimateId) {
-        return chatRoomRepository.findByEstimateId(estimateId);
-//        return existingChatRoom.isPresent();
+    public boolean getChatRoomExisting(Long estimateId) {
+        Optional<ChatRoom> existingChatRoom = chatRoomRepository.findByEstimateId(estimateId);
+        return existingChatRoom.isPresent();
     }
 
     // 채팅방 삭제

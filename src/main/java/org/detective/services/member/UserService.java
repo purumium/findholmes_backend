@@ -1,7 +1,6 @@
 package org.detective.services.member;
 
 //import org.detective.repository.ClientRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.detective.dto.UserCountDTO;
 import org.detective.entity.Client;
 import org.detective.entity.User;
@@ -10,7 +9,6 @@ import org.detective.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -86,14 +84,5 @@ public class UserService {
                         ((Number) result[2]).longValue() // 개수
                 ))
                 .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public void deleteUser(Long userId) {
-        if (userRepository.existsById(userId)) {
-            userRepository.deleteById(userId);
-        } else {
-            throw new EntityNotFoundException("User not found for id: " + userId);
-        }
     }
 }

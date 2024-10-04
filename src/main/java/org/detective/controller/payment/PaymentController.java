@@ -5,11 +5,8 @@ import org.detective.dto.PaymentRequestDTO;
 import org.detective.dto.PaymentResponseDTO;
 import org.detective.entity.Payment;
 import org.detective.entity.User;
-import org.detective.entity.UserPoint;
-import org.detective.services.UserPointService;
 import org.detective.services.member.UserService;
 import org.detective.services.payment.PaymentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -29,9 +26,6 @@ public class PaymentController {
         this.userService = userService;
         this.memberController = memberController;
     }
-
-    @Autowired
-    private UserPointService userPointService;
 
     // 결제 내역 저장, 포인트 사용 내역, 현재 포인트 업데이트
     @PostMapping("/charge")
@@ -69,13 +63,5 @@ public class PaymentController {
         List<PaymentResponseDTO> paymentHistory = paymentService.getPaymentHistory(userId);
 
         return paymentHistory;
-    }
-
-    // 특정 사용자의 포인트 내역 조회
-    @GetMapping("/points/{userId}")
-    public ResponseEntity<List<UserPoint>> getUserPoints(@PathVariable Long userId) {
-        List<UserPoint> userPoints = userPointService.getUserPointsByUserId(userId);
-        System.out.println("pointhistory"+userPoints);
-        return ResponseEntity.ok(userPoints);
     }
 }

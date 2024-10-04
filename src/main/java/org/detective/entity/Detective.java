@@ -22,7 +22,7 @@ public class Detective {
     @Column(name = "detective_id")
     private Long detectiveId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;
 

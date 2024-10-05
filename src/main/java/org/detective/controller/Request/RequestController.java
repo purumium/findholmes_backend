@@ -19,10 +19,7 @@ public class RequestController {
 
     @PostMapping("") // 고객이 탐정에게 요청을 보내는 메서드
     public ResponseEntity<String> createRequest(@RequestBody RequestFormDTO requestFormDTO) {
-        System.err.println("Controller : createRequest 실행");
-        System.err.println("Controller RequestDTO : "+ requestFormDTO);
         try {
-            System.err.println("Controller : Try createRequest");
             requestService.createRequest(requestFormDTO);
             return ResponseEntity.ok("Request Created");
         } catch (Exception e) {

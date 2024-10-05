@@ -76,7 +76,6 @@ public class DetectiveService {
                 specialityRepository.findByDetectiveId(detectiveId),
                 detective.getLocation(),
                 detective.getProfilePicture());
-        System.err.println("!@#$% Sepciality : "+detectiveSimpleDTO.getSpecialities().toString()+"!@#$%");
         return detectiveSimpleDTO;
     }
 
@@ -121,7 +120,6 @@ public class DetectiveService {
         for(int i = 0;i<size;i++){
             DetectiveSpeciality detectiveSpeciality = new DetectiveSpeciality();
             detectiveSpeciality.setDetective(savedDetective); //detective 객체 할당
-            System.out.println(specialityService.getSpecialityById(specialties.get(i)));
             detectiveSpeciality.setSpeciality(specialityService.getSpecialityById(specialties.get(i)));
             detectiveSpecialityRepository.save(detectiveSpeciality);
         }

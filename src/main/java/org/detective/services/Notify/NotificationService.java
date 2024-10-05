@@ -29,7 +29,6 @@ public class NotificationService {
 
         try{
             sseEmitter.send(SseEmitter.event().name("Connect"));
-            System.err.println("성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? 성공? ");
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -50,6 +49,7 @@ public class NotificationService {
         if (NotificationController.sseEmitters.containsKey(notificationDTO.getReceiverId())) {
             SseEmitter sseEmitterReceiver = NotificationController.sseEmitters.get(notificationDTO.getReceiverId());
             try {
+                System.err.println(message);
                 sseEmitterReceiver.send(SseEmitter.event().name("addMessage").data("{\"message\": \"" + message + "\"}"));
             } catch (IOException e) {
                 NotificationController.sseEmitters.remove(notificationDTO.getReceiverId());
@@ -67,6 +67,7 @@ public class NotificationService {
         if (NotificationController.sseEmitters.containsKey(notificationDTO.getReceiverId())) {
             SseEmitter sseEmitterReceiver = NotificationController.sseEmitters.get(notificationDTO.getReceiverId());
             try {
+                System.err.println(message);
                 sseEmitterReceiver.send(SseEmitter.event().name("addMessage").data("{\"message\": \"" + message + "\"}"));
             } catch (IOException e) {
                 NotificationController.sseEmitters.remove(notificationDTO.getReceiverId());
@@ -98,7 +99,7 @@ public class NotificationService {
         if (NotificationController.sseEmitters.containsKey(userId)) {
             SseEmitter sseEmitterReceiver = NotificationController.sseEmitters.get(userId);
             try {
-                System.err.println("채팅 카운팅 메서드 실행");
+                System.err.println("채팅 SSE 실행 "+"채팅 SSE 실행"+"채팅 SSE 실행 "+"채팅 SSE 실행"+"채팅 SSE 실행 "+"채팅 SSE 실행"+"채팅 SSE 실행 "+"채팅 SSE 실행"+"채팅 SSE 실행 "+"채팅 SSE 실행"+"채팅 SSE 실행 "+"채팅 SSE 실행"+"채팅 SSE 실행 "+"채팅 SSE 실행"+"채팅 SSE 실행 "+"채팅 SSE 실행"+"채팅 SSE 실행 "+"채팅 SSE 실행"+"채팅 SSE 실행 "+"채팅 SSE 실행"+"채팅 SSE 실행 "+"채팅 SSE 실행"+"채팅 SSE 실행 "+"채팅 SSE 실행"+"채팅 SSE 실행 "+"채팅 SSE 실행"+"채팅 SSE 실행 "+"채팅 SSE 실행");
                 sseEmitterReceiver.send(SseEmitter.event().name("ReceiveChat").data("새로운 채팅메시지"));
             } catch (IOException e) {
                 NotificationController.sseEmitters.remove(userId);

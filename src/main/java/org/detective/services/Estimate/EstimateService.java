@@ -60,13 +60,11 @@ public class EstimateService {
             Long newPoint = detective.getCurrentPoints() - 1000L;
             detective.setCurrentPoints(newPoint);
             detectiveRepository.save(detective);
-            System.err.println(client.getUser().getUserId());
             // 충전 기록
             userPointRepository.save(new UserPoint(detective.getUser(),1000L,UserPoint.PointUsingType.USE));
 
             NotificationDTO notificationDTO = new NotificationDTO(detective.getUser().getUserId(), client.getUser().getUserId(), request.getTitle(), detective.getUser().getUserName(), "/estimatelist/" + request.getRequestId());
             notificationService.notifyEstimate(notificationDTO);
-            System.out.println(assignmentRequest);
 
             return true;
         }
@@ -136,7 +134,6 @@ public class EstimateService {
                     estimate.getDetective().getProfilePicture()
             ));
         }
-        System.out.println("@@@@@고객의 탐정답변서 리스트 상세보기@@@@@"+estimateDetailDTOS);
         return estimateDetailDTOS;
     }
 }

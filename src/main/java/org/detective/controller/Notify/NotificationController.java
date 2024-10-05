@@ -26,7 +26,6 @@ public class NotificationController {
     // 서버에 클라이언트를 등록하는 메서드
     @GetMapping("/subscribe")
     public SseEmitter subscribe(@RequestParam Long userId) {
-        System.err.println("제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ 제발 여기까지라도ㅠㅠ ");
         return notificationService.subscribe(userId);
     }
 

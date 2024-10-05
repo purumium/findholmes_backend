@@ -19,6 +19,5 @@ public class EmailService {
         message.setText(body);
 
         emailSender.send(message);
-        System.out.println("이메일이 성공적으로 발송되었습니다!");
     }
 }

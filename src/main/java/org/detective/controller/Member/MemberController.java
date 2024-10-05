@@ -65,7 +65,6 @@ public class MemberController {
 
     @PostMapping("/update")
     public ResponseEntity<String> updateUser(@RequestBody User user) {
-        System.out.println(user+"update test");
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String email = "";
@@ -93,7 +92,6 @@ public class MemberController {
 
     @PostMapping("/updatepw")
     public ResponseEntity<String> updateUserPW(@RequestBody User user) {
-        System.out.println(user+"update test");
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String email = "";
@@ -142,12 +140,9 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        System.out.println("일단 성공");
-        System.out.println(loginRequest.getId());
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getId(), loginRequest.getPassword()));
-            System.out.println("여기까지 옴?"+authentication);
             String token = jwtUtil.generateToken(authentication);
             return ResponseEntity.ok(new LoginResponse(token));
         } catch (AuthenticationException e) {
@@ -236,8 +231,6 @@ public class MemberController {
             }
         }
         User userInfo = userRepository.findByEmail(email);
-        System.out.println(userInfo.getRole());
-        System.out.println("test99: " + index);
 
         Long deletedId = 1L;
         // Reason 값을 증가시키는 서비스 메서드 호출

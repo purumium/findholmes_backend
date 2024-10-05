@@ -32,7 +32,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String encodedPassword = userDetails.getPassword();
         // Add your password validation logic here
         if (!passwordEncoder.matches(password, encodedPassword)) {
-            System.out.println("password wrong");
             throw new BadCredentialsException("Wrong password");
         }
 

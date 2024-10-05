@@ -19,7 +19,6 @@ public class SpecialtyController {
     }
     @GetMapping
     public List<Speciality> getAllLocation() {
-        System.out.println("탐정의 카테고리 : " + specialityService.getAllSpecialties());
 
         return specialityService.getAllSpecialties();
     }

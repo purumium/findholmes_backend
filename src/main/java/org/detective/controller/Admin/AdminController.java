@@ -69,9 +69,6 @@ public class AdminController {
         String status = request.getApprovalStatus();
         String message = request.getRejReason();
 
-        // 처리 로직
-        System.out.println("Approval ID: " + id + ", Status: " + status +"deid"+DeId);
-        System.out.println("-------------------------------------------------------");
 
         // id로 엔티티 조회
         DetectiveApproval approval = approvalRepository.findById(id)
@@ -141,14 +138,12 @@ public class AdminController {
     // 문의글 상세 보기
     @GetMapping("/inquery/{inqueryid}/status")
     public ResponseEntity<?> updateInqueryStatus(@PathVariable("inqueryid") Long id) {
-        System.out.println("adminController : " + id);
         return inqueryController.updateInqueryStatus(id);
     }
 
     //날짜별 가입 수 조회
     @GetMapping("/count")
     public List<UserCountDTO> getUserCountByCreatedAtAndRole() {
-        System.out.println("count test"+userService.countUsersByCreatedAtAndRole());
         return userService.countUsersByCreatedAtAndRole();
     }
 

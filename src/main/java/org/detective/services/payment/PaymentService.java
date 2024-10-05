@@ -64,7 +64,6 @@ public class PaymentService {
             Long updatedPoints = currentPoints + paymentPrice;
             client.setCurrentPoints(updatedPoints);
 
-            System.out.println("현재 포인트 : " + client.getCurrentPoints());
 
             // 3. 포인트 업데이트
             clientRepository.save(client);

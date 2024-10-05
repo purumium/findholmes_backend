@@ -20,8 +20,6 @@ public class EstimateController {
 
     @PostMapping("") // 고객의 의뢰에 대한 탐정의 답변서 작성 메서드
     public boolean createEstimate(@RequestBody EstimateFormDTO estimateFormDTO) {
-        System.err.println("ReplyController : createRequest 실행");
-        System.err.println("ReplyController RequestDTO : " + estimateFormDTO);
         return estimateService.createEstimate(estimateFormDTO);
 
     }

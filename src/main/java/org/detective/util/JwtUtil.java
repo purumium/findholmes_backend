@@ -21,8 +21,6 @@ public class JwtUtil {
 
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
-        System.out.println("auth check"+authentication+"\n");
-        System.out.println("----------------------------\n");
 
         // Principal에서 CustomUserDetails 가져오기
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();

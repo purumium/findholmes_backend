@@ -20,7 +20,9 @@ public class UserPointController {
     @PostMapping("/chatroom/{chatRoomId}/unlimitedChat")
     public ResponseEntity<String> usePoints(@AuthenticationPrincipal CustomUserDetails user, @RequestParam Long points, @PathVariable String chatRoomId) {
         Long userId = user.getUserId();
+        System.err.println("채팅제한 컨트롤러");
         try {
+            System.err.println("채팅제한 컨트롤러 try");
             userPointService.usePoints(userId, points, chatRoomId);
             return ResponseEntity.ok(points + "포인트 사용");
         } catch (RuntimeException e) {

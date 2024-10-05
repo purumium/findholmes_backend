@@ -31,11 +31,9 @@ public class PaymentController {
     @PostMapping("/charge")
     public ResponseEntity<?> savePayment(@RequestBody PaymentRequestDTO paymentRequestDTO) {
         try {
-            System.out.println("payment : " + paymentRequestDTO);
 
             // 결제 정보를 저장하는 서비스 호출
             Payment payment = paymentService.savePayment(paymentRequestDTO);
-            System.out.println("결제 정보를 저장 payment : " + paymentRequestDTO);
 
             // 저장된 결제 정보를 바탕으로 응답 DTO 생성
             PaymentResponseDTO responseDTO = new PaymentResponseDTO(
@@ -44,7 +42,6 @@ public class PaymentController {
                     payment.getPaymentAt(),
                     payment.getPrice()
             );
-            System.out.println("저장된 결제 정보를 return : " + responseDTO);
 
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
@@ -58,7 +55,6 @@ public class PaymentController {
     @GetMapping("/history")
     public List<PaymentResponseDTO> getPaymentHistory() {
         Long userId = memberController.getUserInfo().getUserId();  // 사용자정보
-        System.out.println("getPaymentHistory user : " + userId);
 
         List<PaymentResponseDTO> paymentHistory = paymentService.getPaymentHistory(userId);
 

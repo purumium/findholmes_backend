@@ -112,17 +112,14 @@ public class DetectiveController {
                 detectivedto.setAverageRating(detective.getAverageRating());
                 detectivedto.setReviewCount(detective.getReviewCount());
 
-                System.out.println("detectiveDTO"+detective.getSpecialties());
 
 //            Long detectiveId = detective.getDetectiveId();
                 List<DetectiveSpeciality> specialities = detectiveSpecialityRepository.findByDetective_DetectiveId(detective.getDetectiveId());
-                System.out.println("aaaaaaaaaaaaaa speciality"+specialities);
 
                 List<Long> slist = specialities.stream()
                         .map(DetectiveSpeciality::getId)  // 각 DetectiveSpeciality의 ID를 추출
                         .collect(Collectors.toList());
 
-                System.out.println(specialityService.getSpecialitiesByDetectiveSpecialityIds(slist));
 
                 List<String> slist2 = specialityService.getSpecialitiesByDetectiveSpecialityIds(slist).stream()
                         .map(Speciality::getSpecialityName)  // 각 DetectiveSpeciality의 ID를 추출
@@ -155,7 +152,6 @@ public class DetectiveController {
 
     @GetMapping("/specialties")
     public List<Speciality> getAllSpecialties() {
-        System.out.println("탐정 전문 가져오기"+specialityService.getAllSpecialties());
         return specialityService.getAllSpecialties();
     }
 
@@ -251,7 +247,6 @@ public class DetectiveController {
 //                detectiveApprovalService.save(detectiveApproval);
                 Long id = savedDetective.getDetectiveId();
                 // savedDetective의 ID를 사용하여 모든 DetectiveSpeciality 삭제
-                System.out.println(id+"detectiveid");
                 detectiveSpecialityRepository.deleteByDetectiveId(id);
 
 
@@ -337,7 +332,6 @@ public class DetectiveController {
                 for(int i = 0;i<size;i++){
                     DetectiveSpeciality detectiveSpeciality = new DetectiveSpeciality();
                     detectiveSpeciality.setDetective(savedDetective); //detective 객체 할당
-                    System.out.println(specialityService.getSpecialityById(specialties.get(i)));
                     detectiveSpeciality.setSpeciality(specialityService.getSpecialityById(specialties.get(i)));
                     detectiveSpecialityRepository.save(detectiveSpeciality);
                 }
@@ -378,8 +372,6 @@ public class DetectiveController {
 
             User user = userRepository.findByEmail(email);
             Detective detective = detectiveRepository.findByUser(user);
-            System.out.println(detective+"update test");
-            System.out.println(request+"update test2");
 
             detectiveService.updateDetective(user,detective,request);
             return ResponseEntity.ok("탐정 등록이 완료되었습니다.");
@@ -438,11 +430,9 @@ public class DetectiveController {
 
     @PostMapping("/updateFile")
     public ResponseEntity<String> deleteFile(@RequestParam("filePath") String filePath, @RequestParam("state") String state) {
-        System.out.println(filePath+"pathtest");
         if(state.equals("delete")){
             try {
                 Path path = Paths.get(filePath);
-                System.out.println(path+"pathtest2");
                 if (Files.exists(path)) {
                     Files.delete(path);  // 파일 삭제
                     return ResponseEntity.ok("File deleted successfully.");
@@ -539,7 +529,6 @@ public class DetectiveController {
     @GetMapping("/{detectiveId}")
     public DetectiveDTO getDetecveById(@PathVariable Long detectiveId) {
 
-        System.out.println("탐정 아이디 : " + detectiveId);
         Detective detective = detectiveRepository.findById(detectiveId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "탐정을 찾을 수 없습니다."));
 

@@ -64,7 +64,7 @@ public class SecurityConfig {
                         .requestMatchers("/test/**").hasRole("USER")
                         .requestMatchers("/admin/**").permitAll()
                         .requestMatchers("/client/**").permitAll()
-                        .requestMatchers("/notification/**","/chatConut","/plz/**").permitAll()//
+                        .requestMatchers("/notification/**","/chatCount","/plz/**").permitAll()//
                         .anyRequest().authenticated()
                 )
 //                .oauth2Login(oauth2 -> oauth2
@@ -83,16 +83,11 @@ public class SecurityConfig {
         String email = user.getAttribute("email");  // 이메일 정보 가져오기
         String name = user.getAttribute("name");  // 이름 정보 가져오기
 
-        // 사용자 정보를 로그에 출력
-        System.out.println("User Email: " + email);
-        System.out.println("User Name: " + name);
-
         // 사용자 정보가 없으면 가입 처리 (Optional)
         User user2 = userRepository.findByEmail(email);
         if (user2 == null) {
             // OAuth2 요청에서 state 값 추출
             String role = httpServletRequest.getParameter("role");
-            System.out.println("rrr test"+role);
 
             if(role.equals("ROLE_USER")){
                 // 신규 사용자라면 자동 가입 처리
@@ -126,10 +121,10 @@ public class SecurityConfig {
 
         // JWT 토큰 생성
         String token = jwtUtil.generateToken2(user2);  // 사용자 정보 기반으로 JWT 생성
-        System.out.println("token2"+token);
 
         // 토큰을 포함하여 클라이언트로 리다이렉트
         try {
+            //httpServletResponse.sendRedirect("https://findmyholmes.netlify.app/?token=" + token);
             httpServletResponse.sendRedirect("http://localhost:8000/?token=" + token);
         } catch (IOException e) {
             e.printStackTrace();  // 예외 처리

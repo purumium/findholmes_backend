@@ -42,7 +42,6 @@ public class ClientController {
 
     @PostMapping("/finddetectives")
     public List<DetectiveDTO> findDetectives(@RequestBody SearchRequest request) {
-        System.out.println("\naaaaaaaa"+request.getLocation()+"\n"+request.getSpecialityId());
         List<Detective> detectives = new ArrayList<>();
         if(request.getLocation().equals("")){
             Long id = (long) request.getSpecialityId();

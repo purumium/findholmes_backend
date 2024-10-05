@@ -44,8 +44,6 @@ public class ReviewService {
             reviewDTO.setUpdatedAt(review.getUpdatedAt());
 
             reviewDTOS.add(reviewDTO);
-            System.out.println("Review ID: " + review.getId());
-            System.out.println("Rating: " + review.getRating());
         }
         return reviewDTOS;
     }

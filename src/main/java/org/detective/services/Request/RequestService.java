@@ -39,7 +39,6 @@ public class RequestService {
     고객이 보낸 의뢰를 생성하는 메서드
     */
     public void createRequest(RequestFormDTO requestFormDTO) {
-        System.err.println("Service : createRequest 실행");
         User user = userRepository.findByEmail(requestFormDTO.getEmail());
         Long userId = user.getUserId();
         if (userId == null) { throw new RuntimeException("User not found"); }
@@ -61,23 +60,17 @@ public class RequestService {
             if (requestFormDTO.getGender().equals("ANY")) {
                 detectives = detectiveRepository.getDetectiveLS(speciality.getSpecialityId(), requestFormDTO.getLocation());
             } else {
-                System.err.println("getDetectiveLSG : " + requestFormDTO.toString());
                 detectives = detectiveRepository.getDetectiveLSG(speciality.getSpecialityId(), requestFormDTO.getGender(), requestFormDTO.getLocation());
-                System.err.println("getDetectiveLSG_detective : " + detectives.toString());
             }
 
             int cnt = 0;
-            System.err.println("Service detectives entity : " + detectives.toString());
-            System.err.println("Service detectives entity length : " + detectives.size());
             for (Detective detective : detectives) {
-                System.err.println(++cnt + "번째 삽입");
                 AssignmentRequest assignmentRequest = new AssignmentRequest(request, detective, speciality);
                 assignmentRequestRepository.save(assignmentRequest);
                 NotificationDTO notificationDTO = new NotificationDTO(userId,detective.getUser().getUserId(),request.getTitle(),"/detective/received/"+request.getRequestId());
                 notificationService.notifyRequest(notificationDTO);
             }
         } else {
-            System.err.println("직접 의뢰했습니다. / 직접 의뢰했습니다. / 직접 의뢰했습니다. / 직접 의뢰했습니다. / 직접 의뢰했습니다. / 직접 의뢰했습니다. / 직접 의뢰했습니다. / 직접 의뢰했습니다.");
             Detective detective = detectiveRepository.findByDetectiveId(requestFormDTO.getDetectiveId());
             AssignmentRequest assignmentRequest = new AssignmentRequest(request, detective, speciality);
             assignmentRequestRepository.save(assignmentRequest);
@@ -102,7 +95,6 @@ public class RequestService {
                     assignmentRequestRepository.countStatusByRequest(request) > 0? true: false,
                     request.getDetectiveGender()));
         }
-        System.err.println("Request list by Client: " + requestList);
         return requestList;
     }
 

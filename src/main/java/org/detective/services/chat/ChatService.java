@@ -67,7 +67,6 @@ public class ChatService {
     @Transactional
     public void markMessageAsRead(String chatRoomId, Long userId) {
         List<Chat> messages = chatRepository.findByChatRoomId(chatRoomId);
-        System.out.println("프론트에서 보내준거인데 ㅠㅠㅠㅠㅠ chatRoomId: " + chatRoomId + ", userId: " + userId);
         for (Chat message : messages) {
             // 발신자가 아닌 사람이 읽었을 때만 readCount 증가
             if (!message.getSenderId().equals(userId) && message.getReadCount() < 2) { // 상대방이 보낸거가 다 2가 됨

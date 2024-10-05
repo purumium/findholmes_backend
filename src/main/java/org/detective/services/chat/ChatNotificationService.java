@@ -74,7 +74,6 @@ public class ChatNotificationService {
 
     public int totalChatCount(Long userId) {
         List<ChatNotification> chatCount = chatNotificationRepository.findByUserId(userId);
-        System.err.println(" 채팅 카운트 서비스 : "+chatCount+" 채팅 카운트 서비스 : "+chatCount +" 채팅 카운트 서비스 : "+chatCount +" 채팅 카운트 서비스 : "+chatCount +" 채팅 카운트 서비스 : "+chatCount +" 채팅 카운트 서비스 : "+chatCount +" 채팅 카운트 서비스 : "+chatCount +" 채팅 카운트 서비스 : "+chatCount );
         int totalCount = 0;
         for (ChatNotification mapping : chatCount) {
             totalCount+=mapping.getNotification();

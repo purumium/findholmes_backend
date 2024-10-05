@@ -37,14 +37,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("나도몰라");
         User user = userRepository.findByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
 
 
-        System.out.println("비밀번호확인"+user.getPassword());
 //        if(username.equals("admin")){
 //            user.setRole("ROLE_ADMIN");
 //        }else if(username.equals("detective")){
@@ -54,10 +52,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 //        }
 
 
-        System.out.println("login role test"+getAuthorities(user.getRole()));
 
 
-        System.out.print(user+"이게 맞아?");
 
 //        return new org.springframework.security.core.userdetails.User(
 //                user.getEmail(),

@@ -47,8 +47,8 @@ public class ChatController {
         chatService.markMessageAsRead(readInfo.getChatRoomId(), readInfo.getUserId());
     }
 
-    @GetMapping("/chatConut")
-    public int totalChatConut(@RequestParam Long userId) {
+    @GetMapping("/chatCount")
+    public int totalChatCount(@RequestParam Long userId) {
         return chatNotificationService.totalChatCount(userId);
     }
 

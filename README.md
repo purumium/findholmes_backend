@@ -1,4 +1,4 @@
-![8_홈즈승인_3 mp4](https://github.com/user-attachments/assets/f03e427f-dfdd-4945-a49e-34a3cb8f033f)# 탐정 중개 플랫폼 '찾아줘 홈즈'
+# 탐정 중개 플랫폼 '찾아줘 홈즈'
 <img src="https://github.com/user-attachments/assets/3ecc3a08-cc29-4094-8872-744d2f460b02" width="200px">
 
 <br><br>
@@ -133,10 +133,13 @@
 **9-2. 고객: 포인트 충전 돼 있으면 차감하고 무제한 채팅하기** <br>
 <img src="https://github.com/user-attachments/assets/cd528375-7e04-46eb-86f4-ea9a3a913291" width="300"> <br><br>
 
-**10. 채팅 후 리뷰쓰기** <br>
+**10. 결제하기** <br>
+<img src="https://github.com/user-attachments/assets/917b0172-18d0-47af-8f58-ab5b4073ddc9" width="300">  <br><br>
+
+**11. 채팅 후 리뷰쓰기** <br>
 <img src="https://github.com/user-attachments/assets/f23ee089-e39e-4542-9763-90691c29e516" width="300">  <br><br>
 
-**11. 관리자에게 문의하기** <br>
+**12. 관리자에게 문의하기** <br>
 <img src="https://github.com/user-attachments/assets/fd95bba8-8c26-4454-8a9b-5091faf7c331" width="300"> <br><br>
 
 <br><br>
@@ -172,3 +175,21 @@
 **9. 알림(받은 의뢰서 알림 확인)** <br>
 <img src="https://github.com/user-attachments/assets/fe7feb1c-fecd-4563-9bab-670153a8776f" width="300"> <br><br>
 
+<br><br>
+
+
+## 3) 관리자 페이지 <br>
+**1. 관리자 로그인** <br>
+<img src="https://github.com/user-attachments/assets/499a271a-96ef-4260-827c-2c5b3e481c86" width="300"> <br><br>
+
+**2. 탐정 등록 승인** <br>
+<img src="https://github.com/user-attachments/assets/1ca584b9-a30d-46c5-acc5-5bf513eb8a32" width="300"> <br><br>
+
+**3. 문의 관리** <br>
+<img src="https://github.com/user-attachments/assets/2501cf22-a48c-4699-846b-9a892b135c32" width="300"> <br><br>
+
+**4. 사용자 통계** <br>
+<img src="https://github.com/user-attachments/assets/0e49320e-b234-4b4e-90b7-811bfd4b4c85" width="300"> <br><br>
+
+**5. 결제 통계** <br>
+<img src="https://github.com/user-attachments/assets/3875165e-96d3-4674-8e9d-4afd4ec70603" width="300"> <br><br>

@@ -134,7 +134,7 @@
 <img src="https://github.com/user-attachments/assets/cd528375-7e04-46eb-86f4-ea9a3a913291" width="300"> <br><br>
 
 **10. 결제하기** <br>
-<img src="https://github.com/user-attachments/assets/917b0172-18d0-47af-8f58-ab5b4073ddc9" width="300">  <br><br>
+<img src="https://github.com/user-attachments/assets/38e91ba8-bf21-44f0-b036-5f2ccb822894" width="300">  <br><br>
 
 **11. 채팅 후 리뷰쓰기** <br>
 <img src="https://github.com/user-attachments/assets/f23ee089-e39e-4542-9763-90691c29e516" width="300">  <br><br>

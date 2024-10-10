@@ -32,12 +32,9 @@
 
 | **선푸름(팀장)** | **조성현** | **이혜연** | **최유환** |
 | :------: |  :------: | :------: | :------: |
-| ![image](https://github.com/user-attachments/assets/b9add712-b351-4daa-b72b-611e2b372ed7)|
-![image](https://github.com/user-attachments/assets/dbb198d2-8747-4dd8-aea5-d463d0dff50f)|
+| ![image](https://github.com/user-attachments/assets/b9add712-b351-4daa-b72b-611e2b372ed7) | ![image](https://github.com/user-attachments/assets/976f50c4-f40b-4c33-8688-f90ed2e7abc9) | ![image](https://github.com/user-attachments/assets/b9add712-b351-4daa-b72b-611e2b372ed7) | ![image](https://github.com/user-attachments/assets/976f50c4-f40b-4c33-8688-f90ed2e7abc9) |
 
 
-<img src="https://github.com/user-attachments/assets/dcb77afc-1423-4cd3-bb05-88bb94186b7b
-?v=4" height="130" width="130"> | <img src="https://github.com/user-attachments/assets/6fd98055-7e21-432f-9948-dfe88e613c3c?v=4" height="130" width="130"> | <img src="https://github.com/user-attachments/assets/ad4245c8-8e07-4841-8d9e-ef912f46fb91?v=4" height="130" width="130"> | <img src="https://github.com/user-attachments/assets/c0305ec8-9c6e-4bfb-a783-b194f0656ca1?v=4" height="130" width="130"> | 
 
 </div>
 

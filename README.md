@@ -1,4 +1,4 @@
-# 탐정 중개 플랫폼 '찾아줘 홈즈'
+![8_홈즈승인_3 mp4](https://github.com/user-attachments/assets/f03e427f-dfdd-4945-a49e-34a3cb8f033f)# 탐정 중개 플랫폼 '찾아줘 홈즈'
 <img src="https://github.com/user-attachments/assets/3ecc3a08-cc29-4094-8872-744d2f460b02" width="200px">
 
 <br><br>
@@ -142,6 +142,33 @@
 <br><br>
 
 
-## 탐정 페이지 <br>
-**1. 회원 가입** <br>
-<img src="https://github.com/user-attachments/assets/9c98864f-e511-4859-b10e-0825e48d080a" width="300"> <br><br>
+## 2) 탐정 페이지 <br>
+**1. 탐정 회원 가입** <br>
+<img src="https://github.com/user-attachments/assets/91e7fbb5-6443-4fea-8eb4-82bfb039be16" width="300"> <br><br>
+
+**2. 로그인 및 탐정 등록 페이지** <br>
+<img src="https://github.com/user-attachments/assets/8cf7e71c-d9b2-4752-9c75-bed62f5d7d1f" width="300"> <br><br>
+
+**3. 탐정 등록하기(분야, 지역 등 등록)** <br>
+<img src="https://github.com/user-attachments/assets/b01164dd-9871-449d-aa64-c65d12f6baa5" width="300"> <br><br>
+<img src="https://github.com/user-attachments/assets/42800fdc-d001-4078-a3ab-4c0503a6fbb8" width="300"> <br><br>
+<img src="https://github.com/user-attachments/assets/56c7cba4-f4cf-4085-908a-be06e90b1d4a" width="300"> <br><br>
+
+**4. 탐정 등록 승인 완료** <br>
+<img src="https://github.com/user-attachments/assets/469c9dba-3a3f-49e1-9362-1279aa30b499" width="300"> <br><br>
+
+**5. 받은 의뢰서** <br>
+<img src="https://github.com/user-attachments/assets/c4970847-c5e3-4a92-8c57-84f5f68a7183" width="300"> <br><br>
+
+**6. 답변서(견적서) 작성하고 확인하기** <br>
+<img src="https://github.com/user-attachments/assets/016f8c9f-300a-4fa6-83af-21fa7847f15f" width="300"> <br><br>
+
+**7. 보낸 답변서 내역** <br>
+<img src="https://github.com/user-attachments/assets/3a323716-53d9-4d1c-8dd6-45340dde0021" width="300"> <br><br>
+
+**8. 고객과 채팅하기** <br>
+<img src="https://github.com/user-attachments/assets/c442d97f-6a2a-445d-b9ff-afda498dfdb9" width="300"> <br><br>
+
+**9. 알림(받은 의뢰서 알림 확인)** <br>
+<img src="https://github.com/user-attachments/assets/fe7feb1c-fecd-4563-9bab-670153a8776f" width="300"> <br><br>
+

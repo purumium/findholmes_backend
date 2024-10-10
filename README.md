@@ -99,7 +99,7 @@
 
 
 # 기능 소개
-## 고객 페이지 <br>
+## 1) 고객 페이지 <br>
 **1. 회원 가입** <br>
 <img src="https://github.com/user-attachments/assets/9c98864f-e511-4859-b10e-0825e48d080a" width="300"> <br><br>
 
@@ -121,16 +121,27 @@
 **7. 빠르게 탐정 찾기(의뢰 조건에 맞는 전문 탐정 추천받기)** <br>
 <img src="https://github.com/user-attachments/assets/620049b6-8908-43af-adb7-22be0b2aeff2" width="300">  <br><br>
 
-**8. 탐정에게 온 비교견적 보기** <br>
-<img src="https://" width="300">  <br><br>
+**8. 여러명의 탐정에게 온 비교견적 보기** <br>
+<img src="https://github.com/user-attachments/assets/7cac0bd8-1eb9-4519-ac08-640bbe0217b1" width="300">  <br><br>
 
 **9. 탐정의 답변서(견적서)보고 채팅하기** <br>
 <img src="https://github.com/user-attachments/assets/cc7ab08b-75b7-45cc-96a1-d5987a6323e4" width="300"> <br><br>
 
+**9-1. 고객: 채팅 6회 이상이면, 포인트 결제** <br>
+<img src="https://github.com/user-attachments/assets/16a497ca-4a23-4381-92f7-ac9bf822d00e" width="300"> <br><br>
 
-**9. 채팅 후 리뷰쓰기** <br>
+**9-2. 고객: 포인트 충전 돼 있으면 차감하고 무제한 채팅하기** <br>
+<img src="https://github.com/user-attachments/assets/cd528375-7e04-46eb-86f4-ea9a3a913291" width="300"> <br><br>
+
+**10. 채팅 후 리뷰쓰기** <br>
 <img src="https://github.com/user-attachments/assets/f23ee089-e39e-4542-9763-90691c29e516" width="300">  <br><br>
 
-
-**9. 관리자에게 문의하기** <br>
+**11. 관리자에게 문의하기** <br>
 <img src="https://github.com/user-attachments/assets/fd95bba8-8c26-4454-8a9b-5091faf7c331" width="300"> <br><br>
+
+<br><br>
+
+
+## 탐정 페이지 <br>
+**1. 회원 가입** <br>
+<img src="https://github.com/user-attachments/assets/9c98864f-e511-4859-b10e-0825e48d080a" width="300"> <br><br>

@@ -6,20 +6,23 @@
 ## 프로젝트 소개
 ![image](https://github.com/user-attachments/assets/eb3dabc7-e2e0-421b-815e-249fb655c9bb)
 
-- 찾아줘홈즈는 탐정과 의뢰인을 연결해주는 탐정 매칭 플랫폼입니다.
-- 사용자는 요구사항에 맞는 전문 탐정을 빠르고 쉽게 찾고, 탐정들은 더 많은 사건을 경험하며 전문성을 높일 수 있습니다.
-- 검증된 탐정과의 신뢰성 있는 상담과 합리적인 가격 비교 서비스를 제공합니다.
+- 고객의 요구에 맞춰 전문 탐정을 매칭해 주는 탐정 중개 플랫폼
+- 고객은 요구사항에 맞는 전문 탐정을 빠르고 쉽게 찾고, 탐정은 더 많은 사건을 경험하며 전문성을 높일 수 있음
+- 검증된 탐정과의 신뢰성 있는 상담과 합리적인 가격 비교 서비스를 제공
 
 <br>
 
 ## 프로젝트 핵심 기능
-- **검증된 탐정만 소**
+- **검증된 탐정만 소개**
   - 탐정 등록증과 사업자 등록증을 소지한 탐정만이 등록 가능하여, 신뢰할 수 있는 서비스 이용 가능
 - **고객 맞춤형으로 전문 분야의 탐정 매칭**
   - 탐정을 사람찾기, 사이버수사 등 전문 분야별로 구분
   - 고객의 요구사항과 일치하는 전문 분야의 탐정을 매칭
 - **가격 비교 기능**
   - 여러 명의 탐정이 제안한 가격을 쉽게 비교하고, 합리적인 가격으로 탐정 서비스 이용 가능
+- **포인트 결제 기능**
+  - 고객이 탐정과 원활한 채팅하기 위하여 포인트 결제(5회 채팅까지는 무료)
+  - 탐정이 고객에게 답변서(견적서)를 보내기 위해 포인트 결제
 - **실시간 채팅 기능**
   - 고객과 탐정이 실시간 소통을 위한 채팅 기능 제공
 
@@ -27,16 +30,21 @@
 
 ## 팀원 구성
 
-| **선푸름(팀장)** | **김찬희** | **박요한** | **이연수** |  **최유환** |
-| :------: |  :------: | :------: | :------: |:------: |
-| <img src="https://github.com/user-attachments/assets/071a0e18-a8cf-4d36-9c42-9985fcf76104?v=4" height="130" width="130"> | <img src="https://github.com/user-attachments/assets/6fd98055-7e21-432f-9948-dfe88e613c3c?v=4" height="130" width="130"> | <img src="https://github.com/user-attachments/assets/ad4245c8-8e07-4841-8d9e-ef912f46fb91?v=4" height="130" width="130"> | <img src="https://github.com/user-attachments/assets/c0305ec8-9c6e-4bfb-a783-b194f0656ca1?v=4" height="130" width="130"> |  <img src="https://github.com/user-attachments/assets/0267ffd3-8039-4d0d-9be2-99f1668e14b1?v=4" height="130" width="130"> |
+| **선푸름(팀장)** | **조성현** | **이혜연** | **최유환** |
+| :------: |  :------: | :------: | :------: |
+| ![image](https://github.com/user-attachments/assets/b9add712-b351-4daa-b72b-611e2b372ed7)|
+![image](https://github.com/user-attachments/assets/dbb198d2-8747-4dd8-aea5-d463d0dff50f)|
+
+
+<img src="https://github.com/user-attachments/assets/dcb77afc-1423-4cd3-bb05-88bb94186b7b
+?v=4" height="130" width="130"> | <img src="https://github.com/user-attachments/assets/6fd98055-7e21-432f-9948-dfe88e613c3c?v=4" height="130" width="130"> | <img src="https://github.com/user-attachments/assets/ad4245c8-8e07-4841-8d9e-ef912f46fb91?v=4" height="130" width="130"> | <img src="https://github.com/user-attachments/assets/c0305ec8-9c6e-4bfb-a783-b194f0656ca1?v=4" height="130" width="130"> | 
 
 </div>
 
 <br>
 
 ## 개발 기간
-- 2024-08-05 ~ 2024-08-16
+- 2024-08-26 ~ 2024-10-07
 
 <br>
 
